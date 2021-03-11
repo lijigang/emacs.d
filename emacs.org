@@ -1,0 +1,1009 @@
+#+title: emacs literate config
+#+author: lijigang
+
+* doom built-in modules(init.el)
+#+begin_src emacs-lisp :tangle "~/.doom.d/init.el" :mkdirp yes
+;;; init.el -*- lexical-binding: t; -*-
+
+(doom! :input
+       ;;chinese
+
+       :completion
+       company           ; the ultimate code completion backend
+       (ivy
+        +icons
+        +prescient)               ; a search engine for love and life
+
+       :ui
+       ;;deft              ; notational velocity for Emacs
+       doom              ; what makes DOOM look the way it does
+       ;;fill-column       ; a `fill-column' indicator
+       (emoji +unicode)
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       (ligatures +extra)
+       ;;hydra
+       ;;neotree           ; a project drawer, like NERDTree for vim
+       ophints           ; highlight the region an operation acts on
+       (popup
+        +all
+        +defaults)   ; tame sudden yet inevitable temporary windows
+       ;;treemacs          ; a project drawer, like neotree but cooler
+       ;; vc-gutter         ; vcs diff in the fringe
+       ;; vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;;window-select     ; visually switch windows
+       ;;workspaces        ; tab emulation, persistence & separate workspaces
+       zen               ; distraction-free coding or writing
+
+       :editor
+       (evil +everywhere); come to the dark side, we have cookies
+       file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       (format +onsave)  ; automated prettiness
+       ;;multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+       ;;rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
+       ;;word-wrap         ; soft wrapping with language-aware indent
+
+       :emacs
+       (dired +icons)             ; making dired pretty [functional]
+       electric          ; smarter, keyword-based electric-indent
+       (ibuffer +icons)         ; interactive buffer management
+       undo              ; persistent, smarter undo for your inevitable mistakes
+       ;;vc                ; version-control and Emacs, sitting in a tree
+
+       :term
+       ;;eshell            ; the elisp shell that works everywhere
+       ;;shell             ; simple shell REPL for Emacs
+       ;;term              ; basic terminal emulator for Emacs
+       ;;vterm             ; the best terminal emulation in Emacs
+
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       ;;spell             ; tasing you for misspelling mispelling
+       ;;grammar           ; tasing grammar mistake every you make
+
+       :tools
+       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       (eval +overlay)     ; run code, run (also, repls)
+       ;;gist              ; interacting with github gists
+       lookup              ; navigate your code and its documentation
+       magit               ; a git porcelain for Emacs
+       pdf                 ; pdf enhancements
+       rgb               ; creating color strings
+
+       :os
+       (:if IS-MAC macos)  ; improve compatibility with macOS
+
+       :lang
+       emacs-lisp          ; drown in parentheses
+       latex               ; writing papers in Emacs has never been so fun
+       ;;markdown          ; writing docs for people to ignore
+
+       (org                ; organize your plain life in plain text
+        +roam
+        +dragndrop
+        +gnuplot
+        +pandoc
+        +pretty
+        +present)
+
+       plantuml          ; diagrams for confusing people more
+       sh                ; she sells {ba,z,fi}sh shells on the C xor
+       yaml              ; JSON, but readable
+
+       :email
+       (mu4e +org)
+       ;;notmuch
+       ;;(wanderlust +gmail)
+
+       :app
+       calendar
+       ;;irc               ; how neckbeards socialize
+       (rss +org)        ; emacs as an RSS reader
+       ;;twitter           ; twitter client https://twitter.com/vnought
+
+       :config
+       ;;literate
+       (default +bindings +smartparens))
+#+end_src
+
+* packages you want(packages.el)
+#+begin_src emacs-lisp :tangle "~/.doom.d/packages.el" :mkdirp yes
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
+
+;; REVIEW : Change to your personal prefer
+
+;;(package! visual-fill-column)
+(package! org-page)
+(package! org-roam-server)
+(package! dired-narrow)
+(package! valign)
+(package! rime)
+(package! aggressive-fill-paragraph-mode
+  :recipe
+  (:host github :repo "davidshepherd7/aggressive-fill-paragraph-mode"))
+(package! pangu-spacing)
+(package! nano-emacs
+  :recipe (:host github :repo "rougier/nano-emacs"))
+
+(package! writer-word-goals
+  :recipe (:host github :repo "lijigang/writer-word-goals"))
+
+(package! go-translate)
+(package! imenu-list)
+
+(package! calibredb)
+(package! nov)
+
+(package! org-super-agenda)
+
+(package! org-appear
+  :recipe (:host github :repo "awth13/org-appear"))
+
+(package! org-special-block-extras)
+(package! ob-mermaid)
+#+end_src
+* Config.el
+** General config
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+
+;; Change archives to emacs-china
+(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Personal Infomation ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(setq user-full-name "lijigang"
+      user-mail-address "i@lijigang.com")
+
+(setq org-directory "~/Documents/emacs/org/")
+
+;;;;;;;;;;;;;;;;;;
+;; Frame        ;;
+;;;;;;;;;;;;;;;;;;
+
+;; (setq frame-title-format '("你要对这个世界有点意见"))
+(setq frame-title-format
+      '(""
+        (:eval
+         (if (s-contains-p org-roam-directory (or buffer-file-name ""))
+             (replace-regexp-in-string
+              ".*/[0-9]*-?" "☰ "
+              (subst-char-in-string ?_ ?  buffer-file-name))
+           "%b"))
+        (:eval
+         (let ((project-name (projectile-project-name)))
+           (unless (string= "-" project-name)
+             (format (if (buffer-modified-p)  " ◉ %s" "  ●  %s") project-name))))))
+
+(add-to-list 'default-frame-alist '(height . 24))
+(add-to-list 'default-frame-alist '(width . 80))
+
+(menu-bar-mode -1) ;; minimal chrome
+(tool-bar-mode -1) ;; no toolbar
+(scroll-bar-mode -1) ;; disable scroll bars
+
+;;;;;;;;;;;;;
+;; Windows ;;
+;;;;;;;;;;;;;
+
+;; 新打开窗口时, 提示要打开哪个Buffer
+
+(setq evil-vsplit-window-right t
+      evil-split-window-below t)
+
+(defadvice! prompt-for-buffer (&rest _)
+  :after '(evil-window-split evil-window-vsplit)
+  (+ivy/switch-buffer))
+
+(setq +ivy-buffer-preview t)
+
+(map! :map evil-window-map
+      "SPC" #'rotate-layout
+      ;; Navigation
+      "<left>"     #'evil-window-left
+      "<down>"     #'evil-window-down
+      "<up>"       #'evil-window-up
+      "<right>"    #'evil-window-right
+      ;; Swapping windows
+      "C-<left>"       #'+evil/window-move-left
+      "C-<down>"       #'+evil/window-move-down
+      "C-<up>"         #'+evil/window-move-up
+      "C-<right>"      #'+evil/window-move-right)
+
+
+;; Stretch cursor to the glyph width (Tab width cursor)
+(setq-default x-stretch-cursor t)
+
+;; Line spacing, can be 0 for code and 1 or 2 for text
+(setq-default line-spacing 0.2)
+
+;; Underline line at descent position, not baseline position
+(setq x-underline-at-descent-line t)
+
+;; No ugly button for checkboxes
+(setq widget-image-enable nil)
+
+;; Line cursor and no blink
+(set-default 'cursor-type  '(bar . 3))
+(blink-cursor-mode 0)
+
+;; No sound
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
+
+;; Paren mode is part of the theme
+(show-paren-mode t)
+
+;; No fringe
+(fringe-mode '(0 . 0))
+
+
+;;;;;;;;;;
+;; Doom ;;
+;;;;;;;;;;
+(setq +rss-enable-sliced-images nil)
+
+(setq confirm-kill-emacs nil)
+
+(setq system-time-locale "C")
+
+;; Smooth mouse scrolling
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1))  ; scroll two lines at a time
+      mouse-wheel-progressive-speed nil             ; don't accelerate scrolling
+      mouse-wheel-follow-mouse t                    ; scroll window under mouse
+      scroll-step 1)
+
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+
+(global-auto-revert-mode)
+;;;;;;;;;;;;;;;;;;;;;;
+;; nano-emacs theme ;;
+;;;;;;;;;;;;;;;;;;;;;;
+
+(setq doom-theme nil)
+
+(require 'disp-table)
+(require 'nano-faces)
+(require 'nano-colors)
+(require 'nano-theme)
+(require 'nano-help)
+(require 'nano-modeline)
+(nano-faces)
+(nano-theme)
+
+(setq display-line-numbers-type nil
+      evil-default-cursor t
+      custom-blue "#718591"
+      custom-yellow "#BDA441")
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (with-selected-frame frame
+                  (set-cursor-color custom-blue))))
+  (set-cursor-color custom-blue))
+
+;;;;;;;;;;
+;; Font ;;
+;;;;;;;;;;
+(setq doom-font (font-spec :family "Roboto Mono" :size 20)
+      doom-serif-font (font-spec :family "Roboto Mono" )
+      doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold)
+      doom-big-font (font-spec :family "PingFang SC" :size 23))
+
+(add-hook! 'org-mode-hook #'mixed-pitch-mode)
+
+(setq mixed-pitch-variable-pitch-cursor nil)
+#+end_src
+** Package config
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autoemphasis t
+        org-appear-autosubmarkers t
+        org-appear-autolinks nil))
+
+(use-package! calfw
+  :config
+  (setq cfw:display-calendar-holidays nil))
+
+(use-package org-download
+  :config
+  (add-hook 'dired-mode-hook 'org-download-enable)
+  (setq-default org-download-method 'directory
+                org-download-heading-lvl nil
+                org-download-image-dir "./images"
+                org-download-screenshot-method "pngpaste %s"
+                org-download-timestamp ""
+                org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory)))
+(use-package! org-roam-server
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 9090
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-network-label-truncate t
+        org-roam-server-network-label-truncate-length 60
+        org-roam-server-network-label-wrap-length 20))
+
+(use-package org-page
+  :config
+  (progn
+    (setq op/site-main-title "你对这个世界要有点意见")
+    (setq op/personal-github-link "https://github.com/lijigang")
+    (setq op/repository-directory "~/lijigang")
+    (setq op/site-domain "http://lijigang.github.io/")
+    (setq op/theme-root-directory (concat org-directory "private/"))
+    (setq op/theme 'ljg)
+    (setq op/load-directory "~/.emacs.d/.local/straight/repos/org-page/")
+    (setq op/highlight-render 'js)
+    (setq op/category-ignore-list '("themes" "assets" "images"))
+    (setq op/category-config-alist
+          '(("blog"
+             :show-meta t
+             :show-comment t
+             :uri-generator op/generate-uri
+             :uri-template "/blog/%y/%m/%d/%t/"
+             :sort-by :date     ;; how to sort the posts
+             :category-index nil) ;; generate category index or not
+            ("index"
+             :show-meta nil
+             :show-comment nil
+             :uri-generator op/generate-uri
+             :uri-template "/"
+             :sort-by :date
+             :category-index nil)
+            ("about"
+             :show-meta nil
+             :show-comment nil
+             :uri-generator op/generate-uri
+             :uri-template "/about/"
+             :sort-by :date
+             :category-index nil)))))
+
+
+(use-package! dired-narrow
+  :commands (dired-narrow-fuzzy)
+  :init
+  (map! :map dired-mode-map
+        :desc "narrow" "/" #'dired-narrow-fuzzy))
+
+;; Directly edit permisison bits!
+(setq wdired-allow-to-change-permissions t)
+
+;; Use valign package to solve table align problem
+(use-package! valign
+  :config
+  (add-hook 'org-mode-hook #'valign-mode))
+
+(use-package! rime
+  :custom
+  (default-input-method "rime")
+  (rime-librime-root "~/Documents/emacs/depend/librime/dist")
+  (rime-emacs-module-header-root "/usr/local/opt/emacs-mac/include")
+  :config
+  (define-key rime-mode-map (kbd "C-i") 'rime-force-enable)
+  (setq rime-disable-predicates
+        '(rime-predicate-evil-mode-p
+          rime-predicate-after-alphabet-char-p
+          rime-predicate-current-input-punctuation-p
+          rime-predicate-current-uppercase-letter-p
+          rime-predicate-punctuation-line-begin-p))
+  (setq rime-user-data-dir "~/Library/Rime"))
+
+
+(use-package! aggressive-fill-paragraph-mode
+  :hook org-mode)
+
+(use-package! pangu-spacing
+  :config
+  (global-pangu-spacing-mode 1))
+
+(use-package! wwg
+  :config
+  (require 'wwg))
+
+(use-package go-translate
+  :config
+  (setq go-translate-base-url "https://translate.google.cn")
+  (setq go-translate-local-language "zh-CN")
+  (setq go-translate-token-current (cons 430675 2721866130)))
+
+(use-package! calibredb
+  :commands calibredb
+  :config
+  (setq calibredb-root-dir "~/Documents/ebooks"
+        calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+  (map! :map calibredb-show-mode-map
+        :ne "?" #'calibredb-entry-dispatch
+        :ne "o" #'calibredb-find-file
+        :ne "O" #'calibredb-find-file-other-frame
+        :ne "V" #'calibredb-open-file-with-default-tool
+        :ne "s" #'calibredb-set-metadata-dispatch
+        :ne "e" #'calibredb-export-dispatch
+        :ne "q" #'calibredb-entry-quit
+        :ne "." #'calibredb-open-dired
+        :ne [tab] #'calibredb-toggle-view-at-point
+        :ne "M-t" #'calibredb-set-metadata--tags
+        :ne "M-a" #'calibredb-set-metadata--author_sort
+        :ne "M-A" #'calibredb-set-metadata--authors
+        :ne "M-T" #'calibredb-set-metadata--title
+        :ne "M-c" #'calibredb-set-metadata--comments)
+  (map! :map calibredb-search-mode-map
+        :ne [mouse-3] #'calibredb-search-mouse
+        :ne "RET" #'calibredb-find-file
+        :ne "?" #'calibredb-dispatch
+        :ne "a" #'calibredb-add
+        :ne "A" #'calibredb-add-dir
+        :ne "c" #'calibredb-clone
+        :ne "d" #'calibredb-remove
+        :ne "D" #'calibredb-remove-marked-items
+        :ne "j" #'calibredb-next-entry
+        :ne "k" #'calibredb-previous-entry
+        :ne "l" #'calibredb-virtual-library-list
+        :ne "L" #'calibredb-library-list
+        :ne "n" #'calibredb-virtual-library-next
+        :ne "N" #'calibredb-library-next
+        :ne "p" #'calibredb-virtual-library-previous
+        :ne "P" #'calibredb-library-previous
+        :ne "s" #'calibredb-set-metadata-dispatch
+        :ne "S" #'calibredb-switch-library
+        :ne "o" #'calibredb-find-file
+        :ne "O" #'calibredb-find-file-other-frame
+        :ne "v" #'calibredb-view
+        :ne "V" #'calibredb-open-file-with-default-tool
+        :ne "." #'calibredb-open-dired
+        :ne "b" #'calibredb-catalog-bib-dispatch
+        :ne "e" #'calibredb-export-dispatch
+        :ne "r" #'calibredb-search-refresh-and-clear-filter
+        :ne "R" #'calibredb-search-clear-filter
+        :ne "q" #'calibredb-search-quit
+        :ne "m" #'calibredb-mark-and-forward
+        :ne "f" #'calibredb-toggle-favorite-at-point
+        :ne "x" #'calibredb-toggle-archive-at-point
+        :ne "h" #'calibredb-toggle-highlight-at-point
+        :ne "u" #'calibredb-unmark-and-forward
+        :ne "i" #'calibredb-edit-annotation
+        :ne "DEL" #'calibredb-unmark-and-backward
+        :ne [backtab] #'calibredb-toggle-view
+        :ne [tab] #'calibredb-toggle-view-at-point
+        :ne "M-n" #'calibredb-show-next-entry
+        :ne "M-p" #'calibredb-show-previous-entry
+        :ne "/" #'calibredb-search-live-filter
+        :ne "M-t" #'calibredb-set-metadata--tags
+        :ne "M-a" #'calibredb-set-metadata--author_sort
+        :ne "M-A" #'calibredb-set-metadata--authors
+        :ne "M-T" #'calibredb-set-metadata--title
+        :ne "M-c" #'calibredb-set-metadata--comments)
+  )
+
+(use-package! nov
+  :mode ("\\.epub\\'" . nov-mode)
+  :config
+  (map! :map nov-mode-map
+        :n "RET" #'nov-scroll-up)
+
+  (advice-add 'nov-render-title :override #'ignore)
+
+  (defun +nov-mode-setup ()
+    (face-remap-add-relative 'variable-pitch
+                             :family "Merriweather"
+                             :height 1.4
+                             :width 'semi-expanded)
+    (face-remap-add-relative 'default :height 1.3)
+    (setq-local line-spacing 0.2
+                next-screen-context-lines 4
+                shr-use-colors nil)
+    (require 'visual-fill-column nil t)
+    (setq-local visual-fill-column-center-text t
+                visual-fill-column-width 80
+                nov-text-width 80)
+    (visual-fill-column-mode 1)
+    (hl-line-mode -1)
+
+    ;; (add-to-list '+lookup-definition-functions #'+lookup/dictionary-definition)
+
+    )
+
+  (add-hook 'nov-mode-hook #'+nov-mode-setup))
+
+
+
+(use-package! org-super-agenda
+  :commands (org-super-agenda-mode))
+
+(after! org-agenda
+  (org-super-agenda-mode))
+
+(setq org-agenda-custom-commands
+      '(("o" "Overview"
+         ((agenda "" ((org-agenda-span 'day)
+                      (org-super-agenda-groups
+                       '((:name "Today"
+                          :time-grid t
+                          :date today
+                          :todo "TODAY"
+                          :scheduled today
+                          :order 1)))))
+          (alltodo "" ((org-agenda-overriding-header "")
+                       (org-super-agenda-groups
+                        '((:name "Next to do"
+                           :todo "NEXT"
+                           :order 1)
+                          (:name "Important"
+                           :tag "Important"
+                           :priority "A"
+                           :order 6)
+                          (:name "Due Today"
+                           :deadline today
+                           :order 2)
+                          (:name "Due Soon"
+                           :deadline future
+                           :order 8)
+                          (:name "Overdue"
+                           :deadline past
+                           :face error
+                           :order 7)
+                          (:name "Write"
+                           :tag "Write"
+                           :order 10)
+                          (:name "Emacs"
+                           :tag "Emacs"
+                           :order 13)
+                          (:name "To read"
+                           :tag "Read"
+                           :order 30)
+                          (:name "Waiting"
+                           :todo "WAITING"
+                           :order 20)
+                          (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
+
+
+(use-package! org-appear
+  :hook (org-mode . org-appear-mode)
+  :config
+  (setq org-appear-autoemphasis t
+        org-appear-autosubmarkers t
+        org-appear-autolinks nil))
+
+(use-package! org-special-block-extras
+  :hook (org-mode . org-special-block-extras-mode)
+  :config
+  ;; Use short names like ‘defblock’ instead of the fully qualified name
+  ;; ‘org-special-block-extras--defblock’
+  (org-special-block-extras-short-names)
+  (setq org-export-allow-bind-keywords t))
+
+
+;; you Need brew install mermaid-cli first
+(use-package! ob-mermaid)
+
+(after! dired
+  (setq dired-listing-switches "-aBhl  --group-directories-first"
+        dired-dwim-target t
+        dired-recursive-copies (quote always)
+        dired-recursive-deletes (quote top)
+        ;; Directly edit permisison bits!
+        wdired-allow-to-change-permissions t
+        dired-omit-mode nil))
+
+(after! ivy
+  ;; Causes open buffers and recentf to be combined in ivy-switch-buffer
+  (setq ivy-use-virtual-buffers t
+        +ivy-project-search-engines '(rg)
+        ivy-re-builders-alist '((swiper . ivy--regex-plus) (t . ivy--regex-fuzzy))
+        counsel-find-file-at-point t
+        ivy-wrap nil
+        ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-top-center))
+        ivy-posframe-height-alist '((t . 20))
+        ivy-posframe-parameters '((internal-border-width . 1))
+        ivy-posframe-width 100))
+
+(after! plantuml-mode
+  (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
+  (setq plantuml-default-exec-mode 'jar))
+
+(after! company
+  (setq company-tooltip-limit 5
+        company-tooltip-minimum-width 80
+        company-tooltip-minimum 5
+        company-backends
+        '(company-capf company-dabbrev company-files company-yasnippet)
+        company-global-modes '(not comint-mode erc-mode message-mode help-mode gud-mode)))
+
+(after! org-roam
+  :hook
+  (add-hook 'org-mode-hook #'org-roam-mode)
+
+  :config
+
+  ;; REVIEW : Change to your personal prefer
+  (setq org-roam-directory (concat org-directory "roam/")
+        org-roam-db-location (concat org-directory "roam/org-roam.db")
+        +org-roam-open-buffer-on-find-file nil)
+
+  ;; REVIEW : Change to your personal prefer
+  (setq org-roam-capture-templates
+        '(("d" "default" plain (function org-roam--capture-get-point)
+           "%?"
+           :file-name "${slug}"
+           :head "#+title: ${title}\n#+options: toc:nil date:nil num:nil\n"
+           :unnarrowed t))))
+
+
+(defvar +zen-serif-p t
+  "Whether to use a serifed font with `mixed-pitch-mode'.")
+(after! writeroom-mode
+  (defvar-local +zen--original-org-indent-mode-p nil)
+  (defvar-local +zen--original-mixed-pitch-mode-p nil)
+  (defvar-local +zen--original-solaire-mode-p nil)
+  (defvar-local +zen--original-org-pretty-table-mode-p nil)
+  (defun +zen-enable-mixed-pitch-mode-h ()
+    "Enable `mixed-pitch-mode' when in `+zen-mixed-pitch-modes'."
+    (when (apply #'derived-mode-p +zen-mixed-pitch-modes)
+      (if writeroom-mode
+          (progn
+            (setq +zen--original-solaire-mode-p solaire-mode)
+            (solaire-mode -1)
+            (setq +zen--original-mixed-pitch-mode-p mixed-pitch-mode)
+            (funcall (if +zen-serif-p #'mixed-pitch-serif-mode #'mixed-pitch-mode) 1))
+        (funcall #'mixed-pitch-mode (if +zen--original-mixed-pitch-mode-p 1 -1))
+        (when +zen--original-solaire-mode-p (solaire-mode 1)))))
+  (pushnew! writeroom--local-variables
+            'display-line-numbers
+            'visual-fill-column-width
+            'org-adapt-indentation
+            'org-superstar-headline-bullets-list
+            'org-superstar-remove-leading-stars)
+  (add-hook 'writeroom-mode-enable-hook
+            (defun +zen-prose-org-h ()
+              "Reformat the current Org buffer appearance for prose."
+              (when (eq major-mode 'org-mode)
+                (setq display-line-numbers nil
+                      visual-fill-column-width 60
+                      org-adapt-indentation nil)
+                (when (featurep 'org-superstar)
+                  (setq-local org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛")
+                              ;; org-superstar-headline-bullets-list '("🙐" "🙑" "🙒" "🙓" "🙔" "🙕" "🙖" "🙗")
+                              org-superstar-remove-leading-stars t)
+                  (org-superstar-restart))
+                (setq
+                 +zen--original-org-indent-mode-p org-indent-mode
+                 +zen--original-org-pretty-table-mode-p (bound-and-true-p org-pretty-table-mode))
+                (org-indent-mode -1))))
+  (add-hook 'writeroom-mode-disable-hook
+            (defun +zen-nonprose-org-h ()
+              "Reverse the effect of `+zen-prose-org'."
+              (when (eq major-mode 'org-mode)
+                (when (featurep 'org-superstar)
+                  (org-superstar-restart))
+                (when +zen--original-org-indent-mode-p (org-indent-mode 1))
+                ))))
+#+end_src
+** LaTeX config
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
+(setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
+
+(setq org-highlight-latex-and-related '(native script entities))
+
+(add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t)))
+
+(setq Tex-command-default "XeLaTeX")
+(setq org-latex-pdf-process
+      '(
+        "xelatex -interaction nonstopmode -output-directory %o %f"
+        "xelatex -interaction nonstopmode -output-directory %o %f"
+        "xelatex -interaction nonstopmode -output-directory %o %f"
+        "rm -fr %b.out %b.log %b.tex auto"
+        ))
+
+(with-eval-after-load 'ox-latex
+  (add-to-list 'org-latex-classes
+               '("ctexart" "\\documentclass[11pt,titlepage]{ctexart}
+
+% Document title
+\\usepackage{titling}
+
+% Page Margins: important
+% https://ctan.math.illinois.edu/macros/latex/contrib/geometry/geometry.pdf
+% \\usepackage[scale=0.8,centering]{geometry}
+\\usepackage{geometry}
+\\geometry{
+    a4paper,% 210 * 297mm
+    nomarginpar,% 即\marginparwidth=0pt and \marginparsep=0pt
+    hcentering,% 将hmarginratio设为1:1，即left=right
+    left=28mm,% 注意left=right
+    top=37.00mm,% Word 模板页眉顶端距离20mm
+    width=156mm,
+    height=225mm,
+    }
+
+% Page head and foot
+% lhead/chead/rhead
+% lfoot/cfoot/rfoot
+\\usepackage{fancyhdr}
+\\pagestyle{fancy}
+\\rfoot{\\title}
+\\renewcommand\\headrulewidth{0.6pt}
+\\renewcommand\\footrulewidth{0.6pt}
+
+
+% Format of section and subsection headers
+% [rm sf tt bf up it sl sc]
+% Select the corresponding family/series/shape. Default is bf.
+\\usepackage{titlesec}
+
+% 使用UTF-8编码输入文字
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
+
+% Hyperlinks and bookmarks
+\\usepackage{hyperref}
+\\hypersetup{colorlinks=true,linkcolor=blue}
+
+% xcolor is more powerful than color
+% \\color{red!70}  %70 percent red color
+% \\textcolor{red}
+% \\colorbox{gray}
+\\usepackage[rgb]{xcolor}
+
+% Include graphics
+\\usepackage{graphicx}
+
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+
+% For org-special-block-extras package
+\\usepackage{tcolorbox}
+\\usepackage{multicol}
+
+% List items
+\\usepackage{enumerate}
+%% \\usepackage{enumitem}
+
+% Line spread
+\\usepackage{parskip}"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (setq org-latex-default-class "ctexart")
+  (setq org-latex-compiler "xelatex"))
+#+end_src
+** Keybindings
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+(setq doom-localleader-key ",")
+
+(map!
+ ;; 众妙之门, 值得分配一个 SPC SPC
+ :leader :desc "All in M-x" "SPC" #'counsel-M-x
+
+ "C-h h" 'helpful-at-point
+ "C-h f" 'helpful-function
+ "C-h v" 'helpful-variable
+ "C-h k" 'helpful-key
+
+ "C-s" 'swiper-isearch)
+
+(map! :leader
+      :prefix ("r" . "org-roam")
+      "f" #'org-roam-find-file
+      "s" #'org-roam-server-mode
+      "i" #'org-roam-insert
+      "t" #'org-roam-dailies-find-today)
+#+end_src
+** Orgmode config
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+(after! org
+  (setq org-archive-location (concat org-directory "archive.org::")
+        org-use-property-inheritance t
+        org-confirm-babel-evaluate nil
+        org-list-allow-alphabetical t
+        org-export-with-sub-superscripts nil
+        org-export-use-babel nil
+        org-use-speed-commands t
+        org-return-follows-link t
+        org-hide-emphasis-markers t
+        org-special-ctrl-a/e t
+        org-special-ctrl-k t
+        org-export-in-background t
+        org-catch-invisible-edits 'smart)
+
+  (setq org-todo-keywords
+        '((sequence "TODO" "PUSH" "|" "DONE")))
+
+  (set-face-attribute 'org-headline-done nil :strike-through t)
+
+  (remove-hook 'text-mode-hook #'visual-line-mode)
+  (add-hook 'text-mode-hook #'auto-fill-mode)
+
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+  (add-hook 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
+
+  (setq org-html-head
+        "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
+
+  (setq org-list-demote-modify-bullet '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
+
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t)
+     (plantuml . t)
+     (gnuplot . t)))
+
+  (setq org-export-headline-levels 5)
+
+  (map! :map org-mode-map
+        :localleader
+        :desc "View exported file" "v" #'org-view-output-file)
+
+  (defun org-view-output-file (&optional org-file-path)
+    "Visit buffer open on the first output file (if any) found, using `org-view-output-file-extensions'"
+    (interactive)
+    (let* ((org-file-path (or org-file-path (buffer-file-name) ""))
+           (dir (file-name-directory org-file-path))
+           (basename (file-name-base org-file-path))
+           (output-file nil))
+      (dolist (ext org-view-output-file-extensions)
+        (unless output-file
+          (when (file-exists-p
+                 (concat dir basename "." ext))
+            (setq output-file (concat dir basename "." ext)))))
+      (if output-file
+          (if (member (file-name-extension output-file) org-view-external-file-extensions)
+              (browse-url-xdg-open output-file)
+            (pop-to-buffer (or (find-buffer-visiting output-file)
+                               (find-file-noselect output-file))))
+        (message "No exported file found"))))
+
+  (defvar org-view-output-file-extensions '("pdf" "md" "rst" "txt" "tex" "html")
+    "Search for output files with these extensions, in order, viewing the first that matches")
+  (defvar org-view-external-file-extensions '("html")
+    "File formats that should be opened externally.")
+
+  (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
+
+  (custom-set-faces!
+    '(outline-1 :weight extra-bold :height 1.25)
+    '(outline-2 :weight bold :height 1.15)
+    '(outline-3 :weight bold :height 1.12)
+    '(outline-4 :weight semi-bold :height 1.09)
+    '(outline-5 :weight semi-bold :height 1.06)
+    '(outline-6 :weight semi-bold :height 1.03)
+    '(outline-8 :weight semi-bold)
+    '(outline-9 :weight semi-bold))
+
+  (custom-set-faces!
+    '(org-document-title :height 1.2))
+
+  (setq org-agenda-deadline-faces
+        '((1.001 . error)
+          (1.0 . org-warning)
+          (0.5 . org-upcoming-deadline)
+          (0.0 . org-upcoming-distant-deadline)))
+
+  (setq org-agenda-prefix-format '((agenda . "%t %s ")
+                                   (todo   . " ")))
+
+  (setq org-agenda-clockreport-parameter-plist
+        '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
+
+  (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
+
+  (setq org-agenda-diary-file (concat org-directory "private/standard-diary"))
+
+  (setq diary-file (concat org-directory "private/standard-diary"))
+
+  (setq org-agenda-start-on-weekday nil
+        org-agenda-log-mode-items '(clock)
+        org-agenda-include-all-todo t
+        org-agenda-time-leading-zero t
+        org-agenda-use-time-grid nil
+        org-agenda-include-diary t)
+
+  (setq org-fontify-quote-and-verse-blocks t
+        org-fontify-whole-heading-line t
+        org-fontify-done-headline t)
+
+  (after! org-superstar
+    (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+          org-superstar-prettify-item-bullets t ))
+
+  (setq org-ellipsis " ▾ "
+        org-hide-leading-stars t
+        org-priority-highest ?A
+        org-priority-lowest ?E
+        org-priority-faces
+        '((?A . 'all-the-icons-red)
+          (?B . 'all-the-icons-orange)
+          (?C . 'all-the-icons-yellow)
+          (?D . 'all-the-icons-green)
+          (?E . 'all-the-icons-blue)))
+
+  (appendq! +ligatures-extra-symbols
+            `(:checkbox      "☐"
+              :pending       "◼"
+              :checkedbox    "☑"
+              :list_property "∷"
+              :em_dash       "—"
+              :ellipses      "…"
+              :arrow_right   "→"
+              :arrow_left    "←"
+              :title         "𝙏"
+              :subtitle      "𝙩"
+              :author        "𝘼"
+              :date          "𝘿"
+              :property      "☸"
+              :options       "⌥"
+              :latex_class   "🄲"
+              :latex_header  "⇥"
+              :beamer_header "↠"
+              :attr_latex    "🄛"
+              :attr_html     "🄗"
+              :begin_quote   "❮"
+              :end_quote     "❯"
+              :caption       "☰"
+              :header        "›"
+              :results       "🠶"
+              :begin_export  "⏩"
+              :end_export    "⏪"
+              :properties    "⚙"
+              :end           "∎"
+              :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
+              :priority_b   ,(propertize "⬆" 'face 'all-the-icons-orange)
+              :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
+              :priority_d   ,(propertize "⬇" 'face 'all-the-icons-green)
+              :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)))
+  (set-ligatures! 'org-mode
+    :merge t
+    :checkbox      "[ ]"
+    :pending       "[-]"
+    :checkedbox    "[X]"
+    :list_property "::"
+    :em_dash       "---"
+    :ellipsis      "..."
+    :arrow_right   "->"
+    :arrow_left    "<-"
+    :title         "#+title:"
+    :subtitle      "#+subtitle:"
+    :author        "#+author:"
+    :date          "#+date:"
+    :property      "#+property:"
+    :options       "#+options:"
+    :latex_class   "#+latex_class:"
+    :latex_header  "#+latex_header:"
+    :beamer_header "#+beamer_header:"
+    :attr_latex    "#+attr_latex:"
+    :attr_html     "#+attr_latex:"
+    :begin_quote   "#+begin_quote"
+    :end_quote     "#+end_quote"
+    :caption       "#+caption:"
+    :header        "#+header:"
+    :begin_export  "#+begin_export"
+    :end_export    "#+end_export"
+    :results       "#+RESULTS:"
+    :property      ":PROPERTIES:"
+    :end           ":END:"
+    :priority_a    "[#A]"
+    :priority_b    "[#B]"
+    :priority_c    "[#C]"
+    :priority_d    "[#D]"
+    :priority_e    "[#E]")
+  (plist-put +ligatures-extra-symbols :name "⁍")
+  )
+#+end_src
