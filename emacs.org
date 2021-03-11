@@ -958,7 +958,7 @@
               :end_quote     "❯"
               :caption       "☰"
               :header        "›"
-              :results       "🠶"
+              :results       "ᴿ"
               :begin_export  "⏩"
               :end_export    "⏪"
               :properties    "⚙"
