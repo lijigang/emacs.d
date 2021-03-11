@@ -1007,3 +1007,39 @@
   (plist-put +ligatures-extra-symbols :name "⁍")
   )
 #+end_src
+** Personal functions
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+(defun dcf (cf0 g r n)
+  "calculate dcf value
+
+CF0为初始净利润， g为预计净利润年复合增长率
+
+r 为未来现金流折现率， n为企业未来存活年数"
+  (interactive "nCF0: \nng: \nnr: \nnn: ")
+  (let* ((g1 (expt (1+ g) n))
+         (r1  (expt (1+ r) (- n)))
+         (cf1 (* cf0 g1 r1)))
+    (/ (- cf0 cf1) (- r g))))
+
+;; 插入今年的时间进度条
+(defun make-progress (width percent has-number?)
+  (let* ((done (/ percent 100.0))
+         (done-width (floor (* width done))))
+    (concat
+     "["
+     (make-string done-width ?/)
+     (make-string (- width done-width) ? )
+     "]"
+     (if has-number? (concat " " (number-to-string percent) "%"))
+     )))
+
+(defun insert-day-progress ()
+  (interactive)
+  (let* ((today (time-to-day-in-year (current-time)))
+         (percent (floor (* 100 (/ today 365.0)))))
+    (insert (make-progress 30 percent t))
+    ))
+
+;; SPC i p to insert day progress
+(map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
+#+end_src
