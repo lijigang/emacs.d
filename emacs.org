@@ -18,7 +18,7 @@
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        ;;fill-column       ; a `fill-column' indicator
-       (emoji +unicode)
+       ;; (emoji +unicode)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        (ligatures +extra)
        ;;hydra
@@ -114,17 +114,15 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-;; REVIEW : Change to your personal prefer
-
 ;;(package! visual-fill-column)
 (package! org-page)
 (package! org-roam-server)
 (package! dired-narrow)
 (package! valign)
 (package! rime)
-(package! aggressive-fill-paragraph-mode
-  :recipe
-  (:host github :repo "davidshepherd7/aggressive-fill-paragraph-mode"))
+;; (package! aggressive-fill-paragraph-mode
+;;   :recipe
+;;   (:host github :repo "davidshepherd7/aggressive-fill-paragraph-mode"))
 (package! pangu-spacing)
 (package! nano-emacs
   :recipe (:host github :repo "rougier/nano-emacs"))
@@ -192,6 +190,8 @@
 ;;;;;;;;;;;;;
 ;; Windows ;;
 ;;;;;;;;;;;;;
+
+(global-visual-line-mode)
 
 ;; 新打开窗口时, 提示要打开哪个Buffer
 
@@ -402,8 +402,8 @@
   (setq rime-user-data-dir "~/Library/Rime"))
 
 
-(use-package! aggressive-fill-paragraph-mode
-  :hook org-mode)
+;; (use-package! aggressive-fill-paragraph-mode
+;;   :hook org-mode)
 
 (use-package! pangu-spacing
   :config
