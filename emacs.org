@@ -793,9 +793,15 @@
  "C-h h" 'helpful-at-point
  "C-h f" 'helpful-function
  "C-h v" 'helpful-variable
- "C-h k" 'helpful-key
+ "C-h k" 'helpful-key)
 
- "C-s" 'swiper-isearch)
+(map! :leader
+      :desc "open export dispatch" "e" #'org-export-dispatch)
+
+(map! :leader
+      (:prefix "o"
+       :desc "open elfeed" "e" #'elfeed))
+
 
 (map! :leader
       :prefix ("r" . "org-roam")
