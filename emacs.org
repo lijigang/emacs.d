@@ -143,6 +143,7 @@
 
 (package! org-special-block-extras)
 (package! ob-mermaid)
+(package! rainbow-identifiers)
 #+end_src
 * Config.el
 ** General config
@@ -408,6 +409,17 @@
 (use-package! pangu-spacing
   :config
   (global-pangu-spacing-mode 1))
+
+(use-package! telega
+  :load-path "~/Documents/emacs/depend/telega"
+  :config
+  (add-hook 'telega-root-mode-hook (lambda () (writeroom-mode 1)))
+  (setq telega-chat-show-avatars nil)
+  (setq telega-avatar-text-compose-chars nil)
+  (setq telega-proxies
+        (list
+         '(:server "127.0.0.1" :port 8889 :enable t
+           :type (:@type "proxyTypeHttp")))))
 
 (use-package! wwg
   :config
