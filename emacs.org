@@ -144,6 +144,7 @@
 (package! org-special-block-extras)
 (package! ob-mermaid)
 (package! rainbow-identifiers)
+
 #+end_src
 * Config.el
 ** General config
@@ -811,9 +812,9 @@
       :desc "open export dispatch" "e" #'org-export-dispatch)
 
 (map! :leader
-      (:prefix "o"
-       :desc "open elfeed" "e" #'elfeed))
-
+      (:prefix "o" :desc "open elfeed"
+       "e" #'elfeed
+       "t" #'telega))
 
 (map! :leader
       :prefix ("r" . "org-roam")
