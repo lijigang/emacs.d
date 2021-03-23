@@ -144,7 +144,8 @@
 (package! org-special-block-extras)
 (package! ob-mermaid)
 (package! rainbow-identifiers)
-
+(package! twittering-mode
+  :recipe (:host github :repo "hayamiz/twittering-mode"))
 #+end_src
 * Config.el
 ** General config
@@ -421,6 +422,12 @@
         (list
          '(:server "127.0.0.1" :port 8889 :enable t
            :type (:@type "proxyTypeHttp")))))
+
+(use-package! twittering-mode
+  :config
+  (setq twittering-proxy-use t
+        twittering-proxy-server "127.0.0.1"
+        twittering-proxy-port 8889))
 
 (use-package! wwg
   :config
