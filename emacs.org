@@ -437,7 +437,8 @@
   :config
   (setq go-translate-base-url "https://translate.google.cn")
   (setq go-translate-local-language "zh-CN")
-  (setq go-translate-token-current (cons 430675 2721866130)))
+  (setq go-translate-token-current (cons 430675 2721866130))
+  (map! :leader :desc "Translate" "o c" #'go-translate))
 
 (use-package! calibredb
   :commands calibredb
@@ -1067,4 +1068,42 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 ;; SPC i p to insert day progress
 (map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
+
+
+(defun slade/etymonbuf ()
+  "Look up word etymology notes from http://www.etymonline.com. Requires [[http://links.twibright.com/][links]]  to be installed."
+  (interactive)
+  (let ($p1 $p2 $input $result)    ;; lifted from Xah Lee's 2018-08-16: "emacs, create link of word etymology"
+    (if (use-region-p)
+        (progn (setq $p1 (region-beginning))
+               (setq $p2 (region-end)))
+      (progn (setq $p1 (line-beginning-position))
+             (setq $p2 (line-end-position))))
+    (setq $input (buffer-substring-no-properties $p1 $p2)) ;;
+    (generate-new-buffer $input)  ; generate new buffer titled with entry word
+    (switch-to-buffer (last-buffer)) ; switch to that new buffer
+    (insert (shell-command-to-string (concat "links -dump http://www.etymonline.com/word/" $input))) ; dump text via links from etymonline
+    (goto-char (point-min)) ; go to beginning
+    (if (re-search-forward "Error 404 (Not Found)" nil t)   ; for non-word or words with no etymonline entry
+        (slade/word-not-found)   ; if 404, kill buffer and display minibuffer message
+      (slade/trim-etymonbuf))))  ; otherwise trim off unneeded text from header and footer
+
+(defun slade/trim-etymonbuf ()
+  "Trim off unneeded text from top and bottom."
+  (goto-char (point-min))        ; goto beginning of buffer
+  (search-forward "[\s\s]")         ; the text output of links always delivers text with a "[  ]" right before the text we want
+  (let ((begdel (point)))
+    (delete-region 1 begdel))        ; delete from beginning of buffer until "[  ]"
+  (goto-char (point-max))          ; goto end of buffer
+  (search-backward-regexp "Share[[:space:]]*Share on FacebookShare")   ; the unneeded text at the bottom starts with a "Share" section
+  (let ((enddel (point)))
+    (delete-region (point-max) enddel))    ; delete from end of buffer until Share section
+  (goto-char (point-min)))        ; move point back to beginning
+
+(defun slade/word-not-found ()
+  "Delete buffer and display minibuffer message."
+  (kill-buffer)
+  (message "Sorry, word not found."))
+
+(map! :leader :desc "Etymonline" "o y" #'slade/etymonbuf)
 #+end_src
