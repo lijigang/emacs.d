@@ -196,7 +196,7 @@
 
 (global-visual-line-mode)
 
-(setq fill-column 72)
+(setq-default fill-column 72)
 
 ;; 新打开窗口时, 提示要打开哪个Buffer
 
