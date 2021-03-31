@@ -152,10 +152,14 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;;--------------------------------------------------
 ;; Change archives to emacs-china
 (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
+;;--------------------------------------------------
+
+;;--------------------------------------------------
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Personal Infomation ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -165,6 +169,9 @@
 
 (setq org-directory "~/Documents/emacs/org/")
 
+;;--------------------------------------------------
+
+;;--------------------------------------------------
 ;;;;;;;;;;;;;;;;;;
 ;; Frame        ;;
 ;;;;;;;;;;;;;;;;;;
@@ -189,7 +196,9 @@
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 ;;;;;;;;;;;;;
 ;; Windows ;;
 ;;;;;;;;;;;;;
@@ -249,6 +258,9 @@
 ;; No fringe
 (fringe-mode '(0 . 0))
 
+;;--------------------------------------------------
+
+;;--------------------------------------------------
 
 ;;;;;;;;;;
 ;; Doom ;;
@@ -270,6 +282,10 @@
 (setq default-buffer-file-coding-system 'utf-8)
 
 (global-auto-revert-mode)
+
+;;--------------------------------------------------
+
+;;--------------------------------------------------
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; nano-emacs theme ;;
 ;;;;;;;;;;;;;;;;;;;;;;
@@ -297,6 +313,10 @@
                   (set-cursor-color custom-blue))))
   (set-cursor-color custom-blue))
 
+;;--------------------------------------------------
+
+
+;;--------------------------------------------------
 ;;;;;;;;;;
 ;; Font ;;
 ;;;;;;;;;;
@@ -308,20 +328,28 @@
 (add-hook! 'org-mode-hook #'mixed-pitch-mode)
 
 (setq mixed-pitch-variable-pitch-cursor nil)
+
+;;--------------------------------------------------
 #+end_src
 ** Package config
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+
+;;--------------------------------------------------
 (use-package! org-appear
   :hook (org-mode . org-appear-mode)
   :config
   (setq org-appear-autoemphasis t
         org-appear-autosubmarkers t
         org-appear-autolinks nil))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! calfw
   :config
   (setq cfw:display-calendar-holidays nil))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package org-download
   :config
   (add-hook 'dired-mode-hook 'org-download-enable)
@@ -330,7 +358,11 @@
                 org-download-image-dir "./images"
                 org-download-screenshot-method "pngpaste %s"
                 org-download-timestamp ""
-                org-download-screenshot-file (expand-file-name "screenshot.jpg" temporary-file-directory)))
+                org-download-screenshot-file    (expand-file-name "screenshot.jpg" temporary-file-directory)))
+;;--------------------------------------------------
+
+
+;;--------------------------------------------------
 (use-package! org-roam-server
   :config
   (setq org-roam-server-host "127.0.0.1"
@@ -340,7 +372,9 @@
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package org-page
   :config
   (progn
@@ -376,21 +410,28 @@
              :sort-by :date
              :category-index nil)))))
 
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! dired-narrow
   :commands (dired-narrow-fuzzy)
   :init
   (map! :map dired-mode-map
         :desc "narrow" "/" #'dired-narrow-fuzzy))
+;;--------------------------------------------------
 
 ;; Directly edit permisison bits!
 (setq wdired-allow-to-change-permissions t)
 
+
+;;--------------------------------------------------
 ;; Use valign package to solve table align problem
 (use-package! valign
   :config
   (add-hook 'org-mode-hook #'valign-mode))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! rime
   :custom
   (default-input-method "rime")
@@ -405,15 +446,16 @@
           rime-predicate-current-uppercase-letter-p
           rime-predicate-punctuation-line-begin-p))
   (setq rime-user-data-dir "~/Library/Rime"))
+;;--------------------------------------------------
 
 
-;; (use-package! aggressive-fill-paragraph-mode
-;;   :hook org-mode)
-
+;;--------------------------------------------------
 (use-package! pangu-spacing
   :config
   (global-pangu-spacing-mode 1))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! telega
   :load-path "~/Documents/emacs/depend/telega"
   :config
@@ -424,24 +466,32 @@
         (list
          '(:server "127.0.0.1" :port 8889 :enable t
            :type (:@type "proxyTypeHttp")))))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! twittering-mode
   :config
   (setq twittering-proxy-use t
         twittering-proxy-server "127.0.0.1"
         twittering-proxy-port 8889))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! wwg
   :config
   (require 'wwg))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package go-translate
   :config
   (setq go-translate-base-url "https://translate.google.cn")
   (setq go-translate-local-language "zh-CN")
   (setq go-translate-token-current (cons 430675 2721866130))
   (map! :leader :desc "Translate" "o c" #'go-translate))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! calibredb
   :commands calibredb
   :config
@@ -509,7 +559,9 @@
         :ne "M-T" #'calibredb-set-metadata--title
         :ne "M-c" #'calibredb-set-metadata--comments)
   )
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (use-package! nov
   :mode ("\\.epub\\'" . nov-mode)
   :config
@@ -539,9 +591,11 @@
     )
 
   (add-hook 'nov-mode-hook #'+nov-mode-setup))
+;;--------------------------------------------------
 
 
 
+;;--------------------------------------------------
 (use-package! org-super-agenda
   :commands (org-super-agenda-mode))
 
@@ -591,14 +645,9 @@
                            :order 20)
                           (:discard (:tag ("Chore" "Routine" "Daily")))))))))))
 
+;;--------------------------------------------------
 
-(use-package! org-appear
-  :hook (org-mode . org-appear-mode)
-  :config
-  (setq org-appear-autoemphasis t
-        org-appear-autosubmarkers t
-        org-appear-autolinks nil))
-
+;;--------------------------------------------------
 (use-package! org-special-block-extras
   :hook (org-mode . org-special-block-extras-mode)
   :config
@@ -606,11 +655,15 @@
   ;; ‘org-special-block-extras--defblock’
   (org-special-block-extras-short-names)
   (setq org-export-allow-bind-keywords t))
+;;--------------------------------------------------
 
 
+;;--------------------------------------------------
 ;; you Need brew install mermaid-cli first
 (use-package! ob-mermaid)
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (after! dired
   (setq dired-listing-switches "-aBhl  --group-directories-first"
         dired-dwim-target t
@@ -619,7 +672,9 @@
         ;; Directly edit permisison bits!
         wdired-allow-to-change-permissions t
         dired-omit-mode nil))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (after! ivy
   ;; Causes open buffers and recentf to be combined in ivy-switch-buffer
   (setq ivy-use-virtual-buffers t
@@ -631,11 +686,15 @@
         ivy-posframe-height-alist '((t . 20))
         ivy-posframe-parameters '((internal-border-width . 1))
         ivy-posframe-width 100))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (after! plantuml-mode
   (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
   (setq plantuml-default-exec-mode 'jar))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (after! company
   (setq company-tooltip-limit 5
         company-tooltip-minimum-width 80
@@ -643,7 +702,9 @@
         company-backends
         '(company-capf company-dabbrev company-files company-yasnippet)
         company-global-modes '(not comint-mode erc-mode message-mode help-mode gud-mode)))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (after! org-roam
   :hook
   (add-hook 'org-mode-hook #'org-roam-mode)
@@ -662,8 +723,10 @@
            :file-name "${slug}"
            :head "#+title: ${title}\n#+options: toc:nil date:nil num:nil\n"
            :unnarrowed t))))
+;;--------------------------------------------------
 
 
+;;--------------------------------------------------
 (defvar +zen-serif-p t
   "Whether to use a serifed font with `mixed-pitch-mode'.")
 (after! writeroom-mode
@@ -711,9 +774,13 @@
                   (org-superstar-restart))
                 (when +zen--original-org-indent-mode-p (org-indent-mode 1))
                 ))))
+
+;;--------------------------------------------------
 #+end_src
 ** LaTeX config
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+
+;;--------------------------------------------------
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
 (setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
 
@@ -729,7 +796,9 @@
         "xelatex -interaction nonstopmode -output-directory %o %f"
         "rm -fr %b.out %b.log %b.tex auto"
         ))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("ctexart" "\\documentclass[11pt,titlepage]{ctexart}
@@ -804,9 +873,13 @@
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (setq org-latex-default-class "ctexart")
   (setq org-latex-compiler "xelatex"))
+
+;;--------------------------------------------------
 #+end_src
 ** Keybindings
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+
+;;--------------------------------------------------
 (setq doom-localleader-key ",")
 
 (map!
@@ -832,9 +905,12 @@
       "s" #'org-roam-server-mode
       "i" #'org-roam-insert
       "t" #'org-roam-dailies-find-today)
+;;--------------------------------------------------
 #+end_src
 ** Orgmode config
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+
+;;--------------------------------------------------
 (after! org
   (setq org-archive-location (concat org-directory "archive.org::")
         org-use-property-inheritance t
@@ -847,11 +923,11 @@
         org-hide-emphasis-markers t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
-        org-export-in-background t
+        org-export-in-background nil
         org-catch-invisible-edits 'smart)
 
   (setq org-todo-keywords
-        '((sequence "TODO" "PUSH" "|" "DONE")))
+        '((sequence "TODO" "WORK" "DELAYED" "|" "CANCELLED" "DONE")))
 
   (set-face-attribute 'org-headline-done nil :strike-through t)
 
@@ -1034,9 +1110,13 @@
     :priority_e    "[#E]")
   (plist-put +ligatures-extra-symbols :name "⁍")
   )
+
+;;--------------------------------------------------
 #+end_src
 ** Personal functions
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+
+;;--------------------------------------------------
 (defun dcf (cf0 g r n)
   "calculate dcf value
 
@@ -1049,6 +1129,9 @@ r 为未来现金流折现率， n为企业未来存活年数"
          (cf1 (* cf0 g1 r1)))
     (/ (- cf0 cf1) (- r g))))
 
+;;--------------------------------------------------
+
+;;--------------------------------------------------
 ;; 插入今年的时间进度条
 (defun make-progress (width percent has-number?)
   (let* ((done (/ percent 100.0))
@@ -1058,9 +1141,10 @@ r 为未来现金流折现率， n为企业未来存活年数"
      (make-string done-width ?/)
      (make-string (- width done-width) ? )
      "]"
-     (if has-number? (concat " " (number-to-string percent) "%"))
-     )))
+     (if has-number? (concat " " (number-to-string percent) "%")))))
+;;--------------------------------------------------
 
+;;--------------------------------------------------
 (defun insert-day-progress ()
   (interactive)
   (let* ((today (time-to-day-in-year (current-time)))
@@ -1070,8 +1154,10 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 ;; SPC i p to insert day progress
 (map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
+;;--------------------------------------------------
 
 
+;;--------------------------------------------------
 (defun slade/etymonbuf ()
   "Look up word etymology notes from http://www.etymonline.com. Requires [[http://links.twibright.com/][links]]  to be installed."
   (interactive)
@@ -1108,4 +1194,5 @@ r 为未来现金流折现率， n为企业未来存活年数"
   (message "Sorry, word not found."))
 
 (map! :leader :desc "Etymonline" "o y" #'slade/etymonbuf)
+;;--------------------------------------------------
 #+end_src
