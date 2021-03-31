@@ -1018,6 +1018,7 @@
         org-agenda-include-all-todo t
         org-agenda-time-leading-zero t
         org-agenda-use-time-grid nil
+        calendar-holidays nil
         org-agenda-include-diary t)
 
   (setq org-fontify-quote-and-verse-blocks t
