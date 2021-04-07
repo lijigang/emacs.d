@@ -196,6 +196,9 @@
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
+
+(setq evil-move-cursor-back nil)
+
 ;;--------------------------------------------------
 
 ;;--------------------------------------------------
@@ -204,6 +207,8 @@
 ;;;;;;;;;;;;;
 
 (global-visual-line-mode)
+
+(setq scroll-margin 2)
 
 (setq-default fill-column 72)
 
