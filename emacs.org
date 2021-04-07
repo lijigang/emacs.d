@@ -923,6 +923,8 @@
         org-hide-emphasis-markers t
         org-special-ctrl-a/e t
         org-special-ctrl-k t
+        org-src-preserve-indentation nil
+        org-edit-src-content-indentation 0
         org-export-in-background nil
         org-catch-invisible-edits 'smart)
 
