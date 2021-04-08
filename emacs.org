@@ -136,6 +136,7 @@
 (package! calibredb)
 (package! nov)
 
+(package! org-ql)
 (package! org-super-agenda)
 
 (package! org-appear
@@ -605,6 +606,7 @@
   :commands (org-super-agenda-mode))
 
 (after! org-agenda
+  (setq org-agenda-start-on-weekday 1)
   (org-super-agenda-mode))
 
 (setq org-agenda-custom-commands
