@@ -209,6 +209,11 @@
 
 (global-visual-line-mode)
 
+(add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
+(add-hook 'org-mode-hook 'visual-line-mode)
+(add-hook 'org-mode-hook 'visual-fill-column-mode)
+
+
 (setq scroll-margin 2)
 
 (setq-default fill-column 72)
@@ -940,8 +945,8 @@
 
   (set-face-attribute 'org-headline-done nil :strike-through t)
 
-  (remove-hook 'text-mode-hook #'visual-line-mode)
-  (add-hook 'text-mode-hook #'auto-fill-mode)
+  ;; (remove-hook 'text-mode-hook #'visual-line-mode)
+  ;; (add-hook 'text-mode-hook #'auto-fill-mode)
 
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
   (add-hook 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
