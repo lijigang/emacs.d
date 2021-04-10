@@ -148,6 +148,7 @@
   :recipe (:host github :repo "hayamiz/twittering-mode"))
 
 (package! org-fragtog)
+(package! org-tag-beautify)
 #+end_src
 * Config.el
 ** General config
@@ -359,6 +360,12 @@
 ;;--------------------------------------------------
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
+;;--------------------------------------------------
+
+
+;;--------------------------------------------------
+(use-package! org-tag-beautify
+  :init (org-tag-beautify-mode 1))
 ;;--------------------------------------------------
 
 
