@@ -143,10 +143,11 @@
   :recipe (:host github :repo "awth13/org-appear"))
 
 (package! org-special-block-extras)
-(package! ob-mermaid)
 (package! rainbow-identifiers)
 (package! twittering-mode
   :recipe (:host github :repo "hayamiz/twittering-mode"))
+
+(package! org-fragtog)
 #+end_src
 * Config.el
 ** General config
@@ -353,6 +354,13 @@
         org-appear-autosubmarkers t
         org-appear-autolinks nil))
 ;;--------------------------------------------------
+
+
+;;--------------------------------------------------
+(use-package! org-fragtog
+  :hook (org-mode . org-fragtog-mode))
+;;--------------------------------------------------
+
 
 ;;--------------------------------------------------
 (use-package! calfw
@@ -669,11 +677,6 @@
   (setq org-export-allow-bind-keywords t))
 ;;--------------------------------------------------
 
-
-;;--------------------------------------------------
-;; you Need brew install mermaid-cli first
-(use-package! ob-mermaid)
-;;--------------------------------------------------
 
 ;;--------------------------------------------------
 (after! dired
