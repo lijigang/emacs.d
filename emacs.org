@@ -231,20 +231,6 @@
 
 (setq +ivy-buffer-preview t)
 
-(map! :map evil-window-map
-      "SPC" #'rotate-layout
-      ;; Navigation
-      "<left>"     #'evil-window-left
-      "<down>"     #'evil-window-down
-      "<up>"       #'evil-window-up
-      "<right>"    #'evil-window-right
-      ;; Swapping windows
-      "C-<left>"       #'+evil/window-move-left
-      "C-<down>"       #'+evil/window-move-down
-      "C-<up>"         #'+evil/window-move-up
-      "C-<right>"      #'+evil/window-move-right)
-
-
 ;; Stretch cursor to the glyph width (Tab width cursor)
 (setq-default x-stretch-cursor t)
 
@@ -375,18 +361,6 @@
   (setq cfw:display-calendar-holidays nil))
 ;;--------------------------------------------------
 
-;;--------------------------------------------------
-(use-package org-download
-  :config
-  (add-hook 'dired-mode-hook 'org-download-enable)
-  (setq-default org-download-method 'directory
-                org-download-heading-lvl nil
-                org-download-image-dir "./images"
-                org-download-screenshot-method "pngpaste %s"
-                org-download-timestamp ""
-                org-download-screenshot-file    (expand-file-name "screenshot.jpg" temporary-file-directory)))
-;;--------------------------------------------------
-
 
 ;;--------------------------------------------------
 (use-package! org-roam-server
@@ -454,6 +428,7 @@
 ;; Use valign package to solve table align problem
 (use-package! valign
   :config
+  (setq valign-fancy-bar t)
   (add-hook 'org-mode-hook #'valign-mode))
 ;;--------------------------------------------------
 
@@ -507,118 +482,6 @@
   :config
   (require 'wwg))
 ;;--------------------------------------------------
-
-;;--------------------------------------------------
-(use-package go-translate
-  :config
-  (setq go-translate-base-url "https://translate.google.cn")
-  (setq go-translate-local-language "zh-CN")
-  (setq go-translate-token-current (cons 430675 2721866130))
-  (map! :leader :desc "Translate" "o c" #'go-translate))
-;;--------------------------------------------------
-
-;;--------------------------------------------------
-(use-package! calibredb
-  :commands calibredb
-  :config
-  (setq calibredb-root-dir "~/Documents/ebooks"
-        calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
-  (map! :map calibredb-show-mode-map
-        :ne "?" #'calibredb-entry-dispatch
-        :ne "o" #'calibredb-find-file
-        :ne "O" #'calibredb-find-file-other-frame
-        :ne "V" #'calibredb-open-file-with-default-tool
-        :ne "s" #'calibredb-set-metadata-dispatch
-        :ne "e" #'calibredb-export-dispatch
-        :ne "q" #'calibredb-entry-quit
-        :ne "." #'calibredb-open-dired
-        :ne [tab] #'calibredb-toggle-view-at-point
-        :ne "M-t" #'calibredb-set-metadata--tags
-        :ne "M-a" #'calibredb-set-metadata--author_sort
-        :ne "M-A" #'calibredb-set-metadata--authors
-        :ne "M-T" #'calibredb-set-metadata--title
-        :ne "M-c" #'calibredb-set-metadata--comments)
-  (map! :map calibredb-search-mode-map
-        :ne [mouse-3] #'calibredb-search-mouse
-        :ne "RET" #'calibredb-find-file
-        :ne "?" #'calibredb-dispatch
-        :ne "a" #'calibredb-add
-        :ne "A" #'calibredb-add-dir
-        :ne "c" #'calibredb-clone
-        :ne "d" #'calibredb-remove
-        :ne "D" #'calibredb-remove-marked-items
-        :ne "j" #'calibredb-next-entry
-        :ne "k" #'calibredb-previous-entry
-        :ne "l" #'calibredb-virtual-library-list
-        :ne "L" #'calibredb-library-list
-        :ne "n" #'calibredb-virtual-library-next
-        :ne "N" #'calibredb-library-next
-        :ne "p" #'calibredb-virtual-library-previous
-        :ne "P" #'calibredb-library-previous
-        :ne "s" #'calibredb-set-metadata-dispatch
-        :ne "S" #'calibredb-switch-library
-        :ne "o" #'calibredb-find-file
-        :ne "O" #'calibredb-find-file-other-frame
-        :ne "v" #'calibredb-view
-        :ne "V" #'calibredb-open-file-with-default-tool
-        :ne "." #'calibredb-open-dired
-        :ne "b" #'calibredb-catalog-bib-dispatch
-        :ne "e" #'calibredb-export-dispatch
-        :ne "r" #'calibredb-search-refresh-and-clear-filter
-        :ne "R" #'calibredb-search-clear-filter
-        :ne "q" #'calibredb-search-quit
-        :ne "m" #'calibredb-mark-and-forward
-        :ne "f" #'calibredb-toggle-favorite-at-point
-        :ne "x" #'calibredb-toggle-archive-at-point
-        :ne "h" #'calibredb-toggle-highlight-at-point
-        :ne "u" #'calibredb-unmark-and-forward
-        :ne "i" #'calibredb-edit-annotation
-        :ne "DEL" #'calibredb-unmark-and-backward
-        :ne [backtab] #'calibredb-toggle-view
-        :ne [tab] #'calibredb-toggle-view-at-point
-        :ne "M-n" #'calibredb-show-next-entry
-        :ne "M-p" #'calibredb-show-previous-entry
-        :ne "/" #'calibredb-search-live-filter
-        :ne "M-t" #'calibredb-set-metadata--tags
-        :ne "M-a" #'calibredb-set-metadata--author_sort
-        :ne "M-A" #'calibredb-set-metadata--authors
-        :ne "M-T" #'calibredb-set-metadata--title
-        :ne "M-c" #'calibredb-set-metadata--comments)
-  )
-;;--------------------------------------------------
-
-;;--------------------------------------------------
-(use-package! nov
-  :mode ("\\.epub\\'" . nov-mode)
-  :config
-  (map! :map nov-mode-map
-        :n "RET" #'nov-scroll-up)
-
-  (advice-add 'nov-render-title :override #'ignore)
-
-  (defun +nov-mode-setup ()
-    (face-remap-add-relative 'variable-pitch
-                             :family "Merriweather"
-                             :height 1.4
-                             :width 'semi-expanded)
-    (face-remap-add-relative 'default :height 1.3)
-    (setq-local line-spacing 0.2
-                next-screen-context-lines 4
-                shr-use-colors nil)
-    (require 'visual-fill-column nil t)
-    (setq-local visual-fill-column-center-text t
-                visual-fill-column-width 80
-                nov-text-width 80)
-    (visual-fill-column-mode 1)
-    (hl-line-mode -1)
-
-    ;; (add-to-list '+lookup-definition-functions #'+lookup/dictionary-definition)
-
-    )
-
-  (add-hook 'nov-mode-hook #'+nov-mode-setup))
-;;--------------------------------------------------
-
 
 
 ;;--------------------------------------------------
@@ -733,12 +596,10 @@
 
   :config
 
-  ;; REVIEW : Change to your personal prefer
   (setq org-roam-directory (concat org-directory "roam/")
         org-roam-db-location (concat org-directory "roam/org-roam.db")
         +org-roam-open-buffer-on-find-file nil)
 
-  ;; REVIEW : Change to your personal prefer
   (setq org-roam-capture-templates
         '(("d" "default" plain (function org-roam--capture-get-point)
            "%?"
@@ -751,6 +612,7 @@
 ;;--------------------------------------------------
 (defvar +zen-serif-p t
   "Whether to use a serifed font with `mixed-pitch-mode'.")
+
 (after! writeroom-mode
   (defvar-local +zen--original-org-indent-mode-p nil)
   (defvar-local +zen--original-mixed-pitch-mode-p nil)
@@ -917,7 +779,7 @@
       :desc "open export dispatch" "e" #'org-export-dispatch)
 
 (map! :leader
-      (:prefix "o" :desc "open elfeed"
+      (:prefix "o" :desc "open applications"
        "e" #'elfeed
        "t" #'telega))
 
@@ -969,7 +831,7 @@
 
 ;;--------------------------------------------------
 (after! org
-  (setq org-archive-location (concat org-directory "archive.org::")
+  (setq org-archive-location (concat org-directory "roam/archive.org::")
         org-use-property-inheritance t
         org-confirm-babel-evaluate nil
         org-list-allow-alphabetical t
@@ -1183,7 +1045,7 @@
         elfeed-show-entry-switch #'pop-to-buffer
         elfeed-show-entry-delete #'+rss/delete-pane
         elfeed-show-refresh-function #'+rss/elfeed-show-refresh--better-style
-        rmh-elfeed-org-files (list (concat org-directory "elfeed.org"))
+        rmh-elfeed-org-files (list (concat org-directory "roam/elfeed.org"))
         shr-max-image-proportion 0.6)
 
   (add-hook! 'elfeed-show-mode-hook (hide-mode-line-mode 1))
@@ -1287,7 +1149,6 @@
 
   )
 ;;--------------------------------------------------
-
 #+end_src
 ** Personal functions
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
