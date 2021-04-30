@@ -825,6 +825,7 @@
 ;;--------------------------------------------------
 (after! org
   (setq org-archive-location (concat org-directory "roam/archive.org::")
+        org-log-done t
         org-use-property-inheritance t
         org-confirm-babel-evaluate nil
         org-list-allow-alphabetical t
@@ -841,7 +842,7 @@
         org-catch-invisible-edits 'smart)
 
   (setq org-todo-keywords
-        '((sequence "TODO" "WORK" "DELAYED" "|" "CANCELLED" "DONE")))
+        '((sequence "TODO" "WORK" "DELAYED" "|" "DONE")))
 
   (set-face-attribute 'org-headline-done nil :strike-through t)
 
@@ -908,32 +909,6 @@
 
   (custom-set-faces!
     '(org-document-title :height 1.2))
-
-  (setq org-agenda-deadline-faces
-        '((1.001 . error)
-          (1.0 . org-warning)
-          (0.5 . org-upcoming-deadline)
-          (0.0 . org-upcoming-distant-deadline)))
-
-  (setq org-agenda-prefix-format '((agenda . "%t %s ")
-                                   (todo   . " ")))
-
-  (setq org-agenda-clockreport-parameter-plist
-        '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
-
-  (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
-
-  (setq org-agenda-diary-file (concat org-directory "private/standard-diary"))
-
-  (setq diary-file (concat org-directory "private/standard-diary"))
-
-  (setq org-agenda-start-on-weekday nil
-        org-agenda-log-mode-items '(clock)
-        org-agenda-include-all-todo t
-        org-agenda-time-leading-zero t
-        org-agenda-use-time-grid nil
-        calendar-holidays nil
-        org-agenda-include-diary t)
 
   (setq org-fontify-quote-and-verse-blocks t
         org-fontify-whole-heading-line t
@@ -1027,6 +1002,43 @@
   )
 
 ;;--------------------------------------------------
+#+end_src
+** org-agenda config
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+(after! org
+
+  (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
+
+  (setq org-agenda-diary-file (concat org-directory "private/standard-diary"))
+
+  (setq diary-file (concat org-directory "private/standard-diary"))
+
+  (setq org-agenda-deadline-faces
+        '((1.001 . error)
+          (1.0 . org-warning)
+          (0.5 . org-upcoming-deadline)
+          (0.0 . org-upcoming-distant-deadline)))
+
+  (setq org-agenda-prefix-format '((agenda . "%t %s ")
+                                   (todo   . " ")))
+
+  (setq org-agenda-clockreport-parameter-plist
+        '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
+
+
+  (setq org-agenda-start-on-weekday nil
+        org-agenda-log-mode-items '(clock)
+        org-agenda-include-all-todo t
+        org-agenda-time-leading-zero t
+        org-agenda-use-time-grid nil
+        calendar-holidays nil
+        org-agenda-include-diary t)
+
+  )
+#+end_src
+** elfeed
+
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
 
 ;;--------------------------------------------------
 (after! elfeed
