@@ -120,9 +120,6 @@
 (package! dired-narrow)
 (package! valign)
 (package! rime)
-;; (package! aggressive-fill-paragraph-mode
-;;   :recipe
-;;   (:host github :repo "davidshepherd7/aggressive-fill-paragraph-mode"))
 (package! pangu-spacing)
 (package! nano-emacs
   :recipe (:host github :repo "rougier/nano-emacs"))
@@ -130,11 +127,7 @@
 (package! writer-word-goals
   :recipe (:host github :repo "lijigang/writer-word-goals"))
 
-(package! go-translate)
 (package! imenu-list)
-
-(package! calibredb)
-(package! nov)
 
 (package! org-ql)
 (package! org-super-agenda)
