@@ -953,16 +953,16 @@
               :end_quote     "❯"
               :caption       "☰"
               :header        "›"
-              :results       "ᴿ"
+              :results       "🍌"
               :begin_export  "⏩"
               :end_export    "⏪"
               :properties    "⚙"
               :end           "∎"
-              :priority_a   ,(propertize "⚑" 'face 'all-the-icons-red)
-              :priority_b   ,(propertize "⬆" 'face 'all-the-icons-orange)
-              :priority_c   ,(propertize "■" 'face 'all-the-icons-yellow)
-              :priority_d   ,(propertize "⬇" 'face 'all-the-icons-green)
-              :priority_e   ,(propertize "❓" 'face 'all-the-icons-blue)))
+              :priority_a   ,(propertize "🅰" 'face 'all-the-icons-red)
+              :priority_b   ,(propertize "🅱" 'face 'all-the-icons-orange)
+              :priority_c   ,(propertize "🅲" 'face 'all-the-icons-yellow)
+              :priority_d   ,(propertize "🅳" 'face 'all-the-icons-green)
+              :priority_e   ,(propertize "🅴" 'face 'all-the-icons-blue)))
   (set-ligatures! 'org-mode
     :merge t
     :checkbox      "[ ]"
