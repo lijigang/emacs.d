@@ -1221,5 +1221,20 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 (map! :leader :desc "Insert image" "i i" #'org-insert-image)
 
+(defun xah-show-formfeed-as-line ()
+  "Display the formfeed ^L char as line. Version 2018-08-30"
+  (interactive)
+  ;; 2016-10-11 thanks to Steve Purcell's page-break-lines.el
+  (progn
+    (when (not buffer-display-table)
+      (setq buffer-display-table (make-display-table)))
+    (aset buffer-display-table ?\^L
+          (vconcat (make-list 49 (make-glyph-code ?─ 'font-lock-comment-face))))
+    (redraw-frame)))
+
+
+(add-hook 'org-mode-hook #'xah-show-formfeed-as-line)
+(add-hook 'emacs-lisp-mode-hook #'xah-show-formfeed-as-line)
+
 ;;--------------------------------------------------
 #+end_src
