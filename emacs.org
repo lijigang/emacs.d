@@ -793,6 +793,8 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
  "C-h v" 'helpful-variable
  "C-h k" 'helpful-key)
 
+(map! "C-l" #'quoted-insert)
+
 (map! :leader
       :desc "open export dispatch" "e" #'org-export-dispatch)
 
