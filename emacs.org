@@ -142,6 +142,9 @@
 
 (package! org-fragtog)
 (package! org-tag-beautify)
+(package! ace-pinyin
+  :recipe (:host github :repo "cute-jumper/ace-pinyin"))
+
 #+end_src
 * Config.el
 ** General config
@@ -325,6 +328,13 @@
 #+end_src
 ** Package config
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
+
+;;--------------------------------------------------
+(use-package! ace-pinyin
+  :config
+  (ace-pinyin-global-mode +1))
+;;--------------------------------------------------
+
 
 ;;--------------------------------------------------
 (use-package! org-appear
