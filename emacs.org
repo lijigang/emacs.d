@@ -9,7 +9,7 @@
        ;;chinese
 
        :completion
-       company           ; the ultimate code completion backend
+       ;;company           ; the ultimate code completion backend
        (ivy
         +icons
         +prescient)               ; a search engine for love and life
@@ -106,23 +106,19 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-;;(package! visual-fill-column)
-(package! org-page)
-(package! org-roam-server)
-(package! dired-narrow)
-(package! valign)
-(package! rime)
-(package! pangu-spacing)
+(package! dired-narrow)    ;; narrow down to what you want
+(package! org-page)        ;; write blog with orgmode
+(package! org-roam-server) ;; visualize your org files
+(package! pangu-spacing)   ;; automatically add space after english words
+(package! rime)            ;; input with rime input method
+(package! valign)          ;; perfectly solve orgmode table alignment
+
 (package! nano-emacs
   :recipe (:host github :repo "rougier/nano-emacs"))
 
-(package! writer-word-goals
-  :recipe (:host github :repo "lijigang/writer-word-goals"))
-
-(package! imenu-list)
-
 (package! org-ql)
-(package! org-super-agenda)
+
+(package! org-super-agenda) ;; more powerful agenda
 
 (package! org-appear
   :recipe (:host github :repo "awth13/org-appear"))
@@ -132,6 +128,7 @@
 
 (package! org-fragtog)
 (package! org-tag-beautify)
+
 (package! ace-pinyin
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
 
@@ -173,8 +170,6 @@
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
-
-(setq evil-move-cursor-back nil)
 
 ;;--------------------------------------------------
 
@@ -340,6 +335,19 @@
 (use-package! calfw
   :config
   (setq cfw:display-calendar-holidays nil))
+;;--------------------------------------------------
+
+
+;;--------------------------------------------------
+(use-package! page-break-lines
+  :commands page-break-lines-mode
+  :init
+  (autoload 'turn-on-page-break-lines-mode "page-break-lines")
+  :config
+  (setq page-break-lines-max-width fill-column)
+  (map! :prefix "g"
+        :desc "Prev page break" :nv "[" #'backward-page
+        :desc "Next page break" :nv "]" #'forward-page))
 ;;--------------------------------------------------
 
 
@@ -523,6 +531,14 @@
 
 
 ;;--------------------------------------------------
+(after! evil
+  (setq evil-ex-substitute-global t     ; I like my s/../.. to by global by default
+        evil-move-cursor-back nil       ; Don't move the block cursor when toggling insert mode
+        evil-kill-on-visual-paste nil)) ; Don't put overwritten text in the kill ring
+;;--------------------------------------------------
+
+
+;;--------------------------------------------------
 (after! dired
   (setq dired-listing-switches "-aBhl  --group-directories-first"
         dired-dwim-target t
@@ -554,13 +570,13 @@
 ;;--------------------------------------------------
 
 ;;--------------------------------------------------
-(after! company
-  (setq company-tooltip-limit 5
-        company-tooltip-minimum-width 80
-        company-tooltip-minimum 5
-        company-backends
-        '(company-capf company-dabbrev company-files company-yasnippet)
-        company-global-modes '(not comint-mode erc-mode message-mode help-mode gud-mode)))
+;; (after! company
+;;   (setq company-tooltip-limit 5
+;;         company-tooltip-minimum-width 80
+;;         company-tooltip-minimum 5
+;;         company-backends
+;;         '(company-capf company-dabbrev company-files company-yasnippet)
+;;         company-global-modes '(not comint-mode erc-mode message-mode help-mode gud-mode)))
 ;;--------------------------------------------------
 
 ;;--------------------------------------------------
@@ -584,6 +600,8 @@
 
 
 ;;--------------------------------------------------
+(solaire-global-mode +1)
+
 (defvar +zen-serif-p t
   "Whether to use a serifed font with `mixed-pitch-mode'.")
 
@@ -847,34 +865,6 @@
      (gnuplot . t)))
 
   (setq org-export-headline-levels 5)
-
-  (map! :map org-mode-map
-        :localleader
-        :desc "View exported file" "v" #'org-view-output-file)
-
-  (defun org-view-output-file (&optional org-file-path)
-    "Visit buffer open on the first output file (if any) found, using `org-view-output-file-extensions'"
-    (interactive)
-    (let* ((org-file-path (or org-file-path (buffer-file-name) ""))
-           (dir (file-name-directory org-file-path))
-           (basename (file-name-base org-file-path))
-           (output-file nil))
-      (dolist (ext org-view-output-file-extensions)
-        (unless output-file
-          (when (file-exists-p
-                 (concat dir basename "." ext))
-            (setq output-file (concat dir basename "." ext)))))
-      (if output-file
-          (if (member (file-name-extension output-file) org-view-external-file-extensions)
-              (browse-url-xdg-open output-file)
-            (pop-to-buffer (or (find-buffer-visiting output-file)
-                               (find-file-noselect output-file))))
-        (message "No exported file found"))))
-
-  (defvar org-view-output-file-extensions '("pdf" "md" "rst" "txt" "tex" "html")
-    "Search for output files with these extensions, in order, viewing the first that matches")
-  (defvar org-view-external-file-extensions '("html")
-    "File formats that should be opened externally.")
 
   (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
@@ -1177,46 +1167,6 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 ;; SPC i p to insert day progress
 (map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
-;;--------------------------------------------------
-
-
-;;--------------------------------------------------
-(defun slade/etymonbuf ()
-  "Look up word etymology notes from http://www.etymonline.com. Requires [[http://links.twibright.com/][links]]  to be installed."
-  (interactive)
-  (let ($p1 $p2 $input $result)    ;; lifted from Xah Lee's 2018-08-16: "emacs, create link of word etymology"
-    (if (use-region-p)
-        (progn (setq $p1 (region-beginning))
-               (setq $p2 (region-end)))
-      (progn (setq $p1 (line-beginning-position))
-             (setq $p2 (line-end-position))))
-    (setq $input (buffer-substring-no-properties $p1 $p2)) ;;
-    (generate-new-buffer $input)  ; generate new buffer titled with entry word
-    (switch-to-buffer (last-buffer)) ; switch to that new buffer
-    (insert (shell-command-to-string (concat "links -dump http://www.etymonline.com/word/" $input))) ; dump text via links from etymonline
-    (goto-char (point-min)) ; go to beginning
-    (if (re-search-forward "Error 404 (Not Found)" nil t)   ; for non-word or words with no etymonline entry
-        (slade/word-not-found)   ; if 404, kill buffer and display minibuffer message
-      (slade/trim-etymonbuf))))  ; otherwise trim off unneeded text from header and footer
-
-(defun slade/trim-etymonbuf ()
-  "Trim off unneeded text from top and bottom."
-  (goto-char (point-min))        ; goto beginning of buffer
-  (search-forward "[\s\s]")         ; the text output of links always delivers text with a "[  ]" right before the text we want
-  (let ((begdel (point)))
-    (delete-region 1 begdel))        ; delete from beginning of buffer until "[  ]"
-  (goto-char (point-max))          ; goto end of buffer
-  (search-backward-regexp "Share[[:space:]]*Share on FacebookShare")   ; the unneeded text at the bottom starts with a "Share" section
-  (let ((enddel (point)))
-    (delete-region (point-max) enddel))    ; delete from end of buffer until Share section
-  (goto-char (point-min)))        ; move point back to beginning
-
-(defun slade/word-not-found ()
-  "Delete buffer and display minibuffer message."
-  (kill-buffer)
-  (message "Sorry, word not found."))
-
-(map! :leader :desc "Etymonline" "o y" #'slade/etymonbuf)
 ;;--------------------------------------------------
 
 
