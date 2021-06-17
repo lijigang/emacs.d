@@ -18,7 +18,6 @@
        ;;deft              ; notational velocity for Emacs
        doom              ; what makes DOOM look the way it does
        ;;fill-column       ; a `fill-column' indicator
-       ;; (emoji +unicode)
        hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        (ligatures +extra)
        ;;hydra
@@ -51,18 +50,13 @@
        electric          ; smarter, keyword-based electric-indent
        (ibuffer +icons)         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
-       ;;vc                ; version-control and Emacs, sitting in a tree
 
        :term
        ;;eshell            ; the elisp shell that works everywhere
-       ;;shell             ; simple shell REPL for Emacs
-       ;;term              ; basic terminal emulator for Emacs
        ;;vterm             ; the best terminal emulation in Emacs
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       ;;spell             ; tasing you for misspelling mispelling
-       ;;grammar           ; tasing grammar mistake every you make
 
        :tools
        ;;editorconfig      ; let someone else argue about tabs vs spaces
@@ -100,9 +94,7 @@
 
        :app
        calendar
-       ;;irc               ; how neckbeards socialize
        (rss +org)        ; emacs as an RSS reader
-       ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate
@@ -137,8 +129,6 @@
 
 (package! org-special-block-extras)
 (package! rainbow-identifiers)
-(package! twittering-mode
-  :recipe (:host github :repo "hayamiz/twittering-mode"))
 
 (package! org-fragtog)
 (package! org-tag-beautify)
@@ -175,22 +165,10 @@
 ;; Frame        ;;
 ;;;;;;;;;;;;;;;;;;
 
-;; (setq frame-title-format '("你要对这个世界有点意见"))
-(setq frame-title-format
-      '(""
-        (:eval
-         (if (s-contains-p org-roam-directory (or buffer-file-name ""))
-             (replace-regexp-in-string
-              ".*/[0-9]*-?" "☰ "
-              (subst-char-in-string ?_ ?  buffer-file-name))
-           "%b"))
-        (:eval
-         (let ((project-name (projectile-project-name)))
-           (unless (string= "-" project-name)
-             (format (if (buffer-modified-p)  " ◉ %s" "  ●  %s") project-name))))))
+(setq frame-title-format '("你要对这个世界有点意见"))
 
-(add-to-list 'default-frame-alist '(height . 24))
-(add-to-list 'default-frame-alist '(width . 80))
+(add-to-list 'default-frame-alist '(height . 40))
+(add-to-list 'default-frame-alist '(width . 90))
 
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
@@ -472,13 +450,6 @@
            :type (:@type "proxyTypeHttp")))))
 ;;--------------------------------------------------
 
-;;--------------------------------------------------
-(use-package! twittering-mode
-  :config
-  (setq twittering-proxy-use t
-        twittering-proxy-server "127.0.0.1"
-        twittering-proxy-port 8889))
-;;--------------------------------------------------
 
 ;;--------------------------------------------------
 (use-package! wwg
