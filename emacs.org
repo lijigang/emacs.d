@@ -165,7 +165,7 @@
 (setq frame-title-format '("你要对这个世界有点意见"))
 
 (add-to-list 'default-frame-alist '(height . 40))
-(add-to-list 'default-frame-alist '(width . 90))
+(add-to-list 'default-frame-alist '(width . 110))
 
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
@@ -658,7 +658,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
               "Reformat the current Org buffer appearance for prose."
               (when (eq major-mode 'org-mode)
                 (setq display-line-numbers nil
-                      visual-fill-column-width 60
+                      visual-fill-column-width 72
                       org-adapt-indentation nil)
                 (when (featurep 'org-superstar)
                   (setq-local org-superstar-headline-bullets-list '("☰" "☷" "ൠ" "☣")
@@ -846,6 +846,10 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
       "t" #'org-roam-dailies-find-today)
 ;;--------------------------------------------------
 #+end_src
+
+#+RESULTS:
+: org-roam-dailies-find-today
+
 ** Orgmode config
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes
 
