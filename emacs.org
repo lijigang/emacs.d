@@ -484,6 +484,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   (add-hook 'telega-root-mode-hook (lambda () (writeroom-mode 1)))
   (setq telega-chat-show-avatars nil)
   (setq telega-avatar-text-compose-chars nil)
+  (setq telega-chat-input-prompt "🐶:> ")
   (setq telega-proxies
         (list
          '(:server "127.0.0.1" :port 8889 :enable t
