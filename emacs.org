@@ -320,10 +320,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
     "A variable-pitch face with serifs."
     :group 'basic-faces)
 
-  (setq mixed-pitch-set-height t)
-  (setq variable-pitch-serif-font (font-spec :family "PingFang SC" :size 23))
-  (set-face-attribute 'variable-pitch-serif nil :font variable-pitch-serif-font)
-
   (defun mixed-pitch-serif-mode (&optional arg)
     "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch."
     (interactive)
