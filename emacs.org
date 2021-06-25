@@ -470,7 +470,8 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 ;;--------------------------------------------------
 (use-package! pangu-spacing
   :config
-  (global-pangu-spacing-mode 1))
+  (global-pangu-spacing-mode 1)
+  (setq pangu-spacing-real-insert-separtor t))
 ;;--------------------------------------------------
 
 ;;--------------------------------------------------
