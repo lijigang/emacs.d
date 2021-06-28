@@ -845,8 +845,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 ;;--------------------------------------------------
 #+end_src
 
-#+RESULTS:
-: org-roam-dailies-find-today
 
 ** Orgmode config
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el" :mkdirp yes

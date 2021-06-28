@@ -238,7 +238,7 @@
 (global-auto-revert-mode)
 ;;
 #+end_src
-*** 配置Frame
+*** 配置 Frame
 #+begin_src emacs-lisp
 ;;
 ;; 锁定窗口标题内容
@@ -256,7 +256,7 @@
 (scroll-bar-mode -1) ;; disable scroll bars
 ;;
 #+end_src
-*** 配置Window
+*** 配置 Window
 #+begin_src emacs-lisp
 ;;
 ;; 窗口滚动时, 光标所在行不要顶到边缘, 留两行的Buffer
@@ -395,7 +395,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
       (mixed-pitch-mode (or arg 'toggle)))))
 ;;
 #+end_src
-*** 配置LaTeX
+*** 配置 LaTeX
 #+begin_src emacs-lisp
 ;;
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
@@ -403,7 +403,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 (setq org-highlight-latex-and-related '(native script entities))
 
-(add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t)))
+;; (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t)))
 
 (setq Tex-command-default "XeLaTeX")
 (setq org-latex-pdf-process
@@ -531,7 +531,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
           (?E . 'all-the-icons-blue)))
 
   (setq org-todo-keywords
-        '((sequence "TODO" "" "DELAYED" "|" "DONE")))
+        '((sequence "TODO" "WORK" "|" "DONE")))
 
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
@@ -1107,7 +1107,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 #+end_src
 *** 配置自定义函数
-**** 价值投资DCF 函数
+**** 价值投资 DCF 函数
 #+begin_src emacs-lisp
 ;;
 (defun dcf (cf0 g r n)
@@ -1178,7 +1178,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 (map! :leader :desc "Insert image" "i i" #'org-insert-image)
 ;;
 #+end_src
-**** 将form feed 符号显示为横线
+**** 将 form feed 符号显示为横线
 #+begin_src emacs-lisp
 ;;
 (defun xah-show-formfeed-as-line ()
