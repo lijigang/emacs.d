@@ -90,86 +90,86 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-;;
+
 ;; 快速跳转到任意位置, 通过汉字拼音的方式
 (package! ace-pinyin
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
-;;
+
 
 
-;;
+
 ;; 默认的dired 展现内容太多了, 通过此包可过滤展示需要的内容
 (package! dired-narrow)
-;;
+
 
 
-;;
+
 ;; 简洁好看的主题
 (package! nano-emacs
   :recipe (:host github :repo "rougier/nano-emacs"))
-;;
+
 
 
-;;
+
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
 (package! org-appear
   :recipe (:host github :repo "awth13/org-appear"))
-;;
+
 
 
-;;
+
 ;; 鼠标放到LaTeX 代码上, 可编辑状态, 离开即显示编译后的公式效果
 (package! org-fragtog)
-;;
+
 
 
-;;
+
 ;; 通过orgmode 写博客, 使用此包即可
 (package! org-page)
-;;
+
 
 
-;;
+
 ;; FIXME
 (package! org-ql)
-;;
+
 
 
-;;
+
 ;; 在浏览器中直观查看org-roam 文件之间的关联图
 (package! org-roam-server)
-;;
+
 
 
 
-;;
+
 ;; FIXME
 (package! org-special-block-extras)
-;;
+
 
 
-;;
+
 ;; 中英文字符之间自动插入空格, 增加可阅读性
 (package! pangu-spacing)
-;;
+
 
 
-;;
+
 ;; FIXME
 (package! rainbow-identifiers)
-;;
+
 
 
-;;
+
 ;; 在Emacs 中使用rime, 减少切换中英文状态
 (package! rime)
-;;
+
 
 
-;;
+
 ;; 完美解决中英文字符在表格中对齐的问题
 (package! valign)
-;;
+
 #+end_src
 ** 配置: 你想要的效果
 :PROPERTIES:
@@ -181,72 +181,72 @@
 #+begin_src emacs-lisp
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-;; 
+
 ;; 通过Emacs-china 的仓库来安装包, 提升安装速度
 (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-;; 
+
 
 
-;;
+
 ;; 个人信息
 (setq user-full-name "lijigang"
       user-mail-address "i@lijigang.com")
-;;
+
 
 
-;;
+
 ;; 关键变量.
 ;; 通过iCloud 自动同步Documents 目录, 多台电脑可以无缝迁移使用
 (setq org-directory "~/Documents/emacs/org/")
-;;
+
 
 
-;;
+
 ;; 关闭emacs 时无需额外确认
 (setq confirm-kill-emacs nil)
 
 ;; 设置系统时间显示方式
 (setq system-time-locale "C")
-;;
+
 
 
-;;
+
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
-;;
+
 
 
-;;
+
 ;; FIXME
 (global-visual-line-mode)
 
 (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
 (add-hook 'org-mode-hook 'visual-line-mode)
 (add-hook 'org-mode-hook 'visual-fill-column-mode)
-;;
+
 
 
-;;
+
 ;; 关闭Doom rss 切割图片的功能, 展示完整图片吧
 (setq +rss-enable-sliced-images nil)
-;;
+
 
-;;
+
 ;; 编辑了Buffer , 又想回退到file 原始内容, 需要这个mode
 (global-auto-revert-mode)
-;;
+
 #+end_src
 *** 配置 Frame
 #+begin_src emacs-lisp
-;;
+
 ;; 锁定窗口标题内容
 (setq frame-title-format '("你要对这个世界有点意见"))
-;;
+
 
 
-;;
+
 ;; 指定新打开的Emacs 窗口的长宽大小
 (add-to-list 'default-frame-alist '(height . 40))
 (add-to-list 'default-frame-alist '(width . 110))
@@ -254,22 +254,22 @@
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
-;;
+
 #+end_src
 *** 配置 Window
 #+begin_src emacs-lisp
-;;
+
 ;; 窗口滚动时, 光标所在行不要顶到边缘, 留两行的Buffer
 (setq scroll-margin 2)
-;;
+
 
 
-;;
+
 (setq-default fill-column 72)
-;;
+
 
 
-;;
+
 ;; 新打开窗口时, 提示要打开哪个Buffer
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
@@ -279,10 +279,10 @@
   (+ivy/switch-buffer))
 
 (setq +ivy-buffer-preview t)
-;;
+
 
 
-;;
+
 ;; Stretch cursor to the glyph width (Tab width cursor)
 (setq-default x-stretch-cursor t)
 
@@ -308,21 +308,21 @@
 
 ;; No fringe
 (fringe-mode '(0 . 0))
-;;
+
 #+end_src
 *** 配置鼠标滚动
 #+begin_src emacs-lisp
-;;
+
 ;; Smooth mouse scrolling
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))  ; scroll two lines at a time
       mouse-wheel-progressive-speed nil             ; don't accelerate scrolling
       mouse-wheel-follow-mouse t                    ; scroll window under mouse
       scroll-step 1)
-;;
+
 #+end_src
 *** 配置主题
 #+begin_src emacs-lisp
-;;
+
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
 
@@ -348,11 +348,11 @@
                   (set-cursor-color custom-blue))))
   (set-cursor-color custom-blue))
 
-;;
+
 #+end_src
 *** 配置字体
 #+begin_src emacs-lisp
-;;
+
 ;; Doom 自带的字体变量配置
 ;; 中文苹方, 英文Roboto Mono
 (setq doom-font (font-spec :family "Roboto Mono" :size 20)
@@ -360,7 +360,7 @@
       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold)
       doom-unicode-font (font-spec :family "PingFang SC")
       doom-big-font (font-spec :family "PingFang SC" :size 23))
-;;
+
 
 (setq mixed-pitch-variable-pitch-cursor nil)
 
@@ -393,11 +393,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
     (interactive)
     (let ((mixed-pitch-face 'variable-pitch-serif))
       (mixed-pitch-mode (or arg 'toggle)))))
-;;
+
 #+end_src
 *** 配置 LaTeX
 #+begin_src emacs-lisp
-;;
+
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
 (setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
 
@@ -412,11 +412,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         "xelatex -interaction nonstopmode -output-directory %o %f"
         "xelatex -interaction nonstopmode -output-directory %o %f"
         "rm -fr %b.out %b.log %b.tex auto"))
-;;
+
 #+end_src
 
 #+begin_src emacs-lisp
-;;
+
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("ctexart" "\\documentclass[11pt,titlepage]{ctexart}
@@ -491,12 +491,12 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (setq org-latex-default-class "ctexart")
   (setq org-latex-compiler "xelatex"))
-;;
+
 #+end_src
 *** 配置 =OrgMode=
 **** 常用变量
 #+begin_src emacs-lisp
-;;
+
 (after! org
   (setq org-archive-location (concat org-directory "roam/archive.org::")
         org-log-done t
@@ -551,11 +551,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
   )
- ;;
+ 
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp
-;;
+
 (after! org
 
   (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
@@ -584,11 +584,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         org-agenda-use-time-grid nil
         calendar-holidays nil
         org-agenda-include-diary t))
-;;
+
 #+end_src
 **** org babel languages
 #+begin_src emacs-lisp
-;;
+
 (after! org
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (org-babel-do-load-languages
@@ -597,11 +597,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
      (shell . t)
      (plantuml . t)
      (gnuplot . t))))
-;;
+
 #+end_src
 **** 美化符号
 #+begin_src emacs-lisp
-;;
+
 (after! org
     (appendq! +ligatures-extra-symbols
             `(:checkbox      "☐"
@@ -674,12 +674,12 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
     :priority_e    "[#E]")
   (plist-put +ligatures-extra-symbols :name "⁍")
 )
-;;
+
 
 #+end_src
 **** custom face
 #+begin_src emacs-lisp
-;;
+
 (after! org
   (custom-set-faces!
     '(outline-1 :weight extra-bold :height 1.25)
@@ -693,20 +693,20 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
   (custom-set-faces!
     '(org-document-title :height 1.2)))
-;;
+
 #+end_src
 *** 配置自带包
 **** calfw
 #+begin_src emacs-lisp
-;;
+
 (use-package! calfw
   :config
   (setq cfw:display-calendar-holidays nil))
-;;
+
 #+end_src
 **** dired
 #+begin_src emacs-lisp
-;;
+
 (after! dired
   (setq dired-listing-switches "-aBhl  --group-directories-first"
         dired-dwim-target t
@@ -715,11 +715,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         ;; Directly edit permisison bits!
         wdired-allow-to-change-permissions t
         dired-omit-mode nil))
-;;
+
 #+end_src
 **** elfeed
 #+begin_src emacs-lisp
-;;
+
 (after! elfeed
   (use-package! elfeed-link)
 
@@ -832,20 +832,20 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
       (goto-char (point-min))))
 
   )
-;;
+
 #+end_src
 **** evil
 #+begin_src emacs-lisp
-;;
+
 (after! evil
   (setq evil-ex-substitute-global t     ; I like my s/../.. to by global by default
         evil-move-cursor-back nil       ; Don't move the block cursor when toggling insert mode
         evil-kill-on-visual-paste nil))
-;;
+
 #+end_src
 **** ivy
 #+begin_src emacs-lisp
-;;
+
 (after! ivy
   ;; Causes open buffers and recentf to be combined in ivy-switch-buffer
   (setq ivy-use-virtual-buffers t
@@ -857,11 +857,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         ivy-posframe-height-alist '((t . 20))
         ivy-posframe-parameters '((internal-border-width . 1))
         ivy-posframe-width 100))
-;;
+
 #+end_src
 **** org-roam
 #+begin_src emacs-lisp
-;;
+
 (after! org-roam
   :hook
   (add-hook 'org-mode-hook #'org-roam-mode)
@@ -878,19 +878,19 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
            :file-name "${slug}"
            :head "#+title: ${title}\n#+options: toc:nil date:nil num:nil\n"
            :unnarrowed t))))
-;;
+
 #+end_src
 **** plantuml
 #+begin_src emacs-lisp
-;;
+
 (after! plantuml-mode
   (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
   (setq plantuml-default-exec-mode 'jar))
-;;
+
 #+end_src
 **** writroom
 #+begin_src emacs-lisp
-;;
+
 (solaire-global-mode +1)
 
 (defvar +zen-serif-p t
@@ -941,20 +941,20 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
                   (org-superstar-restart))
                 (when +zen--original-org-indent-mode-p (org-indent-mode 1))
                 ))))
-;;
+
 #+end_src
 *** 配置加装包
 **** ace-pinyin
 #+begin_src emacs-lisp
-;;
+
 (use-package! ace-pinyin
   :config
   (ace-pinyin-global-mode +1))
-;;
+
 #+end_src
 **** dired-narrow
 #+begin_src emacs-lisp
-;;
+
 (use-package! dired-narrow
   :commands (dired-narrow-fuzzy)
   :init
@@ -963,7 +963,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 ;; Directly edit permisison bits!
 (setq wdired-allow-to-change-permissions t)
-;;
+
 
 #+end_src
 
@@ -980,14 +980,14 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 #+end_src
 **** org-fragtog
 #+begin_src emacs-lisp
-;;
+
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
-;;
+
 #+end_src
 **** org-page
 #+begin_src emacs-lisp
-;;
+
 (use-package org-page
   :config
   (progn
@@ -1022,12 +1022,12 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
              :uri-template "/about/"
              :sort-by :date
              :category-index nil)))))
-;;
+
 
 #+end_src
 **** org-roam
 #+begin_src emacs-lisp
-;;
+
 (use-package! org-roam-server
   :config
   (setq org-roam-server-host "127.0.0.1"
@@ -1037,11 +1037,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
-;;
+
 #+end_src
 **** org-special-block-extras
 #+begin_src emacs-lisp
-;;
+
 (use-package! org-special-block-extras
   :hook (org-mode . org-special-block-extras-mode)
   :config
@@ -1049,20 +1049,20 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   ;; ‘org-special-block-extras--defblock’
   (org-special-block-extras-short-names)
   (setq org-export-allow-bind-keywords t))
-;;
+
 #+end_src
 **** pangu-spacing
 #+begin_src emacs-lisp
-;;
+
 (use-package! pangu-spacing
   :config
   (global-pangu-spacing-mode 1)
   (setq pangu-spacing-real-insert-separtor t))
-;;
+
 #+end_src
 **** rime
 #+begin_src emacs-lisp
-;;
+
 (use-package! rime
   :custom
   (default-input-method "rime")
@@ -1077,11 +1077,11 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
           rime-predicate-current-uppercase-letter-p
           rime-predicate-punctuation-line-begin-p))
   (setq rime-user-data-dir "~/Library/Rime"))
-;;
+
 #+end_src
 **** telega
 #+begin_src emacs-lisp
-;;
+
 (use-package! telega
   :load-path "~/Documents/emacs/depend/telega"
   :config
@@ -1093,23 +1093,23 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         (list
          '(:server "127.0.0.1" :port 8889 :enable t
            :type (:@type "proxyTypeHttp")))))
-;;
+
 
 #+end_src
 **** valign
 #+begin_src emacs-lisp
-;;
+
 (use-package! valign
   :config
   (setq valign-fancy-bar t)
   (add-hook 'org-mode-hook #'valign-mode))
-;;
+
 
 #+end_src
 *** 配置自定义函数
 **** 价值投资 DCF 函数
 #+begin_src emacs-lisp
-;;
+
 (defun dcf (cf0 g r n)
   "calculate dcf value
 
@@ -1121,11 +1121,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
          (r1  (expt (1+ r) (- n)))
          (cf1 (* cf0 g1 r1)))
     (/ (- cf0 cf1) (- r g))))
-;;
+
 #+end_src
 **** 今年的时间进度函数
 #+begin_src emacs-lisp
-;;
+
 ;; 插入今年的时间进度条
 (defun make-progress (width percent has-number?)
   (let* ((done (/ percent 100.0))
@@ -1136,9 +1136,9 @@ r 为未来现金流折现率， n为企业未来存活年数"
      (make-string (- width done-width) ? )
      "]"
      (if has-number? (concat " " (number-to-string percent) "%")))))
-;;
+
 
-;;
+
 (defun insert-day-progress ()
   (interactive)
   (let* ((today (time-to-day-in-year (current-time)))
@@ -1148,11 +1148,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 ;; SPC i p to insert day progress
 (map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
-;;
+
 #+end_src
 **** 快速插入截图到文件
 #+begin_src emacs-lisp
-;;
+
 (defun org-insert-image ()
   "insert a image from clipboard"
   (interactive)
@@ -1176,11 +1176,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
   )
 
 (map! :leader :desc "Insert image" "i i" #'org-insert-image)
-;;
+
 #+end_src
 **** 将 form feed 符号显示为横线
 #+begin_src emacs-lisp
-;;
+
 (defun xah-show-formfeed-as-line ()
   "Display the formfeed ^L char as line. Version 2018-08-30"
   (interactive)
@@ -1195,12 +1195,12 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 (add-hook 'org-mode-hook #'xah-show-formfeed-as-line)
 (add-hook 'emacs-lisp-mode-hook #'xah-show-formfeed-as-line)
-;;
+
 #+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp
-;;
+
 (setq doom-localleader-key ",")
 
 (map!
@@ -1220,11 +1220,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
       (:prefix "o" :desc "open applications"
        "e" #'elfeed
        "t" #'telega))
-;;
+
 #+end_src
 **** elfeed 快捷键
 #+begin_src emacs-lisp
-;;
+
 (map! :map elfeed-search-mode-map
       :after elfeed-search
       [remap kill-this-buffer] "q"
@@ -1258,16 +1258,16 @@ r 为未来现金流折现率， n为企业未来存活年数"
       :nm "-" #'elfeed-show-untag
       :nm "s" #'elfeed-show-new-live-search
       :nm "y" #'elfeed-show-yank)
-;;
+
 #+end_src
 **** org-roam 快捷键
 #+begin_src emacs-lisp
-;;
+
 (map! :leader
       :prefix ("r" . "org-roam")
       "f" #'org-roam-find-file
       "s" #'org-roam-server-mode
       "i" #'org-roam-insert
       "t" #'org-roam-dailies-find-today)
-;;
+
 #+end_src
