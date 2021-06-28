@@ -1,6 +1,33 @@
 * 背景
+#+begin_quote
+配置原则： *如无必要, 勿增实体*
+#+end_quote
+
+配置的每行代码争取做到 =减无可减= 的状态, 增加的每一行都有其原因。
+
 * 截图
+#+attr_org: :width 600px
+[[file:images/demo1.png]]
+
+#+attr_org: :width 600px
+[[file:images/demo2.png]]
+
 * 安装
+1. 安装 Doom
+   #+begin_src shell
+   git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+
+   ~/.emacs.d/bin/doom install
+   #+end_src
+2. 下载本配置文件到本地
+   #+begin_src shell
+    git clone git@github.com:lijigang/emacs.d.git
+   #+end_src
+3. Tangle 代码生成配置
+  #+begin_src
+   ;; emacs readme.org
+   M-x: org-babel-tangle
+  #+end_src
 * 配置
 ** 开关: Doom 自带的模块
 :PROPERTIES:
