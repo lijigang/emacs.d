@@ -28,6 +28,11 @@
    ;; emacs readme.org
    M-x: org-babel-tangle
   #+end_src
+4. 修改敏感变量
+   #+begin_example
+    搜索 FIXME, 将该标记下方的变量值更改为你自己所需。
+   #+end_example
+
 * 配置
 ** 开关: Doom 自带的模块
 :PROPERTIES:
