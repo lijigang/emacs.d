@@ -130,7 +130,7 @@
 
 
 
-;; FIXME
+;; 一个快速查询org 文件相关内容的 query language
 (package! org-ql)
 
 
@@ -143,7 +143,7 @@
 
 
 
-;; FIXME
+;; 增加了一些特殊的block, 导出的PDF 更好看
 (package! org-special-block-extras)
 
 
@@ -155,7 +155,7 @@
 
 
 
-;; FIXME
+;; 每个标识符显示一个颜色, 花里胡哨的开始
 (package! rainbow-identifiers)
 
 
@@ -183,6 +183,7 @@
 
 
 ;; 通过Emacs-china 的仓库来安装包, 提升安装速度
+;; FIXME
 (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
@@ -190,14 +191,15 @@
 
 
 ;; 个人信息
+;; FIXME
 (setq user-full-name "lijigang"
       user-mail-address "i@lijigang.com")
 
 
 
 
-;; 关键变量.
 ;; 通过iCloud 自动同步Documents 目录, 多台电脑可以无缝迁移使用
+;; FIXME
 (setq org-directory "~/Documents/emacs/org/")
 
 
@@ -219,7 +221,7 @@
 
 
 
-;; FIXME
+;; 全局打开visual line
 (global-visual-line-mode)
 
 (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
@@ -398,6 +400,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 *** 配置 LaTeX
 #+begin_src emacs-lisp
 
+;; FIXME
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
 (setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
 
@@ -557,11 +560,9 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 #+begin_src emacs-lisp
 
 (after! org
-
+  ;; FIXME
   (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
-
   (setq org-agenda-diary-file (concat org-directory "private/standard-diary"))
-
   (setq diary-file (concat org-directory "private/standard-diary"))
 
   (setq org-agenda-deadline-faces
@@ -991,6 +992,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 (use-package org-page
   :config
   (progn
+    ;; FIXME
     (setq op/site-main-title "你对这个世界要有点意见")
     (setq op/personal-github-link "https://github.com/lijigang")
     (setq op/repository-directory "~/lijigang")
@@ -1057,6 +1059,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 (use-package! pangu-spacing
   :config
   (global-pangu-spacing-mode 1)
+  ;; 在中英文符号之间, 真正地插入空格
   (setq pangu-spacing-real-insert-separtor t))
 
 #+end_src
@@ -1066,6 +1069,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 (use-package! rime
   :custom
   (default-input-method "rime")
+  ;; FIXME
   (rime-librime-root "~/Documents/emacs/depend/librime/dist")
   (rime-emacs-module-header-root "/usr/local/opt/emacs-mac/include")
   :config
@@ -1076,6 +1080,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
           rime-predicate-current-input-punctuation-p
           rime-predicate-current-uppercase-letter-p
           rime-predicate-punctuation-line-begin-p))
+  ;; FIXME
   (setq rime-user-data-dir "~/Library/Rime"))
 
 #+end_src
@@ -1083,6 +1088,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 #+begin_src emacs-lisp
 
 (use-package! telega
+  ;; FIXME
   :load-path "~/Documents/emacs/depend/telega"
   :config
   (add-hook 'telega-root-mode-hook (lambda () (writeroom-mode 1)))
