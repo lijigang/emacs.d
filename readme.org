@@ -992,7 +992,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   :commands (dired-narrow-fuzzy)
   :init
   (map! :map dired-mode-map
-        :desc "narrow" "/" #'dired-narrow-fuzzy))
+        :desc "narrow" "C-/" #'dired-narrow-fuzzy))
 
 ;; Directly edit permisison bits!
 (setq wdired-allow-to-change-permissions t)
@@ -1227,7 +1227,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
     (when (not buffer-display-table)
       (setq buffer-display-table (make-display-table)))
     (aset buffer-display-table ?\^L
-          (vconcat (make-list 49 (make-glyph-code ?─ 'font-lock-comment-face))))
+          (vconcat (make-list 39 (make-glyph-code ?─ 'font-lock-comment-face))))
     (redraw-frame)))
 
 
