@@ -645,9 +645,9 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
               :ellipses      "…"
               :arrow_right   "→"
               :arrow_left    "←"
-              :title         "⌘"
+              :title         "❤"
               :subtitle      "𝙩"
-              :author        "❤"
+              :author        "✍"
               :date          "⚓"
               :property      "☸"
               :options       "⌥"
@@ -1124,6 +1124,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   :load-path "~/Documents/emacs/depend/telega"
   :config
   (add-hook 'telega-root-mode-hook (lambda () (writeroom-mode 1)))
+  (add-hook 'telega-chat-mode-hook (lambda () (writeroom-mode 1)))
   (setq telega-chat-show-avatars nil)
   (setq telega-avatar-text-compose-chars nil)
   (setq telega-chat-input-prompt "🐶:> ")
@@ -1131,6 +1132,9 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         (list
          '(:server "127.0.0.1" :port 8889 :enable t
            :type (:@type "proxyTypeHttp")))))
+
+(with-eval-after-load 'telega
+  (define-key telega-msg-button-map "k" nil))
 
 
 #+end_src
