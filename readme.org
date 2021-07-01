@@ -610,7 +610,8 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
 
 
-  (setq org-agenda-start-on-weekday nil
+  (setq org-agenda-span 7
+        org-agenda-start-on-weekday 1
         org-agenda-log-mode-items '(clock)
         org-agenda-include-all-todo t
         org-agenda-time-leading-zero t
@@ -1231,7 +1232,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
     (when (not buffer-display-table)
       (setq buffer-display-table (make-display-table)))
     (aset buffer-display-table ?\^L
-          (vconcat (make-list 39 (make-glyph-code ?─ 'font-lock-comment-face))))
+          (vconcat (make-list 59 (make-glyph-code ?─ 'font-lock-comment-face))))
     (redraw-frame)))
 
 
