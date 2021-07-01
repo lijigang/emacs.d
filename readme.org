@@ -571,6 +571,8 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   (setq org-list-demote-modify-bullet
         '(("+" . "-") ("-" . "+") ("*" . "+") ("1." . "a.")))
 
+  (setq org-tag-alist '(("@工作" . ?w) ("@生活" . ?l) ("@学习" . ?s)))
+
   (setq org-html-head
         "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
 
@@ -1232,7 +1234,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
     (when (not buffer-display-table)
       (setq buffer-display-table (make-display-table)))
     (aset buffer-display-table ?\^L
-          (vconcat (make-list 59 (make-glyph-code ?─ 'font-lock-comment-face))))
+          (vconcat (make-list 49 (make-glyph-code ?─ 'font-lock-comment-face))))
     (redraw-frame)))
 
 
