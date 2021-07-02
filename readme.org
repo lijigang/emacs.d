@@ -591,6 +591,31 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
     (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
           org-superstar-prettify-item-bullets t ))
 
+    ;; Learn from:
+  ;; https://mullikine.github.io/posts/org-mode-bold/
+  (defface org-bold
+    '((t :foreground "#d2268b"
+         :background "#fefefe"
+         :weight bold
+         :underline t
+         :overline t))
+    "Face for org-mode bold."
+    :group 'org-faces )
+
+  (setq org-emphasis-alist
+        '(("*" org-bold)
+          ("/" italic)
+          ("_" underline)
+          ("=" ;; (:background "maroon" :foreground "white")
+           org-verbatim verbatim)
+          ("~" ;; (:background "deep sky blue" :foreground "MidnightBlue")
+           org-code verbatim)
+          ("+" (:strike-through t))))
+
+  ;; Because spacemacs had different ideas about the verbatim background
+  (set-face-background 'org-bold "#fefefe")
+  (set-face-background 'org-verbatim "#fefefe")
+
   ;; 完成任务时, 将其划线勾掉
   (set-face-attribute 'org-headline-done nil :strike-through t)
 
