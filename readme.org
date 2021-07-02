@@ -388,12 +388,23 @@
 #+begin_src emacs-lisp
 
 ;; Doom 自带的字体变量配置
-;; 中文苹方, 英文Roboto Mono
-(setq doom-font (font-spec :family "Roboto Mono" :size 20)
-      doom-serif-font (font-spec :family "Roboto Mono" )
-      doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold)
-      doom-unicode-font (font-spec :family "PingFang SC")
-      doom-big-font (font-spec :family "PingFang SC" :size 23))
+
+;; Plan A: 中文苹方, 英文Roboto Mono
+;; (setq doom-font (font-spec :family "Roboto Mono" :size 20)
+;;       doom-serif-font (font-spec :family "Roboto Mono" )
+;;       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold)
+;;       doom-unicode-font (font-spec :family "PingFang SC")
+;;       doom-big-font (font-spec :family "PingFang SC" :size 23))
+
+;; Plan B: 中文隶变, 英文Comic
+;; 中文隶变下载地址:
+;; https://www.foundertype.com/index.php/FindFont/searchFont?keyword=隶变
+
+(setq doom-font (font-spec :family "Comic Sans MS" :size 20)
+      doom-serif-font (font-spec :family "Comic Sans MS" )
+      doom-variable-pitch-font (font-spec :family "FZLiBian-S02" :weight 'extra-bold)
+      doom-unicode-font (font-spec :family "FZLiBian-S02")
+      doom-big-font (font-spec :family "FZLiBian-S02" :size 23))
 
 
 (setq mixed-pitch-variable-pitch-cursor nil)
