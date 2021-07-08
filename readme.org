@@ -657,6 +657,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   (setq org-agenda-clockreport-parameter-plist
         '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
 
+  (setq org-agenda-hide-tags-regexp ".")
 
   (setq org-agenda-span 7
         org-agenda-start-on-weekday 1
