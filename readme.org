@@ -242,6 +242,12 @@
 
 ;; 设置系统时间显示方式
 (setq system-time-locale "C")
+
+;; 打开文件时, 光标自动定位到上次停留的位置
+(save-place-mode 1)
+
+;; no pop-up window
+(setq pop-up-windows nil)
 
 
 
@@ -254,11 +260,11 @@
 
 
 ;; 全局打开visual line
-(global-visual-line-mode)
+;; (global-visual-line-mode)
 
 (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
-(add-hook 'org-mode-hook 'visual-line-mode)
-(add-hook 'org-mode-hook 'visual-fill-column-mode)
+;; (add-hook 'org-mode-hook 'visual-line-mode)
+;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
 
 
 
@@ -282,8 +288,11 @@
 
 
 ;; 指定新打开的Emacs 窗口的长宽大小
-(add-to-list 'default-frame-alist '(height . 40))
-(add-to-list 'default-frame-alist '(width . 110))
+(setq default-frame-alist
+      (append (list '(vertical-scroll-bars . nil)
+                    '(internal-border-width . 18)
+                    '(width  . 110) '(height . 0.9)
+                    '(left . 0.3) '(top . 0))))
 
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
@@ -449,6 +458,8 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 (setq org-highlight-latex-and-related '(native script entities))
 
 ;; (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t)))
+
+(pdf-loader-install)
 
 (setq Tex-command-default "XeLaTeX")
 (setq org-latex-pdf-process
@@ -1269,7 +1280,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
     (when (not buffer-display-table)
       (setq buffer-display-table (make-display-table)))
     (aset buffer-display-table ?\^L
-          (vconcat (make-list 49 (make-glyph-code ?─ 'font-lock-comment-face))))
+          (vconcat (make-list 39 (make-glyph-code ?─ 'font-lock-comment-face))))
     (redraw-frame)))
 
 
