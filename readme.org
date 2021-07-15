@@ -509,6 +509,9 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 % Select the corresponding family/series/shape. Default is bf.
 \\usepackage{titlesec}
 
+% for use notin math symbol
+\\usepackage{unicode-math}
+
 % 使用UTF-8编码输入文字
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
