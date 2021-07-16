@@ -564,7 +564,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         org-list-allow-alphabetical t
         org-export-with-sub-superscripts nil
         org-export-headline-levels 5
-        org-export-use-babel nil
+        org-export-use-babel t
         org-use-speed-commands t
         org-return-follows-link t
         org-hide-emphasis-markers t
