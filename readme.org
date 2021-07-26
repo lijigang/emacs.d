@@ -265,6 +265,9 @@
 (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
 ;; (add-hook 'org-mode-hook 'visual-line-mode)
 ;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
+
+;; 查帮助文档时, 显示使用Demos
+(advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update)
 
 
 
