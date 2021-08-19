@@ -176,7 +176,7 @@
 
 
 ;; 增加了一些特殊的block, 导出的PDF 更好看
-(package! org-special-block-extras)
+;; (package! org-special-block-extras)
 
 
 
@@ -536,10 +536,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 \\usepackage{float}
 \\usepackage{wrapfig}
 
-% For org-special-block-extras package
-\\usepackage{tcolorbox}
-\\usepackage{multicol}
-
 % List items
 \\usepackage{enumerate}
 %% \\usepackage{enumitem}
@@ -600,8 +596,14 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
   (setq org-tag-alist '(("@工作" . ?w) ("@生活" . ?l) ("@学习" . ?s)))
 
+  ;; Coding system for HTML export.
+  (setq org-html-coding-system 'utf-8)
+  (setq org-html-doctype "html5")
   (setq org-html-head
-        "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
+        "<link rel='stylesheet' type='text/css' href='https://gongzhitaao.org/orgcss/org.css'/> ")
+
+  ;; (setq org-html-head
+  ;;       "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
 
   (after! org-superstar
     (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
@@ -1132,13 +1134,13 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 **** org-special-block-extras
 #+begin_src emacs-lisp
 
-(use-package! org-special-block-extras
-  :hook (org-mode . org-special-block-extras-mode)
-  :config
-  ;; Use short names like ‘defblock’ instead of the fully qualified name
-  ;; ‘org-special-block-extras--defblock’
-  (org-special-block-extras-short-names)
-  (setq org-export-allow-bind-keywords t))
+;; (use-package! org-special-block-extras
+;;   :hook (org-mode . org-special-block-extras-mode)
+;;   :config
+;;   ;; Use short names like ‘defblock’ instead of the fully qualified name
+;;   ;; ‘org-special-block-extras--defblock’
+;;   (org-special-block-extras-short-names)
+;;   (setq org-export-allow-bind-keywords t))
 
 #+end_src
 **** pangu-spacing
