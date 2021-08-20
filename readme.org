@@ -1017,7 +1017,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
                       visual-fill-column-width 72
                       org-adapt-indentation nil)
                 (when (featurep 'org-superstar)
-                  (setq-local org-superstar-headline-bullets-list '("🧙" "☷" "☵" "☲")
+                  (setq-local org-superstar-headline-bullets-list '("🧙" "🐻" "✔" "🐶")
                               org-superstar-remove-leading-stars t)
                   (org-superstar-restart))
                 (setq
