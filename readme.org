@@ -169,7 +169,7 @@
 
 
 ;; 在浏览器中直观查看org-roam 文件之间的关联图
-(package! org-roam-server)
+;; (package! org-roam-server)
 
 
 
@@ -307,11 +307,7 @@
 
 ;; 窗口滚动时, 光标所在行不要顶到边缘, 留两行的Buffer
 (setq scroll-margin 2)
-
 
-
-
-(setq-default fill-column 72)
 
 
 
@@ -334,6 +330,8 @@
 
 ;; Line spacing, can be 0 for code and 1 or 2 for text
 (setq-default line-spacing 0.2)
+
+(setq-default fill-column 72)
 
 ;; Underline line at descent position, not baseline position
 (setq x-underline-at-descent-line t)
@@ -416,39 +414,6 @@
 ;;       doom-variable-pitch-font (font-spec :family "FZLiBian-S02" :weight 'extra-bold)
 ;;       doom-unicode-font (font-spec :family "FZLiBian-S02")
 ;;       doom-big-font (font-spec :family "FZLiBian-S02" :size 23))
-
-
-(setq mixed-pitch-variable-pitch-cursor nil)
-
-
-(defvar mixed-pitch-modes '(org-mode LaTeX-mode markdown-mode gfm-mode Info-mode)
-  "Modes that `mixed-pitch-mode' should be enabled in, but only after UI initialisation.")
-
-(defun init-mixed-pitch-h ()
-  "Hook `mixed-pitch-mode' into each mode in `mixed-pitch-modes'.
-Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
-  (when (memq major-mode mixed-pitch-modes)
-    (mixed-pitch-mode 1))
-  (dolist (hook mixed-pitch-modes)
-    (add-hook (intern (concat (symbol-name hook) "-hook")) #'mixed-pitch-mode)))
-
-(add-hook 'doom-init-ui-hook #'init-mixed-pitch-h)
-
-
-(autoload #'mixed-pitch-serif-mode "mixed-pitch"
-  "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch." t)
-
-(after! mixed-pitch
-  (defface variable-pitch-serif
-    '((t (:family "serif")))
-    "A variable-pitch face with serifs."
-    :group 'basic-faces)
-
-  (defun mixed-pitch-serif-mode (&optional arg)
-    "Change the default face of the current buffer to a serifed variable pitch, while keeping some faces fixed pitch."
-    (interactive)
-    (let ((mixed-pitch-face 'variable-pitch-serif))
-      (mixed-pitch-mode (or arg 'toggle)))))
 
 #+end_src
 *** 配置 LaTeX
@@ -606,7 +571,7 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
   ;;       "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
 
   (after! org-superstar
-    (setq org-superstar-headline-bullets-list '("◉" "○" "✸" "✿" "✤" "✜" "◆" "▶")
+    (setq org-superstar-headline-bullets-list '("🧙" "🐻" "✔" "🐶")
           org-superstar-prettify-item-bullets t ))
 
     ;; Learn from:
@@ -787,14 +752,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 #+end_src
 *** 配置自带包
-**** calfw
-#+begin_src emacs-lisp
-
-(use-package! calfw
-  :config
-  (setq cfw:display-calendar-holidays nil))
-
-#+end_src
 **** dired
 #+begin_src emacs-lisp
 
@@ -806,123 +763,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         ;; Directly edit permisison bits!
         wdired-allow-to-change-permissions t
         dired-omit-mode nil))
-
-#+end_src
-**** elfeed
-#+begin_src emacs-lisp
-
-(after! elfeed
-  (use-package! elfeed-link)
-
-  (setq elfeed-search-filter "@1-week-ago +unread"
-        elfeed-search-print-entry-function '+rss/elfeed-search-print-entry
-        elfeed-search-title-min-width 80
-        elfeed-show-entry-switch #'pop-to-buffer
-        elfeed-show-entry-delete #'+rss/delete-pane
-        elfeed-show-refresh-function #'+rss/elfeed-show-refresh--better-style
-        rmh-elfeed-org-files (list (concat org-directory "roam/elfeed.org"))
-        shr-max-image-proportion 0.6)
-
-  (add-hook! 'elfeed-show-mode-hook (hide-mode-line-mode 1))
-  (add-hook! 'elfeed-search-update-hook #'hide-mode-line-mode)
-
-  (defface elfeed-show-title-face '((t (:weight ultrabold :slant italic :height 1.5)))
-    "title face in elfeed show buffer"
-    :group 'elfeed)
-  (defface elfeed-show-author-face `((t (:weight light)))
-    "title face in elfeed show buffer"
-    :group 'elfeed)
-  (set-face-attribute 'elfeed-search-title-face nil
-                      :foreground 'nil
-                      :weight 'light)
-
-  (defadvice! +rss-elfeed-wrap-h-nicer ()
-    "Enhances an elfeed entry's readability by wrapping it to a width of
-`fill-column' and centering it with `visual-fill-column-mode'."
-    :override #'+rss-elfeed-wrap-h
-    (setq-local truncate-lines nil
-                shr-width 120
-                visual-fill-column-center-text t
-                default-text-properties '(line-height 1.1))
-    (let ((inhibit-read-only t)
-          (inhibit-modification-hooks t))
-      (visual-fill-column-mode)
-      ;; (setq-local shr-current-font '(:family "Merriweather" :height 1.2))
-      (set-buffer-modified-p nil)))
-
-  (defun +rss/elfeed-search-print-entry (entry)
-    "Print ENTRY to the buffer."
-    (let* ((elfeed-goodies/tag-column-width 40)
-           (elfeed-goodies/feed-source-column-width 30)
-           (title (or (elfeed-meta entry :title) (elfeed-entry-title entry) ""))
-           (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
-           (feed (elfeed-entry-feed entry))
-           (feed-title
-            (when feed
-              (or (elfeed-meta feed :title) (elfeed-feed-title feed))))
-           (tags (mapcar #'symbol-name (elfeed-entry-tags entry)))
-           (tags-str (concat (mapconcat 'identity tags ",")))
-           (title-width (- (window-width) elfeed-goodies/feed-source-column-width
-                           elfeed-goodies/tag-column-width 4))
-
-           (tag-column (elfeed-format-column
-                        tags-str (elfeed-clamp (length tags-str)
-                                               elfeed-goodies/tag-column-width
-                                               elfeed-goodies/tag-column-width)
-                        :left))
-           (feed-column (elfeed-format-column
-                         feed-title (elfeed-clamp elfeed-goodies/feed-source-column-width
-                                                  elfeed-goodies/feed-source-column-width
-                                                  elfeed-goodies/feed-source-column-width)
-                         :left)))
-
-      (insert (propertize feed-column 'face 'elfeed-search-feed-face) " ")
-      (insert (propertize tag-column 'face 'elfeed-search-tag-face) " ")
-      (insert (propertize title 'face title-faces 'kbd-help title))
-      (setq-local line-spacing 0.2)))
-
-  (defun +rss/elfeed-show-refresh--better-style ()
-    "Update the buffer to match the selected entry, using a mail-style."
-    (interactive)
-    (let* ((inhibit-read-only t)
-           (title (elfeed-entry-title elfeed-show-entry))
-           (date (seconds-to-time (elfeed-entry-date elfeed-show-entry)))
-           (author (elfeed-meta elfeed-show-entry :author))
-           (link (elfeed-entry-link elfeed-show-entry))
-           (tags (elfeed-entry-tags elfeed-show-entry))
-           (tagsstr (mapconcat #'symbol-name tags ", "))
-           (nicedate (format-time-string "%a, %e %b %Y %T %Z" date))
-           (content (elfeed-deref (elfeed-entry-content elfeed-show-entry)))
-           (type (elfeed-entry-content-type elfeed-show-entry))
-           (feed (elfeed-entry-feed elfeed-show-entry))
-           (feed-title (elfeed-feed-title feed))
-           (base (and feed (elfeed-compute-base (elfeed-feed-url feed)))))
-      (erase-buffer)
-      (insert "\n")
-      (insert (format "%s\n\n" (propertize title 'face 'elfeed-show-title-face)))
-      (insert (format "%s\t" (propertize feed-title 'face 'elfeed-search-feed-face)))
-      (when (and author elfeed-show-entry-author)
-        (insert (format "%s\n" (propertize author 'face 'elfeed-show-author-face))))
-      (insert (format "%s\n\n" (propertize nicedate 'face 'elfeed-log-date-face)))
-      (when tags
-        (insert (format "%s\n"
-                        (propertize tagsstr 'face 'elfeed-search-tag-face))))
-      ;; (insert (propertize "Link: " 'face 'message-header-name))
-      ;; (elfeed-insert-link link link)
-      ;; (insert "\n")
-      (cl-loop for enclosure in (elfeed-entry-enclosures elfeed-show-entry)
-               do (insert (propertize "Enclosure: " 'face 'message-header-name))
-               do (elfeed-insert-link (car enclosure))
-               do (insert "\n"))
-      (insert "\n")
-      (if content
-          (if (eq type 'html)
-              (elfeed-insert-html content base)
-            (insert content))
-        (insert (propertize "(empty)\n" 'face 'italic)))
-      (goto-char (point-min))))
-
-  )
 
 #+end_src
 **** evil
@@ -980,60 +820,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
 
 #+end_src
 **** writroom
-#+begin_src emacs-lisp
-
-(solaire-global-mode +1)
-
-(defvar +zen-serif-p t
-  "Whether to use a serifed font with `mixed-pitch-mode'.")
-
-(after! writeroom-mode
-  (defvar-local +zen--original-org-indent-mode-p nil)
-  (defvar-local +zen--original-mixed-pitch-mode-p nil)
-  (defvar-local +zen--original-solaire-mode-p nil)
-  (defvar-local +zen--original-org-pretty-table-mode-p nil)
-  (defun +zen-enable-mixed-pitch-mode-h ()
-    "Enable `mixed-pitch-mode' when in `+zen-mixed-pitch-modes'."
-    (when (apply #'derived-mode-p +zen-mixed-pitch-modes)
-      (if writeroom-mode
-          (progn
-            (setq +zen--original-solaire-mode-p solaire-mode)
-            (solaire-mode -1)
-            (setq +zen--original-mixed-pitch-mode-p mixed-pitch-mode)
-            (funcall (if +zen-serif-p #'mixed-pitch-serif-mode #'mixed-pitch-mode) 1))
-        (funcall #'mixed-pitch-mode (if +zen--original-mixed-pitch-mode-p 1 -1))
-        (when +zen--original-solaire-mode-p (solaire-mode 1)))))
-  (pushnew! writeroom--local-variables
-            'display-line-numbers
-            'visual-fill-column-width
-            'org-adapt-indentation
-            'org-superstar-headline-bullets-list
-            'org-superstar-remove-leading-stars)
-  (add-hook 'writeroom-mode-enable-hook
-            (defun +zen-prose-org-h ()
-              "Reformat the current Org buffer appearance for prose."
-              (when (eq major-mode 'org-mode)
-                (setq display-line-numbers nil
-                      visual-fill-column-width 72
-                      org-adapt-indentation nil)
-                (when (featurep 'org-superstar)
-                  (setq-local org-superstar-headline-bullets-list '("🧙" "🐻" "✔" "🐶")
-                              org-superstar-remove-leading-stars t)
-                  (org-superstar-restart))
-                (setq
-                 +zen--original-org-indent-mode-p org-indent-mode
-                 +zen--original-org-pretty-table-mode-p (bound-and-true-p org-pretty-table-mode))
-                (org-indent-mode -1))))
-  (add-hook 'writeroom-mode-disable-hook
-            (defun +zen-nonprose-org-h ()
-              "Reverse the effect of `+zen-prose-org'."
-              (when (eq major-mode 'org-mode)
-                (when (featurep 'org-superstar)
-                  (org-superstar-restart))
-                (when +zen--original-org-indent-mode-p (org-indent-mode 1))
-                ))))
-
-#+end_src
 *** 配置加装包
 **** ace-pinyin
 #+begin_src emacs-lisp
@@ -1129,18 +915,6 @@ Also immediately enables `mixed-pitch-modes' if currently in one of the modes."
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
-
-#+end_src
-**** org-special-block-extras
-#+begin_src emacs-lisp
-
-;; (use-package! org-special-block-extras
-;;   :hook (org-mode . org-special-block-extras-mode)
-;;   :config
-;;   ;; Use short names like ‘defblock’ instead of the fully qualified name
-;;   ;; ‘org-special-block-extras--defblock’
-;;   (org-special-block-extras-short-names)
-;;   (setq org-export-allow-bind-keywords t))
 
 #+end_src
 **** pangu-spacing
@@ -1322,51 +1096,13 @@ r 为未来现金流折现率， n为企业未来存活年数"
        "t" #'telega))
 
 #+end_src
-**** elfeed 快捷键
-#+begin_src emacs-lisp
-
-(map! :map elfeed-search-mode-map
-      :after elfeed-search
-      [remap kill-this-buffer] "q"
-      [remap kill-buffer] "q"
-      :n doom-leader-key nil
-      :n "q" #'+rss/quit
-      :n "e" #'elfeed-update
-      :n "r" #'elfeed-search-untag-all-unread
-      :n "u" #'elfeed-search-tag-all-unread
-      :n "s" #'elfeed-search-live-filter
-      :n "RET" #'elfeed-search-show-entry
-      :n "p" #'elfeed-show-pdf
-      :n "+" #'elfeed-search-tag-all
-      :n "-" #'elfeed-search-untag-all
-      :n "S" #'elfeed-search-set-filter
-      :n "b" #'elfeed-search-browse-url
-      :n "y" #'elfeed-search-yank)
-
-(map! :map elfeed-show-mode-map
-      :after elfeed-show
-      [remap kill-this-buffer] "q"
-      [remap kill-buffer] "q"
-      :n doom-leader-key nil
-      :nm "q" #'+rss/delete-pane
-      :nm "o" #'ace-link-elfeed
-      :nm "RET" #'org-ref-elfeed-add
-      :nm "n" #'elfeed-show-next
-      :nm "N" #'elfeed-show-prev
-      :nm "p" #'elfeed-show-pdf
-      :nm "+" #'elfeed-show-tag
-      :nm "-" #'elfeed-show-untag
-      :nm "s" #'elfeed-show-new-live-search
-      :nm "y" #'elfeed-show-yank)
-
-#+end_src
 **** org-roam 快捷键
 #+begin_src emacs-lisp
 
 (map! :leader
       :prefix ("r" . "org-roam")
       "f" #'org-roam-find-file
-      "s" #'org-roam-server-mode
+      ;; "s" #'org-roam-server-mode
       "i" #'org-roam-insert
       "t" #'org-roam-dailies-find-today)
 
