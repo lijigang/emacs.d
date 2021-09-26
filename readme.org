@@ -134,6 +134,9 @@
 (package! dired-narrow)
 
 
+
+(package! elfeed-org)
+
 
 
 ;; 简洁好看的主题
@@ -841,7 +844,15 @@
 ;; Directly edit permisison bits!
 (setq wdired-allow-to-change-permissions t)
 
+#+end_src
 
+**** elfeed-org
+#+begin_src emacs-lisp
+
+(use-package! elfeed-org
+  :config
+  (setq rmh-elfeed-org-files (list "~/Documents/emacs/org/roam/elfeed.org")))
+
 #+end_src
 
 **** org-appear
