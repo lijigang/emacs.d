@@ -139,6 +139,11 @@
 
 
 
+;; 好用的翻译包
+(package! fanyi)
+
+
+
 ;; 简洁好看的主题
 (package! nano-emacs
   :recipe (:host github :repo "rougier/nano-emacs"))
