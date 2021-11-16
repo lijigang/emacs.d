@@ -40,7 +40,7 @@
 :header-args: :mkdirp yes
 :END:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/init.el"
 ;;; init.el -*- lexical-binding: t; -*-
 
 (doom!
@@ -118,7 +118,7 @@
 :header-args: :mkdirp yes
 :END:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
@@ -218,7 +218,7 @@
 :END:
 
 *** 通用配置
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
 
@@ -290,7 +290,7 @@
 
 #+end_src
 *** 配置 Frame
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; 锁定窗口标题内容
 (setq frame-title-format '("你要对这个世界有点意见"))
@@ -311,7 +311,7 @@
 
 #+end_src
 *** 配置 Window
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; 窗口滚动时, 光标所在行不要顶到边缘, 留两行的Buffer
 (setq scroll-margin 2)
@@ -363,7 +363,7 @@
 
 #+end_src
 *** 配置鼠标滚动
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; Smooth mouse scrolling
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))  ; scroll two lines at a time
@@ -373,7 +373,7 @@
 
 #+end_src
 *** 配置主题
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
@@ -403,7 +403,7 @@
 
 #+end_src
 *** 配置字体
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; Doom 自带的字体变量配置
 
@@ -425,7 +425,7 @@
 
 #+end_src
 *** 配置 LaTeX
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; FIXME
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
@@ -447,7 +447,7 @@
 
 #+end_src
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
@@ -526,7 +526,7 @@
 #+end_src
 *** 配置 =OrgMode=
 **** 常用变量
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org
   (setq org-archive-location (concat org-directory "roam/archive.org::")
@@ -618,7 +618,7 @@
  
 #+end_src
 **** org agenda
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org
   ;; FIXME
@@ -651,7 +651,7 @@
 
 #+end_src
 **** org babel languages
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
@@ -664,7 +664,7 @@
 
 #+end_src
 **** 美化符号
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org
     (appendq! +ligatures-extra-symbols
@@ -742,7 +742,7 @@
 
 #+end_src
 **** custom face
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org
   (custom-set-faces!
@@ -761,7 +761,7 @@
 #+end_src
 *** 配置自带包
 **** dired
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! dired
   (setq dired-listing-switches "-aBhl  --group-directories-first"
@@ -774,7 +774,7 @@
 
 #+end_src
 **** evil
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! evil
   (setq evil-ex-substitute-global t     ; I like my s/../.. to by global by default
@@ -783,7 +783,7 @@
 
 #+end_src
 **** ivy
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! ivy
   ;; Causes open buffers and recentf to be combined in ivy-switch-buffer
@@ -799,7 +799,7 @@
 
 #+end_src
 **** org-roam
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org-roam
   :hook
@@ -820,7 +820,7 @@
 
 #+end_src
 **** plantuml
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! plantuml-mode
   (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
@@ -830,7 +830,7 @@
 **** writroom
 *** 配置加装包
 **** ace-pinyin
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! ace-pinyin
   :config
@@ -838,7 +838,7 @@
 
 #+end_src
 **** dired-narrow
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! dired-narrow
   :commands (dired-narrow-fuzzy)
@@ -852,7 +852,7 @@
 #+end_src
 
 **** elfeed-org
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! elfeed-org
   :config
@@ -861,7 +861,7 @@
 #+end_src
 
 **** org-appear
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; 
 (use-package! org-appear
   :hook (org-mode . org-appear-mode)
@@ -872,14 +872,14 @@
 ;; 
 #+end_src
 **** org-fragtog
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
 
 #+end_src
 **** org-page
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package org-page
   :config
@@ -920,7 +920,7 @@
 
 #+end_src
 **** org-roam-server
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; (use-package! org-roam-server
 ;;   :config
@@ -934,7 +934,7 @@
 
 #+end_src
 **** pangu-spacing
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! pangu-spacing
   :config
@@ -944,7 +944,7 @@
 
 #+end_src
 **** rime
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! rime
   :custom
@@ -965,7 +965,7 @@
 
 #+end_src
 **** telega
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! telega
   ;; FIXME
@@ -987,7 +987,7 @@
 
 #+end_src
 **** valign
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! valign
   :config
@@ -998,7 +998,7 @@
 #+end_src
 *** 配置自定义函数
 **** 价值投资 DCF 函数
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (defun dcf (cf0 g r n)
   "calculate dcf value
@@ -1014,7 +1014,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 #+end_src
 **** 今年的时间进度函数
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; 插入今年的时间进度条
 (defun make-progress (width percent has-number?)
@@ -1041,7 +1041,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 #+end_src
 **** 快速插入截图到文件
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (defun org-insert-image ()
   "insert a image from clipboard"
@@ -1069,7 +1069,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 #+end_src
 **** 将 form feed 符号显示为横线
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (defun xah-show-formfeed-as-line ()
   "Display the formfeed ^L char as line. Version 2018-08-30"
@@ -1088,7 +1088,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 #+end_src
 **** 更方便的插入链接
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; Learn from: https://xenodium.com/emacs-dwim-do-what-i-mean/
 (defun ar/org-insert-link-dwim ()
@@ -1122,7 +1122,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 #+end_src
 *** 配置快捷键
 **** 通用快捷键
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (setq doom-localleader-key ",")
 
@@ -1146,7 +1146,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 #+end_src
 **** org-roam 快捷键
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (map! :leader
       :prefix ("r" . "org-roam")
