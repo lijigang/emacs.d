@@ -93,6 +93,7 @@
         +roam
         +dragndrop
         +gnuplot
+        +hugo
         +pandoc
         +pretty
         +present)
@@ -145,8 +146,8 @@
 
 
 ;; 简洁好看的主题
-(package! nano-emacs
-  :recipe (:host github :repo "rougier/nano-emacs"))
+(package! nano-theme)
+(package! nano-modeline)
 
 
 
@@ -165,7 +166,7 @@
 
 
 ;; 通过orgmode 写博客, 使用此包即可
-(package! org-page)
+;; (package! org-page)
 
 
 
@@ -302,7 +303,7 @@
 (setq default-frame-alist
       (append (list '(vertical-scroll-bars . nil)
                     '(internal-border-width . 18)
-                    '(width  . 110) '(height . 0.9)
+                    '(width  . 130) '(height . 0.9)
                     '(left . 0.3) '(top . 0))))
 
 (menu-bar-mode -1) ;; minimal chrome
@@ -378,15 +379,12 @@
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
 
-;; 使用 nano-emacs theme
-(require 'disp-table)
-(require 'nano-faces)
-(require 'nano-colors)
+;; 使用 nano-theme
 (require 'nano-theme)
-(require 'nano-help)
-(require 'nano-modeline)
-(nano-faces)
-(nano-theme)
+(nano-mode)
+(nano-light)
+
+(nano-modeline-mode)
 
 (setq display-line-numbers-type nil
       evil-default-cursor t
@@ -579,7 +577,8 @@
   ;;       "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
 
   (after! org-superstar
-    (setq org-superstar-headline-bullets-list '("🧙" "🐻" "✔" "🐶")
+    ;; other symbols like: 🦄 🧙 🐻
+    (setq org-superstar-headline-bullets-list '("▶" "✿" "🐶" "◉")
           org-superstar-prettify-item-bullets t ))
 
     ;; Learn from:
