@@ -328,9 +328,7 @@
  x-stretch-cursor t ;; Stretch cursor to the glyph width
  line-spacing 0.2
  fill-column 72
- x-underline-at-descent-line t
- 'cursor-type  '(bar . 3)
- )
+ x-underline-at-descent-line t)
 
 #+end_src
 *** 配置鼠标滚动
