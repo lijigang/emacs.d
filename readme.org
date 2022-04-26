@@ -880,41 +880,41 @@
 **** org-page
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
-(use-package org-page
-  :config
-  (progn
-    ;; FIXME
-    (setq op/site-main-title "你对这个世界要有点意见")
-    (setq op/personal-github-link "https://github.com/lijigang")
-    (setq op/repository-directory "~/lijigang")
-    (setq op/site-domain "http://lijigang.github.io/")
-    (setq op/theme-root-directory (concat org-directory "private/"))
-    (setq op/theme 'ljg)
-    (setq op/load-directory "~/.emacs.d/.local/straight/repos/org-page/")
-    (setq op/highlight-render 'js)
-    (setq op/category-ignore-list '("themes" "assets" "images"))
-    (setq op/category-config-alist
-          '(("blog"
-             :show-meta t
-             :show-comment t
-             :uri-generator op/generate-uri
-             :uri-template "/blog/%y/%m/%d/%t/"
-             :sort-by :date     ;; how to sort the posts
-             :category-index nil) ;; generate category index or not
-            ("index"
-             :show-meta nil
-             :show-comment nil
-             :uri-generator op/generate-uri
-             :uri-template "/"
-             :sort-by :date
-             :category-index nil)
-            ("about"
-             :show-meta nil
-             :show-comment nil
-             :uri-generator op/generate-uri
-             :uri-template "/about/"
-             :sort-by :date
-             :category-index nil)))))
+;; (use-package org-page
+;;   :config
+;;   (progn
+;;     ;; FIXME
+;;     (setq op/site-main-title "你对这个世界要有点意见")
+;;     (setq op/personal-github-link "https://github.com/lijigang")
+;;     (setq op/repository-directory "~/lijigang")
+;;     (setq op/site-domain "http://lijigang.github.io/")
+;;     (setq op/theme-root-directory (concat org-directory "private/"))
+;;     (setq op/theme 'ljg)
+;;     (setq op/load-directory "~/.emacs.d/.local/straight/repos/org-page/")
+;;     (setq op/highlight-render 'js)
+;;     (setq op/category-ignore-list '("themes" "assets" "images"))
+;;     (setq op/category-config-alist
+;;           '(("blog"
+;;              :show-meta t
+;;              :show-comment t
+;;              :uri-generator op/generate-uri
+;;              :uri-template "/blog/%y/%m/%d/%t/"
+;;              :sort-by :date     ;; how to sort the posts
+;;              :category-index nil) ;; generate category index or not
+;;             ("index"
+;;              :show-meta nil
+;;              :show-comment nil
+;;              :uri-generator op/generate-uri
+;;              :uri-template "/"
+;;              :sort-by :date
+;;              :category-index nil)
+;;             ("about"
+;;              :show-meta nil
+;;              :show-comment nil
+;;              :uri-generator op/generate-uri
+;;              :uri-template "/about/"
+;;              :sort-by :date
+;;              :category-index nil)))))
 
 
 #+end_src
