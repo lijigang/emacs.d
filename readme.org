@@ -246,17 +246,15 @@
 
 
 
-;; 关闭emacs 时无需额外确认
-(setq confirm-kill-emacs nil)
-
-;; 设置系统时间显示方式
-(setq system-time-locale "C")
-
-;; 打开文件时, 光标自动定位到上次停留的位置
-(save-place-mode 1)
-
-;; no pop-up window
-(setq pop-up-windows nil)
+(setq
+      confirm-kill-emacs nil ; 关闭 emacs 时无需额外确认
+      system-time-locale "C" ; 设置系统时间显示方式
+      pop-up-windows nil     ; no pop-up window
+      scroll-margin 2        ; It's nice to maintain a little margin
+      widget-image-enable nil
+      visible-bell t
+      ring-bell-function 'ignore
+      )
 
 
 
@@ -272,38 +270,38 @@
 ;; (global-visual-line-mode)
 
 (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
-;; (add-hook 'org-mode-hook 'visual-line-mode)
-;; (add-hook 'org-mode-hook 'visual-fill-column-mode)
 
 ;; 查帮助文档时, 显示使用Demos
 (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update)
-
 
+;; 打开文件时, 光标自动定位到上次停留的位置
+(save-place-mode 1)
 
-
+(global-auto-revert-mode)
+
 ;; 关闭Doom rss 切割图片的功能, 展示完整图片吧
 (setq +rss-enable-sliced-images nil)
-
 
-
-;; 编辑了Buffer , 又想回退到file 原始内容, 需要这个mode
-(global-auto-revert-mode)
+
+(blink-cursor-mode 0)
+(show-paren-mode t)
+(fringe-mode '(0 . 0)) ;; No fringe
+
 
 #+end_src
 *** 配置 Frame
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; 锁定窗口标题内容
-(setq frame-title-format '("你要对这个世界有点意见"))
+;; (setq frame-title-format '("你要对这个世界有点意见"))
 
-
 
 
 ;; 指定新打开的Emacs 窗口的长宽大小
 (setq default-frame-alist
       (append (list '(vertical-scroll-bars . nil)
                     '(internal-border-width . 18)
-                    '(width  . 130) '(height . 0.9)
+                    '(width  . 180) '(height . 0.8)
                     '(left . 0.3) '(top . 0))))
 
 (menu-bar-mode -1) ;; minimal chrome
@@ -313,13 +311,6 @@
 #+end_src
 *** 配置 Window
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; 窗口滚动时, 光标所在行不要顶到边缘, 留两行的Buffer
-(setq scroll-margin 2)
-
-
-
-
 
 ;; 新打开窗口时, 提示要打开哪个Buffer
 (setq evil-vsplit-window-right t
@@ -332,35 +323,14 @@
 (setq +ivy-buffer-preview t)
 
 
-
 
-;; Stretch cursor to the glyph width (Tab width cursor)
-(setq-default x-stretch-cursor t)
-
-;; Line spacing, can be 0 for code and 1 or 2 for text
-(setq-default line-spacing 0.2)
-
-(setq-default fill-column 72)
-
-;; Underline line at descent position, not baseline position
-(setq x-underline-at-descent-line t)
-
-;; No ugly button for checkboxes
-(setq widget-image-enable nil)
-
-;; Line cursor and no blink
-(set-default 'cursor-type  '(bar . 3))
-(blink-cursor-mode 0)
-
-;; No sound
-(setq visible-bell t)
-(setq ring-bell-function 'ignore)
-
-;; Paren mode is part of the theme
-(show-paren-mode t)
-
-;; No fringe
-(fringe-mode '(0 . 0))
+(setq-default
+ x-stretch-cursor t ;; Stretch cursor to the glyph width
+ line-spacing 0.2
+ fill-column 72
+ x-underline-at-descent-line t
+ 'cursor-type  '(bar . 3)
+ )
 
 #+end_src
 *** 配置鼠标滚动
@@ -426,12 +396,13 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; FIXME
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
-(setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2022basic/bin/universal-darwin"))
+(setq exec-path (append exec-path '("/usr/local/texlive/2022basic/bin/universal-darwin")))
+
+;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
+;; (setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
 
 (setq org-highlight-latex-and-related '(native script entities))
-
-;; (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t)))
 
 (pdf-loader-install)
 
