@@ -554,7 +554,7 @@
     ;; Learn from:
   ;; https://mullikine.github.io/posts/org-mode-bold/
   (defface org-bold
-    '((t :foreground "#d2268b"
+    '((t :foreground "#79869c"
          :background "#fefefe"
          :weight bold
          :underline t
