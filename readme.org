@@ -548,7 +548,7 @@
 
   (after! org-superstar
     ;; other symbols like: 🦄 🧙 🐻
-    (setq org-superstar-headline-bullets-list '("▶" "✿" "🐶" "◉")
+    (setq org-superstar-headline-bullets-list '("☯" "☷" "☲" "☵")
           org-superstar-prettify-item-bullets t ))
 
     ;; Learn from:
