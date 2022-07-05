@@ -660,7 +660,7 @@
               :end_quote     "❯"
               :caption       "☰"
               :header        "›"
-              :results       "🍌"
+              :results       "🎁"
               :begin_export  "⏩"
               :end_export    "⏪"
               :properties    "⚙"
