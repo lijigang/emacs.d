@@ -624,6 +624,9 @@
 
 (after! org
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (setq org-plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
+  (setq plantuml-default-exec-mode 'jar)
+  (setq org-hide-block-startup t)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -707,6 +710,11 @@
     :priority_e    "[#E]")
   (plist-put +ligatures-extra-symbols :name "⁍")
 )
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^ +\\([-*]\\) "
+    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "▻"))))))
 
 
 #+end_src
