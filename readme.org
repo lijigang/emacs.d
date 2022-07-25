@@ -157,6 +157,12 @@
   :recipe (:host github :repo "awth13/org-appear"))
 
 
+
+(package! imenu-list)
+(package! org-imenu
+  :recipe (:host github :repo "rougier/org-imenu"))
+
+
 
 
 ;; 鼠标放到LaTeX 代码上, 可编辑状态, 离开即显示编译后的公式效果
