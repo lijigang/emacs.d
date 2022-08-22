@@ -446,12 +446,40 @@
 % Page head and foot
 % lhead/chead/rhead
 % lfoot/cfoot/rfoot
+\\usepackage{lastpage}
+
 \\usepackage{fancyhdr}
 \\pagestyle{fancy}
-\\rfoot{\\title}
+\\chead{\\textsc{\\title}}
+\\rhead{\\textit{Last modified: \\today}}
+\\rfoot{}
+\\cfoot{\\color{gray} \\textsc{\\thepage~/~\\pageref*{LastPage}}}
+\\lfoot{}
 \\renewcommand\\headrulewidth{0.6pt}
 \\renewcommand\\footrulewidth{0.6pt}
 
+\\usepackage[most]{tcolorbox}
+\\usepackage[colorinlistoftodos]{todonotes}
+\\usepackage{tikz-bagua}
+
+%% Highlighted remarks/notes
+% Highlighted remark/note with and without title
+\\newenvironment{Highlight}[1]
+{
+        \\ifthenelse{\\equal{#1}{}}{
+                \\begin{tcolorbox}[breakable, enhanced, colback=yellow!15!white,colframe=yellow!20!black]
+                \\setlength\\parskip{0.2cm}
+        }
+        {
+                \\begin{tcolorbox}[breakable, enhanced, colback=yellow!15!white,colframe=yellow!20!black, fonttitle=\\bfseries, title=#1]
+                \\setlength\\parskip{0.2cm}
+        }
+}
+{
+        \\end{tcolorbox}
+}
+\\newtcolorbox{tip}{colback=blue!5!white,colframe=blue!75!black}
+\\newtcolorbox{tipt}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\\bfseries,title=#1}
 
 % Format of section and subsection headers
 % [rm sf tt bf up it sl sc]
