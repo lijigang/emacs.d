@@ -90,7 +90,7 @@
        latex              ; writing papers in Emacs has never been so fun
 
        (org               ; organize your plain life in plain text
-        +roam
+        +roam2
         +dragndrop
         +gnuplot
         +hugo
@@ -973,10 +973,8 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org-roam
-  :hook
-  (add-hook 'org-mode-hook #'org-roam-mode)
-
   :config
+  (org-roam-db-autosync-mode)
 
   (setq org-roam-directory (concat org-directory "roam/")
         org-roam-db-location (concat org-directory "roam/org-roam.db")
