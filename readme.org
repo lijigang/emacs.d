@@ -99,6 +99,7 @@
         +present)
 
        plantuml           ; diagrams for confusing people more
+       rest               ; for use restclient
        sh                 ; she sells {ba,z,fi}sh shells on the C xor
        yaml               ; JSON, but readable
 
