@@ -65,6 +65,7 @@
        fold               ; (nigh) universal code folding
        (format +onsave)   ; automated prettiness
        snippets           ; my elves. They type so I don't have to
+       word-wrap
 
        :emacs
        (dired +dirvish +icons)     ; making dired pretty [functional]
