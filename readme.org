@@ -276,6 +276,8 @@
 ;; 全局打开visual line
 ;; (global-visual-line-mode)
 
+(setq word-wrap-by-category t)
+
 (add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
 
 ;; 查帮助文档时, 显示使用Demos
