@@ -260,7 +260,7 @@
       pop-up-windows nil     ; no pop-up window
       scroll-margin 2        ; It's nice to maintain a little margin
       widget-image-enable nil
-      visible-bell t
+      visible-bell nil
       ring-bell-function 'ignore
       )
 
