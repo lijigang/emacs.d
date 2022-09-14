@@ -214,6 +214,12 @@
 (package! rime)
 
 
+
+(package! svg-lib
+  :recipe (:host github :repo "rougier/svg-lib"))
+
+(package! svg-tag-mode)
+
 
 
 ;; 完美解决中英文字符在表格中对齐的问题
@@ -1158,6 +1164,22 @@
   (define-key telega-msg-button-map "k" nil))
 
 
+#+end_src
+**** svg-tag-tags
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(use-package! svg-tag-mode
+  :hook (org-mode . svg-tag-mode)
+  :config
+  (setq svg-tag-tags
+        '(
+          ("DONE\\b" . ((lambda (tag) (svg-tag-make "DONE" :face 'org-done :margin 0))))
+
+          ("TODO\\b" . ((lambda (tag) (svg-tag-make tag :face 'font-lock-constant-face :crop-right t))))
+
+          ("FIXME\\b" . ((lambda (tag) (svg-tag-make "FIXME" :face 'org-todo :inverse t :margin 0 :crop-right t))))
+          )))
+
 #+end_src
 **** valign
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
