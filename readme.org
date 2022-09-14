@@ -171,6 +171,10 @@
 (package! org-fragtog)
 
 
+
+(package! org-mac-image-paste
+  :recipe (:host github :repo "jdtsmith/org-mac-image-paste"))
+
 
 
 ;; 通过orgmode 写博客, 使用此包即可
@@ -1054,6 +1058,15 @@
 
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
+
+#+end_src
+**** org-mac-image-paste
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(use-package! org-mac-image-paste
+  :config
+  (org-mac-image-paste-mode 1)
+  )
 
 #+end_src
 **** org-page
