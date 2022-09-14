@@ -1295,7 +1295,7 @@
 
 (use-package! valign
   :config
-  (setq valign-fancy-bar t)
+  (setq valign-fancy-bar nil)
   (add-hook 'org-mode-hook #'valign-mode))
 
 
