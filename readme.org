@@ -1263,6 +1263,20 @@
   (defconst day-re "[A-Za-z]\\{3\\}")
   (defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
 
+  (setq svg-tag-action-at-point 'edit)
+
+  (setq svg-lib-icon-collections
+        `(("bootstrap" .
+           "https://icons.getbootstrap.com/assets/icons/%s.svg")
+          ("simple" .
+           "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/%s.svg")
+          ("material" .
+           "https://raw.githubusercontent.com/Templarian/MaterialDesign/master/svg/%s.svg")
+          ("octicons" .
+           "https://raw.githubusercontent.com/primer/octicons/master/icons/%s-24.svg")
+          ("boxicons" .
+           "https://boxicons.com/static/img/svg/regular/bx-%s.svg")))
+
   (setq svg-tag-tags
         `(
           ;; Task priority
@@ -1316,6 +1330,11 @@
                                                  :face 'org-done :margin 0 :radius 5))))
 
           ("FIXME\\b" . ((lambda (tag) (svg-tag-make "FIXME" :face 'org-todo :inverse t :margin 0 :crop-right t))))
+
+          ;; beautify pagebreak in orgmode
+          ("\\\\pagebreak" . ((lambda (tag) (svg-lib-icon "file-break" nil :collection "bootstrap"
+                                                          :stroke 0 :scale 1 :padding 0))))
+
           )))
 
 #+end_src
