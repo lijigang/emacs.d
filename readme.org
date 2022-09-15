@@ -177,10 +177,6 @@
 
 
 
-(package! org-modern)
-
-
-
 ;; 通过orgmode 写博客, 使用此包即可
 ;; (package! org-page)
 
@@ -1073,27 +1069,6 @@
   )
 
 #+end_src
-**** org-modern
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(use-package! org-modern
-  :hook (org-mode . org-modern-mode)
-  :config
-  (setq org-modern-star nil
-        org-modern-block nil
-        org-modern-todo nil
-        org-modern-hide-stars nil
-        org-modern-keyword nil
-        org-modern-checkbox nil
-        org-modern-progress nil
-        org-modern-priority nil
-        org-modern-statistics nil
-        org-modern-list nil
-        org-modern-timestamp nil
-        org-modern-tag nil
-        org-modern-table-vertical 3))
-
-#+end_src
 **** org-page
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
@@ -1343,7 +1318,7 @@
 
 (use-package! valign
   :config
-  (setq valign-fancy-bar nil)
+  (setq valign-fancy-bar t)
   (add-hook 'org-mode-hook #'valign-mode))
 
 
