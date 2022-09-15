@@ -1089,6 +1089,7 @@
         org-modern-priority nil
         org-modern-statistics nil
         org-modern-list nil
+        org-modern-timestamp nil
         org-modern-tag nil
         org-modern-table-vertical 3))
 
@@ -1208,7 +1209,7 @@
 (use-package! svg-tag-mode
   :hook (org-mode . svg-tag-mode)
   :config
-    (defun mk/svg-checkbox-empty()
+  (defun mk/svg-checkbox-empty()
     (let* ((svg (svg-create 14 14)))
       (svg-rectangle svg 0 0 14 14 :fill 'white :rx 2 :stroke-width 2.5 :stroke-color 'black)
       (svg-image svg :ascent 'center)
@@ -1257,9 +1258,14 @@
                   (svg-lib-tag value nil
                                :stroke 0 :margin 0)) :ascent 'center)))
 
+  (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+  (defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+  (defconst day-re "[A-Za-z]\\{3\\}")
+  (defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
+
   (setq svg-tag-tags
-        '(
-                    ;; Task priority
+        `(
+          ;; Task priority
           ("\\[#[A-Z]\\]" . ( (lambda (tag)
                                 (svg-tag-make tag :face 'org-priority
                                               :beg 2 :end -1 :margin 0))))
@@ -1278,13 +1284,36 @@
           ("\\(\\[[Xx]\\]\\)" . ((lambda (_tag) (mk/svg-checkbox-filled))
                                  (lambda () (interactive) (mk/svg-checkbox-toggle))
                                  "Click to toggle."))
+
+          ;; Active date (with or without day name, with or without time)
+          (,(format "\\(<%s>\\)" date-re) .
+           ((lambda (tag)
+              (svg-tag-make tag :beg 1 :end -1 :margin 0))))
+          (,(format "\\(<%s \\)%s>" date-re day-time-re) .
+           ((lambda (tag)
+              (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
+          (,(format "<%s \\(%s>\\)" date-re day-time-re) .
+           ((lambda (tag)
+              (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
+
+          ;; Inactive date  (with or without day name, with or without time)
+          (,(format "\\(\\[%s\\]\\)" date-re) .
+           ((lambda (tag)
+              (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
+          (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
+           ((lambda (tag)
+              (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
+          (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
+           ((lambda (tag)
+              (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))
+
           ;; Keywords
           ("TODO" . ((lambda (tag) (svg-tag-make tag :height 0.8 :inverse t
-                                            :face 'org-todo :margin 0 :radius 5))))
+                                                 :face 'org-todo :margin 0 :radius 5))))
           ("WORK" . ((lambda (tag) (svg-tag-make tag :height 0.8
-                                            :face 'org-todo :margin 0 :radius 5))))
+                                                 :face 'org-todo :margin 0 :radius 5))))
           ("DONE" . ((lambda (tag) (svg-tag-make tag :height 0.8 :inverse t
-                                            :face 'org-done :margin 0 :radius 5))))
+                                                 :face 'org-done :margin 0 :radius 5))))
 
           ("FIXME\\b" . ((lambda (tag) (svg-tag-make "FIXME" :face 'org-todo :inverse t :margin 0 :crop-right t))))
           )))
