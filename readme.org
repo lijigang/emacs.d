@@ -515,6 +515,9 @@
 % \\textcolor{red}
 % \\colorbox{gray}
 \\usepackage[rgb]{xcolor}
+% colortble is for org-table
+% \\rowclor{gray}
+\\usepackage{colortbl}
 
 % Include graphics
 \\usepackage{graphicx}
