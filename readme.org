@@ -68,7 +68,6 @@
        word-wrap
 
        :emacs
-       (dired +dirvish +icons)     ; making dired pretty [functional]
        electric           ; smarter, keyword-based electric-indent
        (ibuffer +icons)   ; interactive buffer management
        undo               ; persistent, smarter undo for your inevitable mistakes
@@ -108,8 +107,8 @@
        (mu4e +org)
 
        :app
-       calendar
-       (rss +org)         ; emacs as an RSS reader
+       ;; calendar
+       ;; (rss +org)         ; emacs as an RSS reader
 
        :config
        (default +bindings +smartparens))
