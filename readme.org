@@ -542,6 +542,8 @@
   (after! org-superstar
     ;; other symbols like: 🦄  🐻 "🙘" "🙙" "🙚" "🙛" "☯" "☷" "☲" "☵"
     (setq org-superstar-headline-bullets-list '("☯" "☷" "☲" "☵")
+          org-superstar-special-todo-items t
+          org-superstar-item-bullet-alist '((?+ . ?•) (?* . ?–) (?- . ?➤))
           org-superstar-prettify-item-bullets t ))
 
   ;; Learn from:
@@ -698,10 +700,6 @@
   (plist-put +ligatures-extra-symbols :name "⁍")
   )
 
-(font-lock-add-keywords
- 'org-mode
- '(("^ +\\([-*]\\) "
-    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "▻"))))))
 
 (defun my-add-pretty-symbol ()
   "make some word display as Unicode symbols"
