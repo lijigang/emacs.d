@@ -706,8 +706,9 @@
   (setq prettify-symbols-alist
         '(
           ("\\pagebreak" . 128204)
-          ("->" . 8594)    ; →
-          ("=>" . 8658)    ; ⇒
+          ("#+tblfm:" . 8756) ; ∴
+          ("->" . 8594)       ; →
+          ("=>" . 8658)       ; ⇒
           )))
 
 (add-hook 'org-mode-hook 'my-add-pretty-symbol)
