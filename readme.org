@@ -133,18 +133,10 @@
 
 
 
-;; 默认的dired 展现内容太多了, 通过此包可过滤展示需要的内容
-(package! dired-narrow)
-
-
-
-(package! elfeed-org)
-
-
-
 ;; 好用的翻译包
 (package! fanyi)
 
+
 
 
 ;; 简洁好看的主题
@@ -176,28 +168,10 @@
   :recipe (:host github :repo "jdtsmith/org-mac-image-paste"))
 
 
-
-;; 通过orgmode 写博客, 使用此包即可
-;; (package! org-page)
-
-
 
 
 ;; 一个快速查询org 文件相关内容的 query language
 (package! org-ql)
-
-
-
-
-;; 在浏览器中直观查看org-roam 文件之间的关联图
-;; (package! org-roam-server)
-
-
-
-
-
-;; 增加了一些特殊的block, 导出的PDF 更好看
-;; (package! org-special-block-extras)
 
 
 
@@ -218,12 +192,6 @@
 (package! rime)
 
 
-
-(package! svg-lib
-  :recipe (:host github :repo "rougier/svg-lib"))
-
-(package! svg-tag-mode)
-
 
 
 ;; 完美解决中英文字符在表格中对齐的问题
@@ -242,7 +210,6 @@
 
 
 ;; 通过Emacs-china 的仓库来安装包, 提升安装速度
-;; FIXME
 (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
 
@@ -250,29 +217,22 @@
 
 
 ;; 个人信息
-;; FIXME
 (setq user-full-name "lijigang"
       user-mail-address "i@lijigang.com")
-
 
-
-
 ;; 通过iCloud 自动同步Documents 目录, 多台电脑可以无缝迁移使用
-;; FIXME
 (setq org-directory "~/Documents/emacs/org/")
 
 
 
 
-(setq
-      confirm-kill-emacs nil ; 关闭 emacs 时无需额外确认
+(setq confirm-kill-emacs nil ; 关闭 emacs 时无需额外确认
       system-time-locale "C" ; 设置系统时间显示方式
       pop-up-windows nil     ; no pop-up window
       scroll-margin 2        ; It's nice to maintain a little margin
       widget-image-enable nil
       visible-bell nil
-      ring-bell-function 'ignore
-      )
+      ring-bell-function 'ignore)
 
 
 
@@ -299,9 +259,17 @@
 
 (global-auto-revert-mode)
 
+(setq display-line-numbers-type nil)
+
 ;; 关闭Doom rss 切割图片的功能, 展示完整图片吧
 (setq +rss-enable-sliced-images nil)
 
+;; 注意Doom 有 Bug : ~/.emacs.d/modules/editor/word-wrap/autoload.el
+;; (symbol-value +word-wrap--major-mode-indent-var)
+;; 手动改为
+;; (symbol-value '+word-wrap--major-mode-indent-var)
+;; 同时设置变量值
+(setq +word-wrap--major-mode-indent-var 1)
 
 (blink-cursor-mode 0)
 (show-paren-mode t)
@@ -311,19 +279,8 @@
 #+end_src
 *** 配置 Frame
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; 锁定窗口标题内容
-;; (setq frame-title-format '("你要对这个世界有点意见"))
-
 
 
-;; 指定新打开的Emacs 窗口的长宽大小
-(setq default-frame-alist
-      (append (list '(vertical-scroll-bars . nil)
-                    '(internal-border-width . 18)
-                    '(width  . 180) '(height . 0.8)
-                    '(left . 0.3) '(top . 0))))
-
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
@@ -344,11 +301,10 @@
 
 
 
-(setq-default
- x-stretch-cursor t ;; Stretch cursor to the glyph width
- line-spacing 0.2
- fill-column 72
- x-underline-at-descent-line t)
+(setq-default x-stretch-cursor t ;; Stretch cursor to the glyph width
+              line-spacing 0.2
+              fill-column 80
+              x-underline-at-descent-line t)
 
 #+end_src
 *** 配置鼠标滚动
@@ -374,18 +330,6 @@
 
 (nano-modeline-mode)
 
-(setq display-line-numbers-type nil
-      evil-default-cursor t
-      custom-blue "#718591"
-      custom-yellow "#BDA441")
-
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (with-selected-frame frame
-                  (set-cursor-color custom-blue))))
-  (set-cursor-color custom-blue))
-
 
 #+end_src
 *** 配置字体
@@ -395,19 +339,18 @@
 
 ;; Plan A: 中文苹方, 英文Roboto Mono
 (setq doom-font (font-spec :family "Roboto Mono" :size 20)
-      doom-serif-font (font-spec :family "Roboto Mono" )
-      doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold)
+      doom-serif-font doom-font
       doom-unicode-font (font-spec :family "PingFang SC")
-      doom-big-font (font-spec :family "PingFang SC" :size 23))
+      doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
 
-;; Plan B: 中文隶变, 英文Comic
-;; 中文隶变下载地址:
-;; https://www.foundertype.com/index.php/FindFont/searchFont?keyword=隶变
-;; (setq doom-font (font-spec :family "Comic Sans MS" :size 20)
-;;       doom-serif-font (font-spec :family "Comic Sans MS" )
-;;       doom-variable-pitch-font (font-spec :family "FZLiBian-S02" :weight 'extra-bold)
-;;       doom-unicode-font (font-spec :family "FZLiBian-S02")
-;;       doom-big-font (font-spec :family "FZLiBian-S02" :size 23))
+;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
+(setq use-default-font-for-symbols nil)
+
+;; Doom 的字体加载顺序问题, 如果不设定这个 hook, 配置会被覆盖失效
+(add-hook! 'after-setting-font-hook
+  (set-fontset-font t 'latin (font-spec :family "Roboto Mono"))
+  (set-fontset-font t 'symbol (font-spec :family "Symbola"))
+  (set-fontset-font t 'emoji (font-spec :family "Symbola")))
 
 #+end_src
 *** 配置 LaTeX
@@ -597,18 +540,18 @@
   ;;       "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
 
   (after! org-superstar
-    ;; other symbols like: 🦄 🧙 🐻
+    ;; other symbols like: 🦄  🐻 "🙘" "🙙" "🙚" "🙛" "☯" "☷" "☲" "☵"
     (setq org-superstar-headline-bullets-list '("☯" "☷" "☲" "☵")
           org-superstar-prettify-item-bullets t ))
 
-    ;; Learn from:
+  ;; Learn from:
   ;; https://mullikine.github.io/posts/org-mode-bold/
   (defface org-bold
     '((t :foreground "#79869c"
-         :background "#fefefe"
-         :weight bold
-         :underline t
-         :overline t))
+       :background "#fefefe"
+       :weight bold
+       :underline t
+       :overline t))
     "Face for org-mode bold."
     :group 'org-faces )
 
@@ -634,7 +577,7 @@
   (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
   )
- 
+
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -689,17 +632,13 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (after! org
-    (appendq! +ligatures-extra-symbols
+  (appendq! +ligatures-extra-symbols
             `(:checkbox      "☐"
               :pending       "◼"
               :checkedbox    "☑"
               :list_property "∷"
-
               :ellipses      "…"
-              :arrow_right   "→"
-              :arrow_left    "←"
               :title         "❤"
-              :subtitle      "𝙩"
               :author        "✍"
               :date          "⚓"
               :property      "☸"
@@ -731,8 +670,6 @@
     :list_property "::"
     :em_dash       "---"
     :ellipsis      "..."
-    :arrow_right   "->"
-    :arrow_left    "<-"
     :title         "#+title:"
     :subtitle      "#+subtitle:"
     :author        "#+author:"
@@ -759,12 +696,24 @@
     :priority_d    "[#D]"
     :priority_e    "[#E]")
   (plist-put +ligatures-extra-symbols :name "⁍")
-)
+  )
 
 (font-lock-add-keywords
  'org-mode
  '(("^ +\\([-*]\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "▻"))))))
+
+(defun my-add-pretty-symbol ()
+  "make some word display as Unicode symbols"
+  (setq prettify-symbols-alist
+        '(
+          ("\\pagebreak" . 128204)
+          ("->" . 8594)    ; →
+          ("=>" . 8658)    ; ⇒
+          )))
+
+(add-hook 'org-mode-hook 'my-add-pretty-symbol)
+
 
 
 #+end_src
@@ -787,19 +736,6 @@
 
 #+end_src
 *** 配置自带包
-**** dired
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(after! dired
-  (setq dired-listing-switches "-aBhl  --group-directories-first"
-        dired-dwim-target t
-        dired-recursive-copies (quote always)
-        dired-recursive-deletes (quote top)
-        ;; Directly edit permisison bits!
-        wdired-allow-to-change-permissions t
-        dired-omit-mode nil))
-
-#+end_src
 **** evil
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
@@ -823,167 +759,6 @@
         ivy-posframe-height-alist '((t . 20))
         ivy-posframe-parameters '((internal-border-width . 1))
         ivy-posframe-width 100))
-
-#+end_src
-**** elfeed
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;;elfeed
-
-(map! :map elfeed-search-mode-map
-      :after elfeed-search
-      [remap kill-this-buffer] "q"
-      [remap kill-buffer] "q"
-      :n doom-leader-key nil
-      :n "q" #'+rss/quit
-      :n "e" #'elfeed-update
-      :n "r" #'elfeed-search-untag-all-unread
-      :n "u" #'elfeed-search-tag-all-unread
-      :n "s" #'elfeed-search-live-filter
-      :n "RET" #'elfeed-search-show-entry
-      :n "p" #'elfeed-show-pdf
-      :n "+" #'elfeed-search-tag-all
-      :n "-" #'elfeed-search-untag-all
-      :n "S" #'elfeed-search-set-filter
-      :n "b" #'elfeed-search-browse-url
-      :n "y" #'elfeed-search-yank)
-
-(map! :map elfeed-show-mode-map
-      :after elfeed-show
-      [remap kill-this-buffer] "q"
-      [remap kill-buffer] "q"
-      :n doom-leader-key nil
-      :nm "q" #'+rss/delete-pane
-      :nm "o" #'ace-link-elfeed
-      :nm "RET" #'org-ref-elfeed-add
-      :nm "n" #'elfeed-show-next
-      :nm "N" #'elfeed-show-prev
-      :nm "p" #'elfeed-show-pdf
-      :nm "+" #'elfeed-show-tag
-      :nm "-" #'elfeed-show-untag
-      :nm "s" #'elfeed-show-new-live-search
-      :nm "y" #'elfeed-show-yank)
-
-(after! elfeed-search
-  (set-evil-initial-state! 'elfeed-search-mode 'normal))
-(after! elfeed-show-mode
-  (set-evil-initial-state! 'elfeed-show-mode   'normal))
-
-(after! evil-snipe
-  (push 'elfeed-show-mode   evil-snipe-disabled-modes)
-  (push 'elfeed-search-mode evil-snipe-disabled-modes))
-
-(after! elfeed
-
-  (elfeed-org)
-  (use-package! elfeed-link)
-
-  (setq elfeed-search-filter "@1-week-ago +unread"
-        elfeed-search-print-entry-function '+rss/elfeed-search-print-entry
-        elfeed-search-title-min-width 80
-        elfeed-show-entry-switch #'pop-to-buffer
-        elfeed-show-entry-delete #'+rss/delete-pane
-        elfeed-show-refresh-function #'+rss/elfeed-show-refresh--better-style
-        shr-max-image-proportion 0.6)
-
-  (add-hook! 'elfeed-show-mode-hook (hide-mode-line-mode 1))
-  (add-hook! 'elfeed-search-update-hook #'hide-mode-line-mode)
-  (defface elfeed-show-title-face '((t (:weight ultrabold :slant italic :height 1.5)))
-    "title face in elfeed show buffer"
-    :group 'elfeed)
-  (defface elfeed-show-author-face `((t (:weight light)))
-    "title face in elfeed show buffer"
-    :group 'elfeed)
-  (set-face-attribute 'elfeed-search-title-face nil
-                      :foreground 'nil
-                      :weight 'light)
-  (defadvice! +rss-elfeed-wrap-h-nicer ()
-    "Enhances an elfeed entry's readability by wrapping it to a width of
-`fill-column' and centering it with `visual-fill-column-mode'."
-    :override #'+rss-elfeed-wrap-h
-    (setq-local truncate-lines nil
-                shr-width 120
-                visual-fill-column-center-text t
-                default-text-properties '(line-height 1.1))
-    (let ((inhibit-read-only t)
-          (inhibit-modification-hooks t))
-      (visual-fill-column-mode)
-      ;; (setq-local shr-current-font '(:family "Merriweather" :height 1.2))
-      (set-buffer-modified-p nil)))
-
-  (defun +rss/elfeed-search-print-entry (entry)
-    "Print ENTRY to the buffer."
-    (let* ((elfeed-goodies/tag-column-width 40)
-           (elfeed-goodies/feed-source-column-width 30)
-           (title (or (elfeed-meta entry :title) (elfeed-entry-title entry) ""))
-           (title-faces (elfeed-search--faces (elfeed-entry-tags entry)))
-           (feed (elfeed-entry-feed entry))
-           (feed-title
-            (when feed
-              (or (elfeed-meta feed :title) (elfeed-feed-title feed))))
-           (tags (mapcar #'symbol-name (elfeed-entry-tags entry)))
-           (tags-str (concat (mapconcat 'identity tags ",")))
-           (title-width (- (window-width) elfeed-goodies/feed-source-column-width
-                           elfeed-goodies/tag-column-width 4))
-
-           (tag-column (elfeed-format-column
-                        tags-str (elfeed-clamp (length tags-str)
-                                               elfeed-goodies/tag-column-width
-                                               elfeed-goodies/tag-column-width)
-                        :left))
-           (feed-column (elfeed-format-column
-                         feed-title (elfeed-clamp elfeed-goodies/feed-source-column-width
-                                                  elfeed-goodies/feed-source-column-width
-                                                  elfeed-goodies/feed-source-column-width)
-                         :left)))
-
-      (insert (propertize feed-column 'face 'elfeed-search-feed-face) " ")
-      (insert (propertize tag-column 'face 'elfeed-search-tag-face) " ")
-      (insert (propertize title 'face title-faces 'kbd-help title))
-      (setq-local line-spacing 0.2)))
-
-  (defun +rss/elfeed-show-refresh--better-style ()
-    "Update the buffer to match the selected entry, using a mail-style."
-    (interactive)
-    (let* ((inhibit-read-only t)
-           (title (elfeed-entry-title elfeed-show-entry))
-           (date (seconds-to-time (elfeed-entry-date elfeed-show-entry)))
-           (author (elfeed-meta elfeed-show-entry :author))
-           (link (elfeed-entry-link elfeed-show-entry))
-           (tags (elfeed-entry-tags elfeed-show-entry))
-           (tagsstr (mapconcat #'symbol-name tags ", "))
-           (nicedate (format-time-string "%a, %e %b %Y %T %Z" date))
-           (content (elfeed-deref (elfeed-entry-content elfeed-show-entry)))
-           (type (elfeed-entry-content-type elfeed-show-entry))
-           (feed (elfeed-entry-feed elfeed-show-entry))
-           (feed-title (elfeed-feed-title feed))
-           (base (and feed (elfeed-compute-base (elfeed-feed-url feed)))))
-      (erase-buffer)
-      (insert "\n")
-      (insert (format "%s\n\n" (propertize title 'face 'elfeed-show-title-face)))
-      (insert (format "%s\t" (propertize feed-title 'face 'elfeed-search-feed-face)))
-      (when (and author elfeed-show-entry-author)
-        (insert (format "%s\n" (propertize author 'face 'elfeed-show-author-face))))
-      (insert (format "%s\n\n" (propertize nicedate 'face 'elfeed-log-date-face)))
-      (when tags
-        (insert (format "%s\n"
-                        (propertize tagsstr 'face 'elfeed-search-tag-face))))
-      ;; (insert (propertize "Link: " 'face 'message-header-name))
-      ;; (elfeed-insert-link link link)
-      ;; (insert "\n")
-      (cl-loop for enclosure in (elfeed-entry-enclosures elfeed-show-entry)
-               do (insert (propertize "Enclosure: " 'face 'message-header-name))
-               do (elfeed-insert-link (car enclosure))
-               do (insert "\n"))
-      (insert "\n")
-      (if content
-          (if (eq type 'html)
-              (elfeed-insert-html content base)
-            (insert content))
-        (insert (propertize "(empty)\n" 'face 'italic)))
-      (goto-char (point-min))))
-
-  )
 
 #+end_src
 **** org-roam
@@ -1023,28 +798,36 @@
   (ace-pinyin-global-mode +1))
 
 #+end_src
-**** dired-narrow
+**** eaf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
-(use-package! dired-narrow
-  :commands (dired-narrow-fuzzy)
-  :init
-  (map! :map dired-mode-map
-        :desc "narrow" "C-/" #'dired-narrow-fuzzy))
-
-;; Directly edit permisison bits!
-(setq wdired-allow-to-change-permissions t)
-
-#+end_src
-**** elfeed-org
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(use-package! elfeed-org
+(use-package! eaf
+  :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+  :custom
+  ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
+  (eaf-browser-continue-where-left-off t)
+  (browse-url-browser-function 'eaf-open-browser)
   :config
-  (setq rmh-elfeed-org-files (list "~/Documents/emacs/org/roam/elfeed.org")))
+  (require 'eaf)
+  (require 'eaf-browser)
+  (require 'eaf-file-manager)
+  (require 'eaf-pdf-viewer)
+  (require 'eaf-rss-reader)
+  (require 'eaf-evil)
+  (require 'eaf-image-viewer)
+
+  (setq eaf-python-command "python3.9")
+  (setq eaf-proxy-type "http")
+  (setq eaf-proxy-host "127.0.0.1")
+  (setq eaf-proxy-port "8889")
+  (setq eaf-pdf-dark-mode nil)
+  (setq eaf-buffer-background-color "#FFFFFF")
+  (setq eaf-webengine-font-family "PingFang SC")
+  (setq eaf-webengine-serif-font-family "PingFang SC")
+  (add-hook 'eaf-mode-hook #'turn-off-evil-mode t)
+  (defalias 'browse-web #'eaf-open-browser))
 
 #+end_src
-
 **** org-appear
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; 
@@ -1068,63 +851,7 @@
 
 (use-package! org-mac-image-paste
   :config
-  (org-mac-image-paste-mode 1)
-  )
-
-#+end_src
-**** org-page
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; (use-package org-page
-;;   :config
-;;   (progn
-;;     ;; FIXME
-;;     (setq op/site-main-title "你对这个世界要有点意见")
-;;     (setq op/personal-github-link "https://github.com/lijigang")
-;;     (setq op/repository-directory "~/lijigang")
-;;     (setq op/site-domain "http://lijigang.github.io/")
-;;     (setq op/theme-root-directory (concat org-directory "private/"))
-;;     (setq op/theme 'ljg)
-;;     (setq op/load-directory "~/.emacs.d/.local/straight/repos/org-page/")
-;;     (setq op/highlight-render 'js)
-;;     (setq op/category-ignore-list '("themes" "assets" "images"))
-;;     (setq op/category-config-alist
-;;           '(("blog"
-;;              :show-meta t
-;;              :show-comment t
-;;              :uri-generator op/generate-uri
-;;              :uri-template "/blog/%y/%m/%d/%t/"
-;;              :sort-by :date     ;; how to sort the posts
-;;              :category-index nil) ;; generate category index or not
-;;             ("index"
-;;              :show-meta nil
-;;              :show-comment nil
-;;              :uri-generator op/generate-uri
-;;              :uri-template "/"
-;;              :sort-by :date
-;;              :category-index nil)
-;;             ("about"
-;;              :show-meta nil
-;;              :show-comment nil
-;;              :uri-generator op/generate-uri
-;;              :uri-template "/about/"
-;;              :sort-by :date
-;;              :category-index nil)))))
-
-
-#+end_src
-**** org-roam-server
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; (use-package! org-roam-server
-;;   :config
-;;   (setq org-roam-server-host "127.0.0.1"
-;;         org-roam-server-port 9090
-;;         org-roam-server-export-inline-images t
-;;         org-roam-server-authenticate nil
-;;         org-roam-server-network-label-truncate t
-;;         org-roam-server-network-label-truncate-length 60
-;;         org-roam-server-network-label-wrap-length 20))
+  (org-mac-image-paste-mode 1))
 
 #+end_src
 **** pangu-spacing
@@ -1180,141 +907,6 @@
   (define-key telega-msg-button-map "k" nil))
 
 
-#+end_src
-**** svg-tag-tags
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(use-package! svg-tag-mode
-  :hook (org-mode . svg-tag-mode)
-  :config
-  (defun mk/svg-checkbox-empty()
-    (let* ((svg (svg-create 14 14)))
-      (svg-rectangle svg 0 0 14 14 :fill 'white :rx 2 :stroke-width 2.5 :stroke-color 'black)
-      (svg-image svg :ascent 'center)
-      ))
-
-  (defun mk/svg-checkbox-filled()
-    (let* ((svg (svg-create 14 14)))
-      (svg-rectangle svg 0 0 14 14 :fill "#FFFFFF" :rx 2)
-      (svg-polygon svg '((5.5 . 11) (12 . 3.5) (11 . 2) (5.5 . 9) (1.5 . 5) (1 . 6.5))
-                   :stroke-color 'black :stroke-width 1 :fill 'black)
-      (svg-image svg :ascent 'center)
-      ))
-  (defun mk/svg-checkbox-toggle()
-    (interactive)
-    (save-excursion
-      (let* ((start-pos (line-beginning-position))
-             (end-pos (line-end-position))
-             (text (buffer-substring-no-properties start-pos end-pos))
-             (case-fold-search t)  ; Let X and x be the same in search
-             )
-        (beginning-of-line)
-        (cond ((string-match-p "\\[X\\]" text)
-               (progn
-                 (re-search-forward "\\[X\\]" end-pos)
-                 (replace-match "[ ]")))
-              ((string-match-p "\\[ \\]" text)
-               (progn
-                 (search-forward "[ ]" end-pos)
-                 (replace-match "[X]")))
-              ))))
-
-  (defun svg-progress-percent (value)
-    (svg-image (svg-lib-concat
-                (svg-lib-progress-bar (/ (string-to-number value) 100.0)
-                                      nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-                (svg-lib-tag (concat value "%")
-                             nil :stroke 0 :margin 0)) :ascent 'center))
-
-  (defun svg-progress-count (value)
-    (let* ((seq (mapcar #'string-to-number (split-string value "/")))
-           (count (float (car seq)))
-           (total (float (cadr seq))))
-      (svg-image (svg-lib-concat
-                  (svg-lib-progress-bar (/ count total) nil
-                                        :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-                  (svg-lib-tag value nil
-                               :stroke 0 :margin 0)) :ascent 'center)))
-
-  (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
-  (defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
-  (defconst day-re "[A-Za-z]\\{3\\}")
-  (defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
-
-  (setq svg-tag-action-at-point 'edit)
-
-  (setq svg-lib-icon-collections
-        `(("bootstrap" .
-           "https://icons.getbootstrap.com/assets/icons/%s.svg")
-          ("simple" .
-           "https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/%s.svg")
-          ("material" .
-           "https://raw.githubusercontent.com/Templarian/MaterialDesign/master/svg/%s.svg")
-          ("octicons" .
-           "https://raw.githubusercontent.com/primer/octicons/master/icons/%s-24.svg")
-          ("boxicons" .
-           "https://boxicons.com/static/img/svg/regular/bx-%s.svg")))
-
-  (setq svg-tag-tags
-        `(
-          ;; Task priority
-          ("\\[#[A-Z]\\]" . ( (lambda (tag)
-                                (svg-tag-make tag :face 'org-priority
-                                              :beg 2 :end -1 :margin 0))))
-
-          ;; Progress
-          ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
-                                              (svg-progress-percent (substring tag 1 -2)))))
-          ("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag)
-                                            (svg-progress-count (substring tag 1 -1)))))
-
-          ;; Checkbox
-          ("\\[ \\]" . ((lambda (_tag) (mk/svg-checkbox-empty))
-                        (lambda () (interactive) (mk/svg-checkbox-toggle))
-                        "Click to toggle."
-                        ))
-          ("\\(\\[[Xx]\\]\\)" . ((lambda (_tag) (mk/svg-checkbox-filled))
-                                 (lambda () (interactive) (mk/svg-checkbox-toggle))
-                                 "Click to toggle."))
-
-          ;; Active date (with or without day name, with or without time)
-          (,(format "\\(<%s>\\)" date-re) .
-           ((lambda (tag)
-              (svg-tag-make tag :beg 1 :end -1 :margin 0))))
-          (,(format "\\(<%s \\)%s>" date-re day-time-re) .
-           ((lambda (tag)
-              (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
-          (,(format "<%s \\(%s>\\)" date-re day-time-re) .
-           ((lambda (tag)
-              (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
-
-          ;; Inactive date  (with or without day name, with or without time)
-          (,(format "\\(\\[%s\\]\\)" date-re) .
-           ((lambda (tag)
-              (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
-          (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
-           ((lambda (tag)
-              (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
-          (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
-           ((lambda (tag)
-              (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))
-
-          ;; Keywords
-          ("TODO" . ((lambda (tag) (svg-tag-make tag :height 0.8 :inverse t
-                                                 :face 'org-todo :margin 0 :radius 5))))
-          ("WORK" . ((lambda (tag) (svg-tag-make tag :height 0.8
-                                                 :face 'org-todo :margin 0 :radius 5))))
-          ("DONE" . ((lambda (tag) (svg-tag-make tag :height 0.8 :inverse t
-                                                 :face 'org-done :margin 0 :radius 5))))
-
-          ("FIXME\\b" . ((lambda (tag) (svg-tag-make "FIXME" :face 'org-todo :inverse t :margin 0 :crop-right t))))
-
-          ;; beautify pagebreak in orgmode
-          ("\\\\pagebreak" . ((lambda (tag) (svg-lib-icon "file-break" nil :collection "bootstrap"
-                                                          :stroke 0 :scale 1 :padding 0))))
-
-          )))
-
 #+end_src
 **** valign
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -1450,6 +1042,34 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 
 #+end_src
+**** 解决中文标记前后空格显示的问题
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+;; https://emacs-china.org/t/org-mode/22313?u=vagrantjoker
+;; 解决中文标记前后空格的问题
+(font-lock-add-keywords 'org-mode
+                        '(("\\cc\\( \\)[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)?\\cc?"
+                           (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) ""))))
+                          ("\\cc?\\( \\)?[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)\\cc"
+                           (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "")))))
+                        'append)
+
+(with-eval-after-load 'ox
+  (defun eli-strip-ws-maybe (text _backend _info)
+    (let* ((text (replace-regexp-in-string
+                  "\\(\\cc\\) *\n *\\(\\cc\\)"
+                  "\\1\\2" text));; remove whitespace from line break
+           ;; remove whitespace from `org-emphasis-alist'
+           (text (replace-regexp-in-string "\\(\\cc\\) \\(.*?\\) \\(\\cc\\)"
+                                           "\\1\\2\\3" text))
+           ;; restore whitespace between English words and Chinese words
+           (text (replace-regexp-in-string "\\(\\cc\\)\\(\\(?:<[^>]+>\\)?[a-z0-9A-Z]+\\(?:<[^>]+>\\)?\\)\\(\\cc\\)"
+                                           "\\1 \\2 \\3" text)))
+      text))
+  (add-to-list 'org-export-filter-paragraph-functions #'eli-strip-ws-maybe))
+
+
+#+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -1471,8 +1091,12 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 (map! :leader
       (:prefix "o" :desc "open applications"
-       "e" #'elfeed
+       "b" #'eaf-open-browser
+       "h" #'eaf-open-browser-with-history
+       "f" #'eaf-open-in-file-manager
+       "r" #'eaf-open-rss-reader
        "t" #'telega))
+
 
 #+end_src
 **** org-roam 快捷键
