@@ -349,6 +349,7 @@
 (add-hook! 'after-setting-font-hook
   (set-fontset-font t 'latin (font-spec :family "Roboto Mono"))
   (set-fontset-font t 'symbol (font-spec :family "Symbola"))
+  (set-fontset-font t 'mathematical (font-spec :family "Symbola"))
   (set-fontset-font t 'emoji (font-spec :family "Symbola")))
 
 #+end_src
@@ -771,10 +772,10 @@
         +org-roam-open-buffer-on-find-file nil)
 
   (setq org-roam-capture-templates
-        '(("d" "default" plain (function org-roam--capture-get-point)
-           "%?"
-           :file-name "${slug}"
-           :head "#+title: ${title}\n#+options: toc:nil date:nil num:nil\n"
+        `(("n" "default note" plain "%?"
+           :if-new
+           (file+head "${slug}.org"
+                      "#+title: ${title}\n\n ")
            :unnarrowed t))))
 
 #+end_src
