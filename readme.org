@@ -1096,6 +1096,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
        "r" #'eaf-open-rss-reader
        "t" #'telega))
 
+
+(global-set-key (kbd "s-j") 'avy-goto-word-1)
+(global-set-key (kbd "s-o") 'org-roam-node-find)
+(global-set-key (kbd "s-i") 'org-roam-node-insert)
+
 
 #+end_src
 **** org-roam 快捷键
