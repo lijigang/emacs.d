@@ -824,6 +824,10 @@
   (setq eaf-webengine-font-family "PingFang SC")
   (setq eaf-webengine-serif-font-family "PingFang SC")
   (add-hook 'eaf-mode-hook #'turn-off-evil-mode t)
+
+  (eaf-bind-key eaf-rss-reader-scroll-up-web-page "SPC" eaf-rss-reader-keybinding)
+  (eaf-bind-key eaf-rss-reader-scroll-down-web-page "b" eaf-rss-reader-keybinding)
+
   (defalias 'browse-web #'eaf-open-browser))
 
 #+end_src
