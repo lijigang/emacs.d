@@ -549,11 +549,11 @@
   ;; Learn from:
   ;; https://mullikine.github.io/posts/org-mode-bold/
   (defface org-bold
-    '((t :foreground "#79869c"
+    '((t :foreground "#000000"
        :background "#fefefe"
        :weight bold
-       :underline t
-       :overline t))
+       :underline nil
+       :overline nil))
     "Face for org-mode bold."
     :group 'org-faces )
 
@@ -821,8 +821,6 @@
   (setq eaf-proxy-port "8889")
   (setq eaf-pdf-dark-mode nil)
   (setq eaf-buffer-background-color "#FFFFFF")
-  (setq eaf-webengine-font-family "PingFang SC")
-  (setq eaf-webengine-serif-font-family "PingFang SC")
   (add-hook 'eaf-mode-hook #'turn-off-evil-mode t)
 
   (eaf-bind-key eaf-rss-reader-scroll-up-web-page "SPC" eaf-rss-reader-keybinding)
