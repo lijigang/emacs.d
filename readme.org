@@ -193,6 +193,12 @@
 
 
 
+(package! telega
+  :recipe (:host github :repo "zevlg/telega.el" :branch "release-0.8.0"))
+
+
+
+
 ;; 完美解决中英文字符在表格中对齐的问题
 (package! valign)
 
@@ -891,11 +897,7 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! telega
-  ;; FIXME
-  :load-path "~/Documents/emacs/depend/telega"
   :config
-  ;; (add-hook 'telega-root-mode-hook (lambda () (writeroom-mode 1)))
-  ;; (add-hook 'telega-chat-mode-hook (lambda () (writeroom-mode 1)))
   (setq telega-chat-show-avatars nil)
   (setq telega-avatar-text-compose-chars nil)
   (setq telega-chat-input-prompt "🐶:> ")
