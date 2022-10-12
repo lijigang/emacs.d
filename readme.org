@@ -900,7 +900,11 @@
   :config
   (setq telega-chat-show-avatars nil)
   (setq telega-avatar-text-compose-chars nil)
-  (setq telega-chat-input-prompt "🐶:> ")
+  (setq telega-sticker-size '(0 . 0))
+  (setq telega-chat-prompt-format ">: ")
+  (setq telega-use-images t)
+  (add-hook 'telega-msg-ignore-predicates 'telega-msg-from-blocked-sender-p)
+
   (setq telega-proxies
         (list
          '(:server "127.0.0.1" :port 8889 :enable t
