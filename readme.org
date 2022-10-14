@@ -162,11 +162,6 @@
 (package! org-fragtog)
 
 
-
-(package! org-mac-image-paste
-  :recipe (:host github :repo "jdtsmith/org-mac-image-paste"))
-
-
 
 
 ;; 一个快速查询org 文件相关内容的 query language
@@ -851,14 +846,6 @@
 
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
-
-#+end_src
-**** org-mac-image-paste
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(use-package! org-mac-image-paste
-  :config
-  (org-mac-image-paste-mode 1))
 
 #+end_src
 **** pangu-spacing
