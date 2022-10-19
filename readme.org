@@ -810,17 +810,19 @@
   :config
   (require 'eaf)
   (require 'eaf-browser)
+  (require 'eaf-evil)
   (require 'eaf-file-manager)
+  (require 'eaf-image-viewer)
   (require 'eaf-pdf-viewer)
   (require 'eaf-rss-reader)
-  (require 'eaf-evil)
-  (require 'eaf-image-viewer)
+  (require 'eaf-terminal)
 
   (setq eaf-python-command "python3.9")
   (setq eaf-proxy-type "http")
   (setq eaf-proxy-host "127.0.0.1")
   (setq eaf-proxy-port "8889")
   (setq eaf-pdf-dark-mode nil)
+  (setq eaf-terminal-font-size 24)
   (setq eaf-buffer-background-color "#FFFFFF")
   (add-hook 'eaf-mode-hook #'turn-off-evil-mode t)
 
@@ -1089,6 +1091,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
        "h" #'eaf-open-browser-with-history
        "f" #'eaf-open-in-file-manager
        "r" #'eaf-open-rss-reader
+       "s" #'eaf-open-terminal
        "t" #'telega))
 
 (setq mac-command-modifier 'super)
