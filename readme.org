@@ -890,7 +890,7 @@
   (setq telega-chat-show-avatars nil)
   (setq telega-avatar-text-compose-chars nil)
   (setq telega-sticker-size '(0 . 0))
-  (setq telega-chat-prompt-format ">: ")
+  (setq telega-chat-prompt-format "🐴>: ")
   (setq telega-use-images t)
   (add-hook 'telega-msg-ignore-predicates 'telega-msg-from-blocked-sender-p)
 
