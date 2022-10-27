@@ -824,6 +824,7 @@
   (setq eaf-pdf-dark-mode nil)
   (setq eaf-terminal-font-size 24)
   (setq eaf-buffer-background-color "#FFFFFF")
+  (setq eaf-start-python-process-when-require nil)
   (add-hook 'eaf-mode-hook #'turn-off-evil-mode t)
 
   (eaf-bind-key eaf-rss-reader-scroll-up-web-page "SPC" eaf-rss-reader-keybinding)
