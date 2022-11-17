@@ -802,7 +802,7 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 (use-package! eaf
-  :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+  :load-path "~/Documents/emacs/local-packages/emacs-application-framework"
   :custom
   ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
   (eaf-browser-continue-where-left-off t)
