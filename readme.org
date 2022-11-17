@@ -798,6 +798,17 @@
   (ace-pinyin-global-mode +1))
 
 #+end_src
+**** blink-search
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(add-to-list 'load-path "~/Documents/emacs/local-packages/blink-search")
+
+(require 'blink-search)
+(global-set-key (kbd "C-s") 'blink-search)
+
+#+end_src
+
+
 **** eaf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
@@ -869,7 +880,7 @@
   (default-input-method "rime")
   ;; FIXME
   (rime-librime-root "~/Documents/emacs/depend/librime/dist")
-  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-mac/emacs-28.2-mac-9.1/include")
+  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@28/28.2/include")
   ;; (rime-emacs-module-header-root "/usr/local/opt/emacs-mac/include")
   :config
   (define-key rime-mode-map (kbd "C-i") 'rime-force-enable)
