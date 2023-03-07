@@ -534,11 +534,11 @@
   ;; Coding system for HTML export.
   (setq org-html-coding-system 'utf-8)
   (setq org-html-doctype "html5")
-  (setq org-html-head
-        "<link rel='stylesheet' type='text/css' href='https://gongzhitaao.org/orgcss/org.css'/> ")
-
   ;; (setq org-html-head
-  ;;       "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
+  ;;       "<link rel='stylesheet' type='text/css' href='https://gongzhitaao.org/orgcss/org.css'/> ")
+
+  (setq org-html-head
+        "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
 
   (after! org-superstar
     ;; other symbols like: 🦄  🐻 "🙘" "🙙" "🙚" "🙛" "☯" "☷" "☲" "☵"
@@ -550,13 +550,14 @@
   ;; Learn from:
   ;; https://mullikine.github.io/posts/org-mode-bold/
   (defface org-bold
-    '((t :foreground "#000000"
+    '((t :foreground "black"
        :background "#fefefe"
        :weight bold
-       :underline nil
+       :underline (:color "red" :style line :position 9)
        :overline nil))
     "Face for org-mode bold."
     :group 'org-faces )
+
 
   (setq org-emphasis-alist
         '(("*" org-bold)
