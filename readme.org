@@ -1079,6 +1079,24 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 
 #+end_src
+**** 快速调整 Frame 窗口大小
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(defun set-frame-size-phone ()
+  "Set the current frame's size to 40x50."
+  (interactive)
+  (set-frame-size (selected-frame) 40 50))
+
+(defun set-frame-size-mac ()
+  "Set the current frame's size to 120x50."
+  (interactive)
+  (set-frame-size (selected-frame) 120 50))
+
+(global-set-key (kbd "s-m") 'set-frame-size-phone)
+(global-set-key (kbd "s-l") 'set-frame-size-mac)
+
+
+#+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
