@@ -647,6 +647,7 @@
               :date          "⚓"
               :property      "☸"
               :options       "⌥"
+              :tags          "☁"
               :latex_class   "🄲"
               :latex_header  "⇥"
               :beamer_header "↠"
@@ -680,6 +681,7 @@
     :date          "#+date:"
     :property      "#+property:"
     :options       "#+options:"
+    :tags          "#+tags:"
     :latex_class   "#+latex_class:"
     :latex_header  "#+latex_header:"
     :beamer_header "#+beamer_header:"
@@ -831,7 +833,7 @@
 
   (setq eaf-python-command "python3.9")
   (setq eaf-proxy-type "http")
-  (setq eaf-proxy-host "127.0.0.1")
+  ;; (setq eaf-proxy-host "127.0.0.1")
   (setq eaf-proxy-port "8889")
   (setq eaf-pdf-dark-mode nil)
   (setq eaf-terminal-font-size 24)
@@ -907,10 +909,11 @@
   (setq telega-use-images t)
   (add-hook 'telega-msg-ignore-predicates 'telega-msg-from-blocked-sender-p)
 
-  (setq telega-proxies
-        (list
-         '(:server "127.0.0.1" :port 8889 :enable t
-           :type (:@type "proxyTypeHttp")))))
+  ;; (setq telega-proxies
+  ;;       (list
+  ;;        '(:server "127.0.0.1" :port 8889 :enable t
+  ;;          :type (:@type "proxyTypeHttp"))))
+  )
 
 (with-eval-after-load 'telega
   (define-key telega-msg-button-map "k" nil))
