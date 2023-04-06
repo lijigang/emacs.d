@@ -1113,7 +1113,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
     (fill-paragraph nil region)))
 
 ;; Handy key definition
-(define-key global-map "s-u" 'unfill-paragraph)
+(global-set-key (kbd "s-u") 'unfill-paragraph)
 
 
 #+end_src
