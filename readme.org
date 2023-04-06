@@ -832,9 +832,9 @@
   (require 'eaf-terminal)
 
   (setq eaf-python-command "python3.9")
-  (setq eaf-proxy-type "http")
+  ;; (setq eaf-proxy-type "http")
   ;; (setq eaf-proxy-host "127.0.0.1")
-  (setq eaf-proxy-port "8889")
+  ;; (setq eaf-proxy-port "8889")
   (setq eaf-pdf-dark-mode nil)
   (setq eaf-terminal-font-size 24)
   (setq eaf-buffer-background-color "#FFFFFF")
