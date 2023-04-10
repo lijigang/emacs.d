@@ -1117,6 +1117,19 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 
 #+end_src
+**** 插入水平分隔线
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(defun insert-bold-hline ()
+  "Insert a bold horizontal line in Org-mode."
+  (interactive)
+  (insert (make-string 18 ?━))
+  (insert "\n"))
+
+(global-set-key (kbd "s-h") 'insert-bold-hline)
+
+
+#+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
