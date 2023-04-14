@@ -281,6 +281,12 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 
+;; 指定启动时的窗口位置和大小
+(setq initial-frame-alist '((top . 45)
+                             (left . 1200)
+                             (width . 100)
+                             (height . 45)))
+
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
