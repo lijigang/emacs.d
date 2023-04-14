@@ -1136,6 +1136,52 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 
 #+end_src
+**** 插入当前 Buffer 字符数
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(defvar word-count-rule-chinese "\\cc"
+  "A regexp string to match Chinese characters.")
+
+(defvar word-count-rule-nonespace "[^[:space:]]"
+  "A regexp string to match none pace characters.")
+
+(defvar word-count-rule-ansci "[A-Za-z0-9][A-Za-z0-9[:punct:]]*"
+  "A regexp string to match none pace characters.")
+
+(defun special-words-count (start end regexp)
+  "Count the word from START to END with REGEXP."
+  (let ((count 0))
+    (save-excursion
+      (goto-char start)
+      (while (and (< (point) end) (re-search-forward regexp end t))
+        (setq count (1+ count))))
+    count))
+
+;;;###autoload
+(defun chinese-word-count (&optional beg end)
+  "Chinese user preferred word count.
+If BEG = END, count the whole buffer."
+  (interactive (list (mark) (point)))
+  (let ((min (if (= beg end) (point-min) beg))
+        (max (if (= beg end) (point-max) end))
+        list)
+    (setq list
+          (mapcar (lambda (r)
+                    (special-words-count min max r))
+                  (list
+                   word-count-rule-chinese
+                   word-count-rule-nonespace
+                   word-count-rule-ansci
+                   )))
+    (insert
+     (format "━━━━━━━━━━━━
+/Words: %d  ♥  Emacs/"
+             (+ (car list) (car (last list)))))))
+
+(global-set-key (kbd "s-q") 'chinese-word-count)
+
+
+#+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
