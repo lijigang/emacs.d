@@ -151,6 +151,12 @@
 
 
 
+;; 在Orgmode 文件中插入图片
+(package! org-download)
+
+
+
+
 (package! imenu-list)
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
@@ -817,7 +823,6 @@
 
 #+end_src
 
-
 **** eaf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
@@ -863,6 +868,23 @@
         org-appear-autosubmarkers t
         org-appear-autolinks nil))
 ;; 
+#+end_src
+**** org-download
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(use-package! org-download
+  :defer nil
+  :custom
+  (org-download-image-dir "~/Documents/images")
+  (org-image-actual-width '(400))
+  (org-download-heading-lvl nil)
+  (org-download-timestamp "")
+  :config
+  (require 'org-download))
+
+(after! org-download
+  (setq org-download-method 'directory))
+
 #+end_src
 **** org-fragtog
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
