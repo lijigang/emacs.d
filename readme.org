@@ -875,7 +875,7 @@
 (use-package! org-download
   :defer nil
   :custom
-  (org-download-image-dir "~/Documents/images")
+  (org-download-image-dir "~/Documents/emacs/org/roam/images")
   (org-image-actual-width '(400))
   (org-download-heading-lvl nil)
   (org-download-timestamp "")
@@ -883,7 +883,8 @@
   (require 'org-download))
 
 (after! org-download
-  (setq org-download-method 'directory))
+  (setq org-download-method 'directory)
+  (setq org-download-link-format "[[file:images/%s]]\n"))
 
 #+end_src
 **** org-fragtog
@@ -1175,7 +1176,8 @@ r 为未来现金流折现率， n为企业未来存活年数"
   (let ((count 0))
     (save-excursion
       (goto-char start)
-      (while (and (< (point) end) (re-search-forward regexp end t))
+      (while (and (< (point) end)
+                  (re-search-forward regexp end t))
         (setq count (1+ count))))
     count))
 
