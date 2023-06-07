@@ -51,6 +51,7 @@
 
        :ui
        doom               ; what makes DOOM look the way it does
+       (modeline +light)
        hl-todo            ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        (ligatures +extra)
        ophints            ; highlight the region an operation acts on
@@ -143,6 +144,7 @@
 (package! nano-modeline)
 
 
+(package! olivetti)
 
 
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
@@ -857,6 +859,17 @@
 
   (defalias 'browse-web #'eaf-open-browser))
 
+#+end_src
+**** olivetti
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; 
+(use-package! olivetti
+  :ensure t
+  :hook (org-mode . olivetti-mode)
+  :config
+  ;; 设置文本宽度，默认是 80 列
+  (setq olivetti-body-width 80))
+;; 
 #+end_src
 **** org-appear
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
