@@ -51,7 +51,7 @@
 
        :ui
        doom               ; what makes DOOM look the way it does
-       (modeline +light)
+       modeline
        hl-todo            ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        (ligatures +extra)
        ophints            ; highlight the region an operation acts on
@@ -140,8 +140,8 @@
 
 
 ;; 简洁好看的主题
-(package! nano-theme)
-(package! nano-modeline)
+;; (package! nano-theme)
+;; (package! nano-modeline)
 
 
 (package! olivetti)
@@ -199,6 +199,15 @@
 (package! telega
   :recipe (:host github :repo "zevlg/telega.el" :branch "release-0.8.0"))
 
+
+
+
+(package! ef-themes
+  :recipe (:host github :repo "protesilaos/ef-themes"))
+
+
+(package! org-ai)
+(package! org-roam-ui)
 
 
 
@@ -337,12 +346,18 @@
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
 
-;; 使用 nano-theme
-(require 'nano-theme)
-(nano-mode)
-(nano-light)
+(setq doom-theme 'ef-elea-light)
 
-(nano-modeline-mode)
+;; 另外两个非常好看的主题
+;; (setq doom-theme 'ef-cyprus)
+;; (setq doom-theme 'doom-tokyo-night)
+
+;; 使用 nano-theme
+;; (require 'nano-theme)
+;; (nano-mode)
+;; (nano-light)
+
+;; (nano-modeline-mode)
 
 
 #+end_src
@@ -778,6 +793,16 @@
         ivy-posframe-width 100))
 
 #+end_src
+**** doom-modeline
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(use-package! doom-modeline
+  :custom
+  (doom-modeline-enable-word-count t)
+  (doom-modeline-height 10)
+  (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode text-mode)))
+
+#+end_src
 **** org-roam
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
@@ -805,7 +830,6 @@
   (setq plantuml-default-exec-mode 'jar))
 
 #+end_src
-**** writroom
 *** 配置加装包
 **** ace-pinyin
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -871,6 +895,24 @@
   (setq olivetti-body-width 80))
 ;; 
 #+end_src
+**** org-ai
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; 
+(use-package! org-ai
+  :ensure t
+  :commands (org-ai-mode
+             org-ai-global-mode)
+  :init
+  (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
+  (org-ai-global-mode) ; installs global keybindings on C-c M-a
+  :config
+  ;; (setq org-ai-openai-api-token "your-key")
+  (load-file "~/Documents/emacs/private/openai_key.el")
+  (setq org-ai-default-chat-model "gpt-3.5-turbo-0613") ; if you are on the gpt-4 beta:
+  (org-ai-install-yasnippets) ; if you are using yasnippet and want `ai` snippets
+)
+;; 
+#+end_src
 **** org-appear
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; 
@@ -905,6 +947,12 @@
 
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
+
+#+end_src
+**** org-roam-ui
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(use-package! org-roam-ui)
 
 #+end_src
 **** pangu-spacing
@@ -1044,25 +1092,6 @@ r 为未来现金流折现率， n为企业未来存活年数"
 (map! :leader :desc "Insert image" "i i" #'org-insert-image)
 
 #+end_src
-**** 将 form feed 符号显示为横线
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(defun xah-show-formfeed-as-line ()
-  "Display the formfeed ^L char as line. Version 2018-08-30"
-  (interactive)
-  ;; 2016-10-11 thanks to Steve Purcell's page-break-lines.el
-  (progn
-    (when (not buffer-display-table)
-      (setq buffer-display-table (make-display-table)))
-    (aset buffer-display-table ?\^L
-          (vconcat (make-list 39 (make-glyph-code ?─ 'font-lock-comment-face))))
-    (redraw-frame)))
-
-
-(add-hook 'org-mode-hook #'xah-show-formfeed-as-line)
-(add-hook 'emacs-lisp-mode-hook #'xah-show-formfeed-as-line)
-
-#+end_src
 **** 更方便的插入链接
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
@@ -1101,62 +1130,113 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 ;; https://emacs-china.org/t/org-mode/22313?u=vagrantjoker
 ;; 解决中文标记前后空格的问题
-(font-lock-add-keywords 'org-mode
-                        '(("\\cc\\( \\)[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)?\\cc?"
-                           (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) ""))))
-                          ("\\cc?\\( \\)?[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)\\cc"
-                           (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "")))))
-                        'append)
+;; (font-lock-add-keywords 'org-mode
+;;                         '(("\\cc\\( \\)[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)?\\cc?"
+;;                            (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) ""))))
+;;                           ("\\cc?\\( \\)?[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)\\cc"
+;;                            (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "")))))
+;;                         'append)
 
-(with-eval-after-load 'ox
-  (defun eli-strip-ws-maybe (text _backend _info)
-    (let* ((text (replace-regexp-in-string
-                  "\\(\\cc\\) *\n *\\(\\cc\\)"
-                  "\\1\\2" text));; remove whitespace from line break
-           ;; remove whitespace from `org-emphasis-alist'
-           (text (replace-regexp-in-string "\\(\\cc\\) \\(.*?\\) \\(\\cc\\)"
-                                           "\\1\\2\\3" text))
-           ;; restore whitespace between English words and Chinese words
-           (text (replace-regexp-in-string "\\(\\cc\\)\\(\\(?:<[^>]+>\\)?[a-z0-9A-Z]+\\(?:<[^>]+>\\)?\\)\\(\\cc\\)"
-                                           "\\1 \\2 \\3" text)))
-      text))
-  (add-to-list 'org-export-filter-paragraph-functions #'eli-strip-ws-maybe))
+;; (with-eval-after-load 'ox
+;;   (defun eli-strip-ws-maybe (text _backend _info)
+;;     (let* ((text (replace-regexp-in-string
+;;                   "\\(\\cc\\) *\n *\\(\\cc\\)"
+;;                   "\\1\\2" text));; remove whitespace from line break
+;;            ;; remove whitespace from `org-emphasis-alist'
+;;            (text (replace-regexp-in-string "\\(\\cc\\) \\(.*?\\) \\(\\cc\\)"
+;;                                            "\\1\\2\\3" text))
+;;            ;; restore whitespace between English words and Chinese words
+;;            (text (replace-regexp-in-string "\\(\\cc\\)\\(\\(?:<[^>]+>\\)?[a-z0-9A-Z]+\\(?:<[^>]+>\\)?\\)\\(\\cc\\)"
+;;                                            "\\1 \\2 \\3" text)))
+;;       text))
+;;   (add-to-list 'org-export-filter-paragraph-functions #'eli-strip-ws-maybe))
 
 
 #+end_src
 **** 快速调整 Frame 窗口大小
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(defun set-frame-size-phone ()
-  "Set the current frame's size to 40x50."
-  (interactive)
-  (set-frame-size (selected-frame) 40 50))
+;; (defun set-frame-size-phone ()
+;;   "Set the current frame's size to 40x50."
+;;   (interactive)
+;;   (set-frame-size (selected-frame) 40 50))
 
-(defun set-frame-size-mac ()
-  "Set the current frame's size to 120x50."
-  (interactive)
-  (set-frame-size (selected-frame) 120 50))
+;; (defun set-frame-size-mac ()
+;;   "Set the current frame's size to 120x50."
+;;   (interactive)
+;;   (set-frame-size (selected-frame) 120 50))
 
-(global-set-key (kbd "s-m") 'set-frame-size-phone)
-(global-set-key (kbd "s-l") 'set-frame-size-mac)
-
+;; (global-set-key (kbd "s-m") 'set-frame-size-phone)
+;; (global-set-key (kbd "s-l") 'set-frame-size-mac)
+#+end_src
+**** 快速调整 Frame 居中
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;;
+
+;; Author: @Nasy 学姐
+;; Description: 将当前窗口设置为居中.
+
+(defun nasy/frame-recenter (&optional frame)
+  "Center FRAME on the screen.
+FRAME can be a frame name, a terminal name, or a frame.
+If FRAME is omitted or nil, use currently selected frame."
+  (interactive)
+  (unless (eq 'maximised (frame-parameter nil 'fullscreen))
+    (let* ((frame (or (and (boundp 'frame) frame) (selected-frame)))
+           (frame-w (frame-pixel-width frame))
+           (frame-h (frame-pixel-height frame))
+            ;; frame-monitor-workarea returns (x y width height) for the monitor
+           (monitor-w (nth 2 (frame-monitor-workarea frame)))
+           (monitor-h (nth 3 (frame-monitor-workarea frame)))
+           (center (list (/ (- monitor-w frame-w) 2)
+                         (/ (- monitor-h frame-h) 2))))
+      (apply 'set-frame-position (flatten-list (list frame center))))))
+;;
 
 #+end_src
 **** Unfill-Paragraph
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
-(defun unfill-paragraph (&optional region)
-    "Takes a multi-line paragraph and makes it into a single line of text."
-    (interactive (progn (barf-if-buffer-read-only) '(t)))
-    (let ((fill-column (point-max))
-        ;; This would override `fill-column' if it's an integer.
-        (emacs-lisp-docstring-fill-column t))
-    (fill-paragraph nil region)))
+;; (defun unfill-paragraph (&optional region)
+;;     "Takes a multi-line paragraph and makes it into a single line of text."
+;;     (interactive (progn (barf-if-buffer-read-only) '(t)))
+;;     (let ((fill-column (point-max))
+;;         ;; This would override `fill-column' if it's an integer.
+;;         (emacs-lisp-docstring-fill-column t))
+;;     (fill-paragraph nil region)))
 
-;; Handy key definition
-(global-set-key (kbd "s-u") 'unfill-paragraph)
+;; ;; Handy key definition
+;; (global-set-key (kbd "s-u") 'unfill-paragraph)
 
+
+#+end_src
+**** 复制 org 文字到其它地方时自动 Unfill
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; 
+;; Author: @Eli
+;; Description: 将 Orgmode 文本复制到其它软件时, 去除硬换行和标记符号
+;; 使用时, C-u + 复制 即可
+(require 'ox-ascii)
+
+(defun eli/org2plaintxt (string)
+  (cl-flet ((drop-markup (_ content _) (identity content)))
+    (cl-letf (((symbol-function #'org-ascii-bold) #'drop-markup)
+              ((symbol-function #'org-ascii-italic) #'drop-markup)
+              ((symbol-function #'org-ascii-strike-through) #'drop-markup)
+              ((symbol-function #'org-ascii-underline) #'drop-markup))
+      (let ((org-ascii-text-width 999999)
+   (org-ascii-bullets nil)
+            (org-ascii-underline nil)
+            (org-ascii-verbatim-format "%s"))
+        (org-export-string-as string 'ascii t)))))
+
+(defun eli/unfill-string (string)
+  (if current-prefix-arg
+   (thread-last string eli/org2plaintxt)
+    string))
+
+(advice-add #'buffer-substring--filter :filter-return #'eli/unfill-string)
+;; 
 
 #+end_src
 **** 插入水平分隔线
@@ -1169,53 +1249,6 @@ r 为未来现金流折现率， n为企业未来存活年数"
   (insert "\n"))
 
 (global-set-key (kbd "s-h") 'insert-bold-hline)
-
-
-#+end_src
-**** 插入当前 Buffer 字符数
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(defvar word-count-rule-chinese "\\cc"
-  "A regexp string to match Chinese characters.")
-
-(defvar word-count-rule-nonespace "[^[:space:]]"
-  "A regexp string to match none pace characters.")
-
-(defvar word-count-rule-ansci "[A-Za-z0-9][A-Za-z0-9[:punct:]]*"
-  "A regexp string to match none pace characters.")
-
-(defun special-words-count (start end regexp)
-  "Count the word from START to END with REGEXP."
-  (let ((count 0))
-    (save-excursion
-      (goto-char start)
-      (while (and (< (point) end)
-                  (re-search-forward regexp end t))
-        (setq count (1+ count))))
-    count))
-
-;;;###autoload
-(defun chinese-word-count (&optional beg end)
-  "Chinese user preferred word count.
-If BEG = END, count the whole buffer."
-  (interactive (list (mark) (point)))
-  (let ((min (if (= beg end) (point-min) beg))
-        (max (if (= beg end) (point-max) end))
-        list)
-    (setq list
-          (mapcar (lambda (r)
-                    (special-words-count min max r))
-                  (list
-                   word-count-rule-chinese
-                   word-count-rule-nonespace
-                   word-count-rule-ansci
-                   )))
-    (insert
-     (format "━━━━━━━━━━━━
-/Words: %d  ♥  Emacs/"
-             (+ (car list) (car (last list)))))))
-
-(global-set-key (kbd "s-q") 'chinese-word-count)
 
 
 #+end_src
