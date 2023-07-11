@@ -125,95 +125,95 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-
+
 ;; 快速跳转到任意位置, 通过汉字拼音的方式
 (package! ace-pinyin
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
-
 
 
-
+
+
 ;; 好用的翻译包
 (package! fanyi)
-
 
 
-
+
+
 ;; 简洁好看的主题
 ;; (package! nano-theme)
 ;; (package! nano-modeline)
-
+
 
 (package! olivetti)
 
-
+
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
 (package! org-appear
   :recipe (:host github :repo "awth13/org-appear"))
-
 
-
+
+
 ;; 在Orgmode 文件中插入图片
 (package! org-download)
-
 
 
-
+
+
 (package! imenu-list)
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
-
 
 
-
+
+
 ;; 鼠标放到LaTeX 代码上, 可编辑状态, 离开即显示编译后的公式效果
 (package! org-fragtog)
-
 
 
-
+
+
 ;; 一个快速查询org 文件相关内容的 query language
 (package! org-ql)
-
 
 
-
+
+
 ;; 中英文字符之间自动插入空格, 增加可阅读性
 (package! pangu-spacing)
-
 
 
-
+
+
 ;; 每个标识符显示一个颜色, 花里胡哨的开始
 (package! rainbow-identifiers)
-
 
 
-
+
+
 ;; 在Emacs 中使用rime, 减少切换中英文状态
 (package! rime)
-
 
 
-
+
+
 (package! telega
   :recipe (:host github :repo "zevlg/telega.el" :branch "release-0.8.0"))
-
 
 
-
+
+
 (package! ef-themes
   :recipe (:host github :repo "protesilaos/ef-themes"))
-
+
 
 (package! org-ai)
 (package! org-roam-ui)
 
 
-
+
 ;; 完美解决中英文字符在表格中对齐的问题
 (package! valign)
-
+
 #+end_src
 ** 配置: 你想要的效果
 :PROPERTIES:
@@ -225,24 +225,24 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-
+
 ;; 通过Emacs-china 的仓库来安装包, 提升安装速度
 (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-
 
 
-
+
+
 ;; 个人信息
 (setq user-full-name "lijigang"
       user-mail-address "i@lijigang.com")
 
 ;; 通过iCloud 自动同步Documents 目录, 多台电脑可以无缝迁移使用
 (setq org-directory "~/Documents/emacs/org/")
-
 
 
-
+
+
 (setq confirm-kill-emacs nil ; 关闭 emacs 时无需额外确认
       system-time-locale "C" ; 设置系统时间显示方式
       pop-up-windows nil     ; no pop-up window
@@ -250,17 +250,17 @@
       widget-image-enable nil
       visible-bell nil
       ring-bell-function 'ignore)
-
 
 
-
+
+
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
-
 
 
-
+
+
 ;; 全局打开visual line
 ;; (global-visual-line-mode)
 
@@ -292,12 +292,12 @@
 (show-paren-mode t)
 (fringe-mode '(0 . 0)) ;; No fringe
 
-
+
 #+end_src
 *** 配置 Frame
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
-
+
 ;; 指定启动时的窗口位置和大小
 (setq initial-frame-alist '((top . 45)
                              (left . 1200)
@@ -307,11 +307,11 @@
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
-
+
 #+end_src
 *** 配置 Window
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; 新打开窗口时, 提示要打开哪个Buffer
 (setq evil-vsplit-window-right t
       evil-split-window-below t)
@@ -321,28 +321,28 @@
   (+ivy/switch-buffer))
 
 (setq +ivy-buffer-preview t)
-
 
-
+
+
 (setq-default x-stretch-cursor t ;; Stretch cursor to the glyph width
               line-spacing 0.2
               fill-column 80
               x-underline-at-descent-line t)
-
+
 #+end_src
 *** 配置鼠标滚动
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; Smooth mouse scrolling
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))  ; scroll two lines at a time
       mouse-wheel-progressive-speed nil             ; don't accelerate scrolling
       mouse-wheel-follow-mouse t                    ; scroll window under mouse
       scroll-step 1)
-
+
 #+end_src
 *** 配置主题
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
 
@@ -359,11 +359,11 @@
 
 ;; (nano-modeline-mode)
 
-
+
 #+end_src
 *** 配置字体
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; Doom 自带的字体变量配置
 
 ;; Plan A: 中文苹方, 英文Roboto Mono
@@ -381,11 +381,11 @@
   (set-fontset-font t 'symbol (font-spec :family "Symbola"))
   (set-fontset-font t 'mathematical (font-spec :family "Symbola"))
   (set-fontset-font t 'emoji (font-spec :family "Symbola")))
-
+
 #+end_src
 *** 配置 LaTeX
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; FIXME
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2022/bin/universal-darwin"))
 (setq exec-path (append exec-path '("/usr/local/texlive/2022/bin/universal-darwin")))
@@ -404,11 +404,11 @@
         "xelatex -interaction nonstopmode -output-directory %o %f"
         "xelatex -interaction nonstopmode -output-directory %o %f"
         "rm -fr %b.out %b.log %b.tex auto"))
-
+
 #+end_src
 
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("ctexart" "\\documentclass[11pt,titlepage]{ctexart}
@@ -512,12 +512,12 @@
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (setq org-latex-default-class "ctexart")
   (setq org-latex-compiler "xelatex"))
-
+
 #+end_src
 *** 配置 =OrgMode=
 **** 常用变量
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! org
   (setq org-archive-location (concat org-directory "roam/archive.org::")
         org-log-done t
@@ -610,11 +610,11 @@
   (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
 
   )
-
+
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! org
   ;; FIXME
   (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
@@ -643,11 +643,11 @@
         org-agenda-use-time-grid nil
         calendar-holidays nil
         org-agenda-include-diary t))
-
+
 #+end_src
 **** org babel languages
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! org
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (setq org-plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
@@ -659,11 +659,11 @@
      (shell . t)
      (plantuml . t)
      (gnuplot . t))))
-
+
 #+end_src
 **** 美化符号
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! org
   (appendq! +ligatures-extra-symbols
             `(:checkbox      "☐"
@@ -746,12 +746,12 @@
 
 (add-hook 'org-mode-hook 'my-add-pretty-symbol)
 
-
+
 
 #+end_src
 **** custom face
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! org
   (custom-set-faces!
     '(outline-1 :weight extra-bold :height 1.25)
@@ -765,21 +765,21 @@
 
   (custom-set-faces!
     '(org-document-title :height 1.2)))
-
+
 #+end_src
 *** 配置自带包
 **** evil
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! evil
   (setq evil-ex-substitute-global t     ; I like my s/../.. to by global by default
         evil-move-cursor-back nil       ; Don't move the block cursor when toggling insert mode
         evil-kill-on-visual-paste nil))
-
+
 #+end_src
 **** ivy
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! ivy
   ;; Causes open buffers and recentf to be combined in ivy-switch-buffer
   (setq ivy-use-virtual-buffers t
@@ -791,21 +791,21 @@
         ivy-posframe-height-alist '((t . 20))
         ivy-posframe-parameters '((internal-border-width . 1))
         ivy-posframe-width 100))
-
+
 #+end_src
 **** doom-modeline
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! doom-modeline
   :custom
   (doom-modeline-enable-word-count t)
   (doom-modeline-height 10)
   (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode text-mode)))
-
+
 #+end_src
 **** org-roam
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! org-roam
   :config
   (org-roam-db-autosync-mode)
@@ -820,38 +820,38 @@
            (file+head "${slug}.org"
                       "#+title: ${title}\n\n ")
            :unnarrowed t))))
-
+
 #+end_src
 **** plantuml
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (after! plantuml-mode
   (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
   (setq plantuml-default-exec-mode 'jar))
-
+
 #+end_src
 *** 配置加装包
 **** ace-pinyin
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! ace-pinyin
   :config
   (ace-pinyin-global-mode +1))
-
+
 #+end_src
 **** blink-search
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (add-to-list 'load-path "~/Documents/emacs/local-packages/blink-search")
 
 (require 'blink-search)
 (global-set-key (kbd "C-s") 'blink-search)
-
+
 #+end_src
 
 **** eaf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! eaf
   :load-path "~/Documents/emacs/local-packages/emacs-application-framework"
   :custom
@@ -882,22 +882,22 @@
   (eaf-bind-key eaf-rss-reader-scroll-down-web-page "b" eaf-rss-reader-keybinding)
 
   (defalias 'browse-web #'eaf-open-browser))
-
+
 #+end_src
 **** olivetti
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; 
+;;
 (use-package! olivetti
   :ensure t
   :hook (org-mode . olivetti-mode)
   :config
   ;; 设置文本宽度，默认是 80 列
   (setq olivetti-body-width 80))
-;; 
+;;
 #+end_src
 **** org-ai
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; 
+;;
 (use-package! org-ai
   :ensure t
   :commands (org-ai-mode
@@ -911,22 +911,22 @@
   (setq org-ai-default-chat-model "gpt-3.5-turbo-0613") ; if you are on the gpt-4 beta:
   (org-ai-install-yasnippets) ; if you are using yasnippet and want `ai` snippets
 )
-;; 
+;;
 #+end_src
 **** org-appear
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; 
+;;
 (use-package! org-appear
   :hook (org-mode . org-appear-mode)
   :config
   (setq org-appear-autoemphasis t
         org-appear-autosubmarkers t
         org-appear-autolinks nil))
-;; 
+;;
 #+end_src
 **** org-download
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! org-download
   :defer nil
   :custom
@@ -940,34 +940,34 @@
 (after! org-download
   (setq org-download-method 'directory)
   (setq org-download-link-format "[[file:images/%s]]\n"))
-
+
 #+end_src
 **** org-fragtog
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! org-fragtog
   :hook (org-mode . org-fragtog-mode))
-
+
 #+end_src
 **** org-roam-ui
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! org-roam-ui)
-
+
 #+end_src
 **** pangu-spacing
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! pangu-spacing
   :config
   (global-pangu-spacing-mode 1)
   ;; 在中英文符号之间, 真正地插入空格
   (setq pangu-spacing-real-insert-separtor t))
-
+
 #+end_src
 **** rime
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! rime
   :custom
   (default-input-method "rime")
@@ -985,11 +985,11 @@
           rime-predicate-punctuation-line-begin-p))
   ;; FIXME
   (setq rime-user-data-dir "~/Library/Rime"))
-
+
 #+end_src
 **** telega
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! telega
   :config
   (setq telega-chat-show-avatars nil)
@@ -1007,23 +1007,23 @@
 
 (with-eval-after-load 'telega
   (define-key telega-msg-button-map "k" nil))
-
+
 
 #+end_src
 **** valign
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (use-package! valign
   :config
   (setq valign-fancy-bar t)
   (add-hook 'org-mode-hook #'valign-mode))
-
+
 
 #+end_src
 *** 配置自定义函数
 **** 价值投资 DCF 函数
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (defun dcf (cf0 g r n)
   "calculate dcf value
 
@@ -1035,11 +1035,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
          (r1  (expt (1+ r) (- n)))
          (cf1 (* cf0 g1 r1)))
     (/ (- cf0 cf1) (- r g))))
-
+
 #+end_src
 **** 今年的时间进度函数
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; 插入今年的时间进度条
 (defun make-progress (width percent has-number?)
   (let* ((done (/ percent 100.0))
@@ -1050,9 +1050,9 @@ r 为未来现金流折现率， n为企业未来存活年数"
      (make-string (- width done-width) ? )
      "]"
      (if has-number? (concat " " (number-to-string percent) "%")))))
-
 
-
+
+
 (defun insert-day-progress ()
   (interactive)
   (let* ((today (time-to-day-in-year (current-time)))
@@ -1062,11 +1062,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 ;; SPC i p to insert day progress
 (map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
-
+
 #+end_src
 **** 快速插入截图到文件
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (defun org-insert-image ()
   "insert a image from clipboard"
   (interactive)
@@ -1090,11 +1090,11 @@ r 为未来现金流折现率， n为企业未来存活年数"
   )
 
 (map! :leader :desc "Insert image" "i i" #'org-insert-image)
-
+
 #+end_src
 **** 更方便的插入链接
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; Learn from: https://xenodium.com/emacs-dwim-do-what-i-mean/
 (defun ar/org-insert-link-dwim ()
   "Like `org-insert-link' but with personal dwim preferences."
@@ -1122,12 +1122,12 @@ r 为未来现金流折现率， n为企业未来存活年数"
            (call-interactively 'org-insert-link)))))
 
 (map! :leader "i l" #'ar/org-insert-link-dwim)
-
+
 
 #+end_src
 **** 解决中文标记前后空格显示的问题
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;; https://emacs-china.org/t/org-mode/22313?u=vagrantjoker
 ;; 解决中文标记前后空格的问题
 ;; (font-lock-add-keywords 'org-mode
@@ -1150,7 +1150,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 ;;                                            "\\1 \\2 \\3" text)))
 ;;       text))
 ;;   (add-to-list 'org-export-filter-paragraph-functions #'eli-strip-ws-maybe))
-
+
 
 #+end_src
 **** 快速调整 Frame 窗口大小
@@ -1170,7 +1170,7 @@ r 为未来现金流折现率， n为企业未来存活年数"
 #+end_src
 **** 快速调整 Frame 居中
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;;
+;;
 
 ;; Author: @Nasy 学姐
 ;; Description: 将当前窗口设置为居中.
@@ -1190,12 +1190,12 @@ If FRAME is omitted or nil, use currently selected frame."
            (center (list (/ (- monitor-w frame-w) 2)
                          (/ (- monitor-h frame-h) 2))))
       (apply 'set-frame-position (flatten-list (list frame center))))))
-;;
+;;
 
 #+end_src
 **** Unfill-Paragraph
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 ;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
 ;; (defun unfill-paragraph (&optional region)
 ;;     "Takes a multi-line paragraph and makes it into a single line of text."
@@ -1207,12 +1207,12 @@ If FRAME is omitted or nil, use currently selected frame."
 
 ;; ;; Handy key definition
 ;; (global-set-key (kbd "s-u") 'unfill-paragraph)
-
+
 
 #+end_src
 **** 复制 org 文字到其它地方时自动 Unfill
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; 
+;;
 ;; Author: @Eli
 ;; Description: 将 Orgmode 文本复制到其它软件时, 去除硬换行和标记符号
 ;; 使用时, C-u + 复制 即可
@@ -1236,12 +1236,12 @@ If FRAME is omitted or nil, use currently selected frame."
     string))
 
 (advice-add #'buffer-substring--filter :filter-return #'eli/unfill-string)
-;; 
+;;
 
 #+end_src
 **** 插入水平分隔线
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (defun insert-bold-hline ()
   "Insert a bold horizontal line in Org-mode."
   (interactive)
@@ -1249,13 +1249,13 @@ If FRAME is omitted or nil, use currently selected frame."
   (insert "\n"))
 
 (global-set-key (kbd "s-h") 'insert-bold-hline)
-
+
 
 #+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (setq doom-localleader-key ",")
 
 (map!
@@ -1288,16 +1288,16 @@ If FRAME is omitted or nil, use currently selected frame."
 (global-set-key (kbd "s-i") 'org-roam-node-insert)
 (global-set-key (kbd "s-k") 'eaf-open-browser-with-history)
 
-
+
 #+end_src
 **** org-roam 快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
+
 (map! :leader
       :prefix ("r" . "org-roam")
       "f" #'org-roam-find-file
       ;; "s" #'org-roam-server-mode
       "i" #'org-roam-insert
       "t" #'org-roam-dailies-find-today)
-
+
 #+end_src
