@@ -367,7 +367,7 @@
 ;; Doom 自带的字体变量配置
 
 ;; Plan A: 中文苹方, 英文Roboto Mono
-(setq doom-font (font-spec :family "Roboto Mono" :size 20)
+(setq doom-font (font-spec :family "Roboto Mono" :size 22)
       doom-serif-font doom-font
       doom-unicode-font (font-spec :family "PingFang SC")
       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
@@ -868,7 +868,7 @@
   (require 'eaf-rss-reader)
   (require 'eaf-terminal)
 
-  (setq eaf-python-command "python3.9")
+  (setq eaf-python-command "python3.11")
   ;; (setq eaf-proxy-type "http")
   ;; (setq eaf-proxy-host "127.0.0.1")
   ;; (setq eaf-proxy-port "8889")
