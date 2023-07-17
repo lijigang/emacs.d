@@ -692,6 +692,8 @@
               :attr_html     "🄗"
               :begin_quote   "❮"
               :end_quote     "❯"
+              :begin_ai   "🌩"
+              :end_ai     "☁️"
               :caption       "☰"
               :header        "›"
               :results       "🎁"
@@ -735,6 +737,8 @@
     :attr_html     "#+attr_latex:"
     :begin_quote   "#+begin_quote"
     :end_quote     "#+end_quote"
+    :begin_ai   "#+begin_ai"
+    :end_ai     "#+end_ai"
     :caption       "#+caption:"
     :header        "#+header:"
     :begin_export  "#+begin_export"
@@ -1013,6 +1017,7 @@
   (setq telega-avatar-text-compose-chars nil)
   (setq telega-sticker-size '(0 . 0))
   (setq telega-chat-prompt-format "🐴>: ")
+  (setq telega-chat-input-markups '("org"))
   (setq telega-use-images t)
   (add-hook 'telega-msg-ignore-predicates 'telega-msg-from-blocked-sender-p)
 
