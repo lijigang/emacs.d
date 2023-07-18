@@ -909,7 +909,6 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;
 (use-package! olivetti
-  :ensure t
   :hook (org-mode . olivetti-mode)
   :config
   ;; 设置文本宽度，默认是 80 列
@@ -920,7 +919,6 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;
 (use-package! org-ai
-  :ensure t
   :commands (org-ai-mode
              org-ai-global-mode)
   :init
