@@ -992,7 +992,7 @@
   (default-input-method "rime")
   ;; FIXME
   (rime-librime-root "~/Documents/emacs/depend/librime/dist")
-  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@28/28.2/include")
+  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@29/29.1/include")
   ;; (rime-emacs-module-header-root "/usr/local/opt/emacs-mac/include")
   :config
   (define-key rime-mode-map (kbd "C-i") 'rime-force-enable)
