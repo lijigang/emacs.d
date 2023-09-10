@@ -39,7 +39,6 @@
 :header-args: :tangle "~/.doom.d/init.el"
 :header-args: :mkdirp yes
 :END:
-
 #+begin_src emacs-lisp :tangle "~/.doom.d/init.el"
 ;;; init.el -*- lexical-binding: t; -*-
 
@@ -125,113 +124,72 @@
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
 
-
 ;; 快速跳转到任意位置, 通过汉字拼音的方式
 (package! ace-pinyin
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
 
-
-
-
 ;; 好用的翻译包
 (package! fanyi)
 
-
-
+(package! gptel)
 
 ;; 简洁好看的主题
 ;; (package! nano-theme)
 ;; (package! nano-modeline)
 
-
 (package! olivetti)
-
 
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
 (package! org-appear
   :recipe (:host github :repo "awth13/org-appear"))
 
-
-
 ;; 在Orgmode 文件中插入图片
 (package! org-download)
 
-
-
-
 (package! imenu-list)
+
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
-
-
-
 
 ;; 鼠标放到LaTeX 代码上, 可编辑状态, 离开即显示编译后的公式效果
 (package! org-fragtog)
 
-
-
-
 ;; 一个快速查询org 文件相关内容的 query language
 (package! org-ql)
-
-
-
 
 ;; 中英文字符之间自动插入空格, 增加可阅读性
 (package! pangu-spacing)
 
-
-
-
 ;; 每个标识符显示一个颜色, 花里胡哨的开始
 (package! rainbow-identifiers)
-
-
-
 
 ;; 在Emacs 中使用rime, 减少切换中英文状态
 (package! rime)
 
-
-
-
 (package! telega
   :recipe (:host github :repo "zevlg/telega.el" :branch "release-0.8.0"))
-
-
-
 
 (package! ef-themes
   :recipe (:host github :repo "protesilaos/ef-themes"))
 
-
 (package! org-ai)
 (package! org-roam-ui)
 
-
-
 ;; 完美解决中英文字符在表格中对齐的问题
 (package! valign)
-
 #+end_src
 ** 配置: 你想要的效果
 :PROPERTIES:
 :header-args: :tangle "~/.doom.d/config.el"
 :header-args: :mkdirp yes
 :END:
-
 *** 通用配置
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-
 ;; 通过Emacs-china 的仓库来安装包, 提升安装速度
 (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
-
-
-
 
 ;; 个人信息
 (setq user-full-name "lijigang"
@@ -239,9 +197,6 @@
 
 ;; 通过iCloud 自动同步Documents 目录, 多台电脑可以无缝迁移使用
 (setq org-directory "~/Documents/emacs/org/")
-
-
-
 
 (setq confirm-kill-emacs nil ; 关闭 emacs 时无需额外确认
       system-time-locale "C" ; 设置系统时间显示方式
@@ -251,15 +206,9 @@
       visible-bell nil
       ring-bell-function 'ignore)
 
-
-
-
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
-
-
-
 
 ;; 全局打开visual line
 ;; (global-visual-line-mode)
@@ -292,12 +241,9 @@
 (show-paren-mode t)
 (fringe-mode '(0 . 0)) ;; No fringe
 
-
 #+end_src
 *** 配置 Frame
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-
 ;; 指定启动时的窗口位置和大小
 (setq initial-frame-alist '((top . 45)
                              (left . 1200)
@@ -322,8 +268,6 @@
 
 (setq +ivy-buffer-preview t)
 
-
-
 (setq-default x-stretch-cursor t ;; Stretch cursor to the glyph width
               line-spacing 0.2
               fill-column 80
@@ -342,11 +286,13 @@
 #+end_src
 *** 配置主题
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
 
-(setq doom-theme 'ef-elea-light)
+(add-to-list 'load-path "~/Documents/emacs/local-packages/replace-colorthemes")
+(require 'retro-green-theme)
+(load-theme 'retro-green)
+(enable-theme 'retro-green)
 
 ;; 另外两个非常好看的主题
 ;; (setq doom-theme 'ef-cyprus)
@@ -905,6 +851,53 @@
   (defalias 'browse-web #'eaf-open-browser))
 
 #+end_src
+**** gptel
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! gptel
+   :config
+   (setq! gptel-model "gpt-4")
+   (setq! gptel-api-key "your-api-key")
+   ;; (setq! gptel-model "gpt-3.5-turbo-0613")
+   ;; (setq! gptel-api-key "your-api-key")
+   )
+
+(global-set-key (kbd "s-l") 'gptel-send)
+
+
+(defvar eli/gptel-quick-prompts-directory org-roam-directory)
+
+(defun eli/gptel-quick-query (beg end)
+  (interactive "r")
+  (let* ((prompt (string-split (buffer-substring-no-properties beg end)
+                               ":" t " "))
+         (gptel--system-message
+          (with-temp-buffer
+            (insert-file-contents
+             (file-name-concat eli/gptel-quick-prompts-directory
+                               (file-name-with-extension
+                                (car prompt) ".org")))
+            (goto-char (point-min))
+            (org-next-visible-heading 1)
+            (let* ((elt (org-element-at-point))
+                   (beg (org-element-property :contents-begin elt))
+                   (end (org-element-property :contents-end elt)))
+              (buffer-substring-no-properties beg end))))
+         (user-prompt (cadr prompt)))
+    (gptel-request user-prompt :stream t)
+    (deactivate-mark)))
+
+(defun eli/gptel-quick-select-prompt ()
+  "Select a prompt."
+  (interactive)
+  (let* ((full-path (read-file-name "Select: " eli/gptel-quick-prompts-directory))
+         (filename (file-name-base full-path)))
+    (insert filename)))
+
+(global-set-key (kbd "s-d") 'eli/gptel-quick-select-prompt)
+(global-set-key (kbd "s-p") 'eli/gptel-quick-query)
+
+#+end_src
+
 **** olivetti
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;
@@ -1190,8 +1183,6 @@ r 为未来现金流折现率， n为企业未来存活年数"
 #+end_src
 **** 快速调整 Frame 居中
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;;
-
 ;; Author: @Nasy 学姐
 ;; Description: 将当前窗口设置为居中.
 
@@ -1272,6 +1263,41 @@ If FRAME is omitted or nil, use currently selected frame."
 
 
 #+end_src
+**** 前后 Buffer 切换
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(defvar buffer-pool '()
+  "池子中的 Buffer 列表")
+
+(defun add-to-buffer-pool ()
+  "将当前 Buffer 添加到池子中"
+  (interactive)
+  (if (>= (length buffer-pool) 2)
+      (message "池子已满，无法添加更多的 Buffer")
+    (setq buffer-pool (cons (current-buffer) buffer-pool))
+    (message "Buffer 添加到池子中前: %s" buffer-pool)))
+
+(defun switch-buffer-pool ()
+  "切换到池子中的另一个 Buffer"
+  (interactive)
+  (if (<= (length buffer-pool) 1)
+    (message "池子中没有足够的 Buffer")
+    (setq buffer-pool (append (cdr buffer-pool) (list (car buffer-pool))))
+    (switch-to-buffer (car buffer-pool)))
+  (message "已切换到池子中的另一个 Buffer"))
+
+(defun remove-from-buffer-pool ()
+  "从池子中删除被关闭的 Buffer"
+  (when (memq (current-buffer) buffer-pool)
+    (setq buffer-pool (delete (current-buffer) buffer-pool))))
+
+(add-hook 'kill-buffer-hook 'remove-from-buffer-pool)
+
+(global-set-key (kbd "s-;") 'add-to-buffer-pool)
+(global-set-key (kbd "s-1") 'switch-buffer-pool)
+
+#+end_src
+
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
