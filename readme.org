@@ -173,6 +173,8 @@
 (package! ef-themes
   :recipe (:host github :repo "protesilaos/ef-themes"))
 
+(package! literate-calc-mode)
+
 (package! org-ai)
 (package! org-roam-ui)
 
@@ -897,6 +899,11 @@
 (global-set-key (kbd "s-d") 'eli/gptel-quick-select-prompt)
 (global-set-key (kbd "s-p") 'eli/gptel-quick-query)
 
+#+end_src
+**** literate-calc
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! literate-calc-mode
+  :hook (org-mode . literate-calc-minor-mode))
 #+end_src
 
 **** olivetti
