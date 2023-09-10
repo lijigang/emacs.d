@@ -292,13 +292,8 @@
 ;; 关掉Doom 自己的Theme
 (setq doom-theme nil)
 
-(add-to-list 'load-path "~/Documents/emacs/local-packages/replace-colorthemes")
-(require 'retro-green-theme)
-(load-theme 'retro-green)
-(enable-theme 'retro-green)
-
 ;; 另外两个非常好看的主题
-;; (setq doom-theme 'ef-cyprus)
+(setq doom-theme 'ef-cyprus)
 ;; (setq doom-theme 'doom-tokyo-night)
 
 ;; 使用 nano-theme
