@@ -88,6 +88,7 @@
        :lang
        emacs-lisp         ; drown in parentheses
        latex              ; writing papers in Emacs has never been so fun
+       markdown
 
        (org               ; organize your plain life in plain text
         +roam2
