@@ -135,10 +135,11 @@
 
 (package! gptel)
 
-
 (package! imenu-list)
 
 (package! olivetti)
+
+(package! org-ai)
 
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
 (package! org-appear
@@ -156,6 +157,11 @@
 ;; 一个快速查询org 文件相关内容的 query language
 (package! org-ql)
 
+(package! org-roam-ui)
+
+;; 文件间引用的插件
+(package! org-transclusion)
+
 ;; 中英文字符之间自动插入空格, 增加可阅读性
 (package! pangu-spacing)
 
@@ -168,13 +174,8 @@
 (package! telega
   :recipe (:host github :repo "zevlg/telega.el" :branch "release-0.8.0"))
 
-(package! ef-themes
-  :recipe (:host github :repo "protesilaos/ef-themes"))
-
+;; 在orgmode 文件中进行计算器式的操作
 (package! literate-calc-mode)
-
-(package! org-ai)
-(package! org-roam-ui)
 
 ;; 完美解决中英文字符在表格中对齐的问题
 (package! valign)
@@ -688,6 +689,18 @@
           )))
 
 (add-hook 'org-mode-hook 'my-add-pretty-symbol)
+
+(defun org-mode-remove-stars ()
+  ;; 关掉 Headline 前面的 * 符号显示
+  (font-lock-add-keywords
+   nil
+   '(("^\\*+ "
+      (0
+       (prog1 nil
+         (put-text-property (match-beginning 0) (match-end 0)
+                            'invisible t)))))))
+
+(add-hook! 'org-mode-hook #'org-mode-remove-stars)
 #+end_src
 **** custom face
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -867,8 +880,7 @@
 #+end_src
 **** literate-calc
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! literate-calc-mode
-  :hook (org-mode . literate-calc-minor-mode))
+(use-package! literate-calc-mode)
 #+end_src
 
 **** olivetti
@@ -940,9 +952,20 @@
 (use-package! org-roam-ui)
 
 #+end_src
+**** org-transclusion
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! org-transclusion
+  :after org
+  :init
+  (map!
+   :leader
+   :prefix "n"
+   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
+
+(global-set-key (kbd "C-s-j") 'org-transclusion-add)
+#+end_src
 **** pangu-spacing
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (use-package! pangu-spacing
   :config
   (global-pangu-spacing-mode 1)
