@@ -530,9 +530,12 @@
   ;; 完成任务时, 将其划线勾掉
   ;; (set-face-attribute 'org-headline-done nil :strike-through t)
 
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-  (add-hook 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
+  (add-hook! 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+  (add-hook! 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
   (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode))
+
+  ;; 关闭缩进, 保持左对齐
+  (add-hook! 'org-mode-hook (lambda () (org-indent-mode -1)))
 
 #+end_src
 **** org agenda
