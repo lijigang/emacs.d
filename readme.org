@@ -57,6 +57,7 @@
        (popup
         +all
         +defaults)        ; tame sudden yet inevitable temporary windows
+       unicode
        zen                ; distraction-free coding or writing
 
        :editor
@@ -109,7 +110,7 @@
 
        :app
        ;; calendar
-       ;; (rss +org)         ; emacs as an RSS reader
+       (rss +org)         ; emacs as an RSS reader
 
        :config
        (default +bindings +smartparens))
@@ -134,9 +135,8 @@
 
 (package! gptel)
 
-;; 简洁好看的主题
-;; (package! nano-theme)
-;; (package! nano-modeline)
+
+(package! imenu-list)
 
 (package! olivetti)
 
@@ -146,8 +146,6 @@
 
 ;; 在Orgmode 文件中插入图片
 (package! org-download)
-
-(package! imenu-list)
 
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
@@ -289,21 +287,7 @@
 #+end_src
 *** 配置主题
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; 关掉Doom 自己的Theme
-(setq doom-theme nil)
-
-;; 另外两个非常好看的主题
-(setq doom-theme 'ef-cyprus)
-;; (setq doom-theme 'doom-tokyo-night)
-
-;; 使用 nano-theme
-;; (require 'nano-theme)
-;; (nano-mode)
-;; (nano-light)
-
-;; (nano-modeline-mode)
-
-
+(setq doom-theme 'doom-monokai-spectrum)
 #+end_src
 *** 配置字体
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -313,7 +297,7 @@
 ;; Plan A: 中文苹方, 英文Roboto Mono
 (setq doom-font (font-spec :family "Roboto Mono" :size 22)
       doom-serif-font doom-font
-      doom-unicode-font (font-spec :family "PingFang SC")
+      doom-symbol-font (font-spec :family "PingFang SC")
       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
 
 ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
@@ -325,15 +309,14 @@
   (set-fontset-font t 'symbol (font-spec :family "Symbola"))
   (set-fontset-font t 'mathematical (font-spec :family "Symbola"))
   (set-fontset-font t 'emoji (font-spec :family "Symbola")))
-
 #+end_src
 *** 配置 LaTeX
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; FIXME
+;; Macbook 安装路径
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2022/bin/universal-darwin"))
 (setq exec-path (append exec-path '("/usr/local/texlive/2022/bin/universal-darwin")))
 
+;; 家里iMac 安装路径
 ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
 ;; (setq exec-path (append exec-path '("/usr/local/texlive/2019/bin/x86_64-darwin/")))
 
@@ -352,7 +335,6 @@
 #+end_src
 
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("ctexart" "\\documentclass[11pt,titlepage]{ctexart}
@@ -461,7 +443,6 @@
 *** 配置 =OrgMode=
 **** 常用变量
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (after! org
   (setq org-archive-location (concat org-directory "roam/archive.org::")
         org-log-done t
@@ -483,7 +464,7 @@
         org-fontify-quote-and-verse-blocks t
         org-fontify-whole-heading-line t
         org-fontify-done-headline t
-        org-catch-invisible-edits 'smart)
+        org-fold-catch-invisible-edits 'smart)
 
   (setq org-ellipsis " ▾ "
         org-hide-leading-stars t
@@ -551,14 +532,11 @@
 
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
   (add-hook 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
-  (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode)
-
-  )
+  (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode))
 
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (after! org
   ;; FIXME
   (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
@@ -710,13 +688,9 @@
           )))
 
 (add-hook 'org-mode-hook 'my-add-pretty-symbol)
-
-
-
 #+end_src
 **** custom face
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (after! org
   (custom-set-faces!
     '(outline-1 :weight extra-bold :height 1.25)
@@ -740,11 +714,9 @@
   (setq evil-ex-substitute-global t     ; I like my s/../.. to by global by default
         evil-move-cursor-back nil       ; Don't move the block cursor when toggling insert mode
         evil-kill-on-visual-paste nil))
-
 #+end_src
 **** ivy
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (after! ivy
   ;; Causes open buffers and recentf to be combined in ivy-switch-buffer
   (setq ivy-use-virtual-buffers t
@@ -756,7 +728,6 @@
         ivy-posframe-height-alist '((t . 20))
         ivy-posframe-parameters '((internal-border-width . 1))
         ivy-posframe-width 100))
-
 #+end_src
 **** doom-modeline
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -816,7 +787,6 @@
 
 **** eaf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (use-package! eaf
   :load-path "~/Documents/emacs/local-packages/emacs-application-framework"
   :custom
@@ -982,7 +952,6 @@
 #+end_src
 **** rime
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (use-package! rime
   :custom
   (default-input-method "rime")
@@ -1000,7 +969,6 @@
           rime-predicate-punctuation-line-begin-p))
   ;; FIXME
   (setq rime-user-data-dir "~/Library/Rime"))
-
 #+end_src
 **** telega
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -1141,49 +1109,6 @@ r 为未来现金流折现率， n为企业未来存活年数"
 
 
 #+end_src
-**** 解决中文标记前后空格显示的问题
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; https://emacs-china.org/t/org-mode/22313?u=vagrantjoker
-;; 解决中文标记前后空格的问题
-;; (font-lock-add-keywords 'org-mode
-;;                         '(("\\cc\\( \\)[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)?\\cc?"
-;;                            (1 (prog1 () (compose-region (match-beginning 1) (match-end 1) ""))))
-;;                           ("\\cc?\\( \\)?[/+*_=~][^a-zA-Z0-9]*?[/+*_=~]\\( \\)\\cc"
-;;                            (2 (prog1 () (compose-region (match-beginning 2) (match-end 2) "")))))
-;;                         'append)
-
-;; (with-eval-after-load 'ox
-;;   (defun eli-strip-ws-maybe (text _backend _info)
-;;     (let* ((text (replace-regexp-in-string
-;;                   "\\(\\cc\\) *\n *\\(\\cc\\)"
-;;                   "\\1\\2" text));; remove whitespace from line break
-;;            ;; remove whitespace from `org-emphasis-alist'
-;;            (text (replace-regexp-in-string "\\(\\cc\\) \\(.*?\\) \\(\\cc\\)"
-;;                                            "\\1\\2\\3" text))
-;;            ;; restore whitespace between English words and Chinese words
-;;            (text (replace-regexp-in-string "\\(\\cc\\)\\(\\(?:<[^>]+>\\)?[a-z0-9A-Z]+\\(?:<[^>]+>\\)?\\)\\(\\cc\\)"
-;;                                            "\\1 \\2 \\3" text)))
-;;       text))
-;;   (add-to-list 'org-export-filter-paragraph-functions #'eli-strip-ws-maybe))
-
-
-#+end_src
-**** 快速调整 Frame 窗口大小
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; (defun set-frame-size-phone ()
-;;   "Set the current frame's size to 40x50."
-;;   (interactive)
-;;   (set-frame-size (selected-frame) 40 50))
-
-;; (defun set-frame-size-mac ()
-;;   "Set the current frame's size to 120x50."
-;;   (interactive)
-;;   (set-frame-size (selected-frame) 120 50))
-
-;; (global-set-key (kbd "s-m") 'set-frame-size-phone)
-;; (global-set-key (kbd "s-l") 'set-frame-size-mac)
-#+end_src
 **** 快速调整 Frame 居中
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; Author: @Nasy 学姐
@@ -1300,11 +1225,20 @@ If FRAME is omitted or nil, use currently selected frame."
 (global-set-key (kbd "s-1") 'switch-buffer-pool)
 
 #+end_src
+**** 快速插入符号 ▎
+
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(defun insert-custom-symbol ()
+  "Inserts the custom symbol '▎' at the cursor position."
+  (interactive)
+  (insert "▎"))
+
+(global-set-key (kbd "C-s-i") 'insert-custom-symbol)
+#+end_src
 
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 (setq doom-localleader-key ",")
 
 (map!
@@ -1336,8 +1270,6 @@ If FRAME is omitted or nil, use currently selected frame."
 (global-set-key (kbd "s-o") 'org-roam-node-find)
 (global-set-key (kbd "s-i") 'org-roam-node-insert)
 (global-set-key (kbd "s-k") 'eaf-open-browser-with-history)
-
-
 #+end_src
 **** org-roam 快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -1347,6 +1279,5 @@ If FRAME is omitted or nil, use currently selected frame."
       "f" #'org-roam-find-file
       ;; "s" #'org-roam-server-mode
       "i" #'org-roam-insert
-      "t" #'org-roam-dailies-find-today)
-
+      "t" #'org-roam-dailies-goto-today)
 #+end_src
