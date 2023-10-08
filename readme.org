@@ -1277,7 +1277,8 @@ If FRAME is omitted or nil, use currently selected frame."
 
 (map! :leader
       (:prefix "o" :desc "open applications"
-       "t" #'telega))
+               "e" #'elfeed
+               "t" #'telega))
 
 (setq mac-command-modifier 'super)
 (setq mac-option-modifier 'meta)
