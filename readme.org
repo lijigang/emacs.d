@@ -802,41 +802,6 @@
 (global-set-key (kbd "C-s") 'blink-search)
 
 #+end_src
-
-**** eaf
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! eaf
-  :load-path "~/Documents/emacs/local-packages/emacs-application-framework"
-  :custom
-  ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
-  (eaf-browser-continue-where-left-off t)
-  (browse-url-browser-function 'eaf-open-browser)
-  :config
-  (require 'eaf)
-  (require 'eaf-browser)
-  (require 'eaf-evil)
-  (require 'eaf-file-manager)
-  (require 'eaf-image-viewer)
-  (require 'eaf-pdf-viewer)
-  (require 'eaf-rss-reader)
-  (require 'eaf-terminal)
-
-  (setq eaf-python-command "python3.11")
-  ;; (setq eaf-proxy-type "http")
-  ;; (setq eaf-proxy-host "127.0.0.1")
-  ;; (setq eaf-proxy-port "8889")
-  (setq eaf-pdf-dark-mode nil)
-  (setq eaf-terminal-font-size 24)
-  (setq eaf-buffer-background-color "#FFFFFF")
-  (setq eaf-start-python-process-when-require nil)
-  (add-hook 'eaf-mode-hook #'turn-off-evil-mode t)
-
-  (eaf-bind-key eaf-rss-reader-scroll-up-web-page "SPC" eaf-rss-reader-keybinding)
-  (eaf-bind-key eaf-rss-reader-scroll-down-web-page "b" eaf-rss-reader-keybinding)
-
-  (defalias 'browse-web #'eaf-open-browser))
-
-#+end_src
 **** gptel
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! gptel
@@ -1292,11 +1257,6 @@ If FRAME is omitted or nil, use currently selected frame."
 
 (map! :leader
       (:prefix "o" :desc "open applications"
-       "b" #'eaf-open-browser
-       "h" #'eaf-open-browser-with-history
-       "f" #'eaf-open-in-file-manager
-       "r" #'eaf-open-rss-reader
-       "s" #'eaf-open-terminal
        "t" #'telega))
 
 (setq mac-command-modifier 'super)
@@ -1305,7 +1265,6 @@ If FRAME is omitted or nil, use currently selected frame."
 (global-set-key (kbd "s-j") 'avy-goto-word-1)
 (global-set-key (kbd "s-o") 'org-roam-node-find)
 (global-set-key (kbd "s-i") 'org-roam-node-insert)
-(global-set-key (kbd "s-k") 'eaf-open-browser-with-history)
 #+end_src
 **** org-roam 快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
