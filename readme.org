@@ -754,6 +754,36 @@
   (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode text-mode)))
 
 #+end_src
+**** elfeed
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(after! elfeed
+  (setq rmh-elfeed-org-files (list (concat org-roam-directory "elfeed.org")))
+  (add-hook 'elfeed-search-mode-hook #'elfeed-update)
+  (setq elfeed-search-title-max-width 80    ; Maximum titles width
+        elfeed-search-title-min-width 40    ; Minimum titles width
+        elfeed-search-trailing-width 24     ; Space reserved for feed & tag
+        elfeed-search-filter                ; Default filter
+        "@1-weeks-ago +unread")
+
+  (defun my/elfeed-search-mode-hook ()
+    (hl-line-mode t)
+    (set-window-fringes nil 0 1) ; One pixel right fringe to avoid ellipsis
+    (setq cursor-type nil))
+
+  (add-hook 'elfeed-search-mode-hook  #'my/elfeed-search-mode-hook)
+
+  (defun my/elfeed-show-mode-hook ()
+    (visual-line-mode)
+
+    (let ((inhibit-read-only t)
+          (inhibit-modification-hooks t))
+      (setq-local truncate-lines nil)
+      (setq-local shr-width 79)
+      (set-buffer-modified-p nil)))
+
+  (add-hook 'elfeed-show-mode-hook #'my/elfeed-show-mode-hook)
+  )
+#+end_src
 **** org-roam
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
