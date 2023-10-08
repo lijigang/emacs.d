@@ -534,9 +534,11 @@
   (add-hook! 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
   (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode))
 
+  ;; 任何.org 后缀的文件, 均以orgmode 打开
+  (setq auto-mode-alist (append '(("\\.org$" . org-mode)) auto-mode-alist))
+
   ;; 关闭缩进, 保持左对齐
   (add-hook! 'org-mode-hook (lambda () (org-indent-mode -1)))
-
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
