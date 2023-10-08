@@ -154,9 +154,6 @@
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
 
-;; 鼠标放到LaTeX 代码上, 可编辑状态, 离开即显示编译后的公式效果
-(package! org-fragtog)
-
 ;; 一个快速查询org 文件相关内容的 query language
 (package! org-ql)
 
@@ -915,13 +912,6 @@
 (after! org-download
   (setq org-download-method 'directory)
   (setq org-download-link-format "[[file:images/%s]]\n"))
-
-#+end_src
-**** org-fragtog
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(use-package! org-fragtog
-  :hook (org-mode . org-fragtog-mode))
 
 #+end_src
 **** org-roam-ui
