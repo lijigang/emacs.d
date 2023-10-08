@@ -705,6 +705,10 @@
                             'invisible t)))))))
 
 (add-hook! 'org-mode-hook #'org-mode-remove-stars)
+
+;; 高亮显示选中的区域
+(set-face-attribute 'region nil :background "#464646" :foreground "green")
+
 #+end_src
 **** custom face
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
