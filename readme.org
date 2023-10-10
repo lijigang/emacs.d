@@ -28,10 +28,6 @@
    ;; emacs readme.org
    M-x: org-babel-tangle
   #+end_src
-4. 修改敏感变量
-   #+begin_example
-    搜索 FIXME, 将该标记下方的变量值更改为你自己所需。
-   #+end_example
 
 * 配置
 ** 开关: Doom 自带的模块
@@ -115,13 +111,11 @@
        :config
        (default +bindings +smartparens))
 #+end_src
-
 ** 加装: 额外需要的功能包
 :PROPERTIES:
 :header-args: :tangle "~/.doom.d/packages.el"
 :header-args: :mkdirp yes
 :END:
-
 #+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
 ;; -*- no-byte-compile: t; -*-
 ;;; $DOOMDIR/packages.el
@@ -1253,7 +1247,6 @@ If FRAME is omitted or nil, use currently selected frame."
 
 #+end_src
 **** 快速插入符号 ▎
-
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (defun insert-custom-symbol ()
   "Inserts the custom symbol '▎' at the cursor position."
