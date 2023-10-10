@@ -12,6 +12,12 @@
 #+attr_org: :width 600px
 [[file:images/demo2.png]]
 
+#+attr_org: :width 600px
+[[file:images/demo3.png]]
+
+#+attr_org: :width 600px
+[[file:images/demo4.png]]
+
 * 安装
 1. 安装 Doom
    #+begin_src shell
