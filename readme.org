@@ -708,10 +708,6 @@
                             'invisible t)))))))
 
 (add-hook! 'org-mode-hook #'org-mode-remove-stars)
-
-;; 高亮显示选中的区域
-(set-face-attribute 'region nil :background "#464646" :foreground "green")
-
 #+end_src
 **** custom face
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -725,6 +721,9 @@
     '(outline-6 :weight semi-bold :height 1.03)
     '(outline-8 :weight semi-bold)
     '(outline-9 :weight semi-bold))
+
+  (custom-set-faces
+   '(region ((t (:foreground "green" :background "#464646")))))
 
   (custom-set-faces!
     '(org-document-title :height 1.2)))
