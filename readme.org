@@ -288,7 +288,10 @@
 #+end_src
 *** 配置主题
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; for night
 (setq doom-theme 'doom-monokai-spectrum)
+;; for day
+;; (setq doom-theme 'doom-flatwhite)
 #+end_src
 *** 配置字体
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
