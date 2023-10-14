@@ -590,109 +590,125 @@
 #+end_src
 **** 美化符号
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(setq-default prettify-symbols-alist '(("#+title:" . "✍")
+                                       ("#+author:" . "👨")
+                                       ("#+caption:" . "☰")
+                                       ("#+results:" . "🎁")
+                                       ("#+date:" . "⚓")
+                                       ("#+property:" . "☸")
+                                       (":PROPERTIES:" . "⚙")
+                                       (":END:" . ".")
+                                       ("#+options:" . "⌥")
+                                       ("\\pagebreak" . 128204)
+                                       ("#+begin_quote" . "❮")
+                                       ("#+end_quote" . "❯")
+                                       ("#+begin_src" . "⏩")
+                                       ("#+end_src" . "⏪")))
 
-(after! org
-  (appendq! +ligatures-extra-symbols
-            `(:checkbox      "☐"
-              :pending       "◼"
-              :idea          "💡"
-              :think         "🤔"
-              :question      "❓"
-              :savings       "💰"
-              :pros          "👍"
-              :cons          "👎"
-              :up            "📈"
-              :down          "📉"
-              :checkedbox    "☑"
-              :list_property "››"
-              :ellipses      "…"
-              :title         "✍"
-              :author        "👨"
-              :date          "⚓"
-              :property      "☸"
-              :options       "⌥"
-              :tags          "☁"
-              :latex_class   "🄲"
-              :latex_header  "⇥"
-              :beamer_header "↠"
-              :attr_latex    "🄛"
-              :attr_html     "🄗"
-              :begin_quote   "❮"
-              :end_quote     "❯"
-              :begin_ai   "🌩"
-              :end_ai     "☁️"
-              :caption       "☰"
-              :header        "›"
-              :results       "🎁"
-              :begin_export  "⏩"
-              :end_export    "⏪"
-              :properties    "⚙"
-              :end           "∎"
-              :priority_a   ,(propertize "🅰" 'face 'all-the-icons-red)
-              :priority_b   ,(propertize "🅱" 'face 'all-the-icons-orange)
-              :priority_c   ,(propertize "🅲" 'face 'all-the-icons-yellow)
-              :priority_d   ,(propertize "🅳" 'face 'all-the-icons-green)
-              :priority_e   ,(propertize "🅴" 'face 'all-the-icons-blue)))
-  (set-ligatures! 'org-mode
-    :merge t
-    :checkbox      "[ ]"
-    :pending       "[-]"
-    :idea          "[i]"
-    :pending       "[-]"
-    :think         "[t]"
-    :question      "[q]"
-    :savings       "[s]"
-    :pros          "[p]"
-    :cons          "[c]"
-    :up            "[u]"
-    :down          "[d]"
-    :checkedbox    "[X]"
-    :list_property "::"
-    :em_dash       "---"
-    :ellipsis      "..."
-    :title         "#+title:"
-    :subtitle      "#+subtitle:"
-    :author        "#+author:"
-    :date          "#+date:"
-    :property      "#+property:"
-    :options       "#+options:"
-    :tags          "#+tags:"
-    :latex_class   "#+latex_class:"
-    :latex_header  "#+latex_header:"
-    :beamer_header "#+beamer_header:"
-    :attr_latex    "#+attr_latex:"
-    :attr_html     "#+attr_latex:"
-    :begin_quote   "#+begin_quote"
-    :end_quote     "#+end_quote"
-    :begin_ai   "#+begin_ai"
-    :end_ai     "#+end_ai"
-    :caption       "#+caption:"
-    :header        "#+header:"
-    :begin_export  "#+begin_export"
-    :end_export    "#+end_export"
-    :results       "#+RESULTS:"
-    :property      ":PROPERTIES:"
-    :end           ":END:"
-    :priority_a    "[#A]"
-    :priority_b    "[#B]"
-    :priority_c    "[#C]"
-    :priority_d    "[#D]"
-    :priority_e    "[#E]")
-  (plist-put +ligatures-extra-symbols :name "⁍")
-  )
+(add-hook! 'org-mode-hook 'prettify-symbols-mode)
+
+;; (after! org
+;;   (appendq! +ligatures-extra-symbols
+;;             `(:checkbox      "☐"
+;;               :pending       "◼"
+;;               :idea          "💡"
+;;               :think         "🤔"
+;;               :question      "❓"
+;;               :savings       "💰"
+;;               :pros          "👍"
+;;               :cons          "👎"
+;;               :up            "📈"
+;;               :down          "📉"
+;;               :checkedbox    "☑"
+;;               :list_property "››"
+;;               :ellipses      "…"
+;;               :title         "✍"
+;;               :author        "👨"
+;;               :date          "⚓"
+;;               :property      "☸"
+;;               :options       "⌥"
+;;               :tags          "☁"
+;;               :latex_class   "🄲"
+;;               :latex_header  "⇥"
+;;               :beamer_header "↠"
+;;               :attr_latex    "🄛"
+;;               :attr_html     "🄗"
+;;               :begin_quote   "❮"
+;;               :end_quote     "❯"
+;;               :begin_ai   "🌩"
+;;               :end_ai     "☁️"
+;;               :caption       "☰"
+;;               :header        "›"
+;;               :results       "🎁"
+;;               :begin_export  "⏩"
+;;               :end_export    "⏪"
+;;               :properties    "⚙"
+;;               :end           "∎"
+;;               :priority_a   ,(propertize "🅰" 'face 'all-the-icons-red)
+;;               :priority_b   ,(propertize "🅱" 'face 'all-the-icons-orange)
+;;               :priority_c   ,(propertize "🅲" 'face 'all-the-icons-yellow)
+;;               :priority_d   ,(propertize "🅳" 'face 'all-the-icons-green)
+;;               :priority_e   ,(propertize "🅴" 'face 'all-the-icons-blue)))
+;;   (set-ligatures! 'org-mode
+;;     :merge t
+;;     :checkbox      "[ ]"
+;;     :pending       "[-]"
+;;     :idea          "[i]"
+;;     :pending       "[-]"
+;;     :think         "[t]"
+;;     :question      "[q]"
+;;     :savings       "[s]"
+;;     :pros          "[p]"
+;;     :cons          "[c]"
+;;     :up            "[u]"
+;;     :down          "[d]"
+;;     :checkedbox    "[X]"
+;;     :list_property "::"
+;;     :em_dash       "---"
+;;     :ellipsis      "..."
+;;     :title         "#+title:"
+;;     :subtitle      "#+subtitle:"
+;;     :author        "#+author:"
+;;     :date          "#+date:"
+;;     :property      "#+property:"
+;;     :options       "#+options:"
+;;     :tags          "#+tags:"
+;;     :latex_class   "#+latex_class:"
+;;     :latex_header  "#+latex_header:"
+;;     :beamer_header "#+beamer_header:"
+;;     :attr_latex    "#+attr_latex:"
+;;     :attr_html     "#+attr_latex:"
+;;     :begin_quote   "#+begin_quote"
+;;     :end_quote     "#+end_quote"
+;;     :begin_ai   "#+begin_ai"
+;;     :end_ai     "#+end_ai"
+;;     :caption       "#+caption:"
+;;     :header        "#+header:"
+;;     :begin_export  "#+begin_export"
+;;     :end_export    "#+end_export"
+;;     :results       "#+RESULTS:"
+;;     :property      ":PROPERTIES:"
+;;     :end           ":END:"
+;;     :priority_a    "[#A]"
+;;     :priority_b    "[#B]"
+;;     :priority_c    "[#C]"
+;;     :priority_d    "[#D]"
+;;     :priority_e    "[#E]")
+;;   (plist-put +ligatures-extra-symbols :name "⁍")
+;;   )
 
 
-(defun my-add-pretty-symbol ()
-  "make some word display as Unicode symbols"
-  (setq prettify-symbols-alist
-        '(
-          ("\\pagebreak" . 128204)
-          ("#+tblfm:" . 8756) ; ∴
-          ("->" . 8594)       ; →
-          ("=>" . 8658)       ; ⇒
-          )))
+;; (defun my-add-pretty-symbol ()
+;;   "make some word display as Unicode symbols"
+;;   (setq prettify-symbols-alist
+;;         '(
+;;           ("\\pagebreak" . 128204)
+;;           ("#+tblfm:" . 8756) ; ∴
+;;           ("->" . 8594)       ; →
+;;           ("=>" . 8658)       ; ⇒
+;;           )))
 
-(add-hook 'org-mode-hook 'my-add-pretty-symbol)
+;; (add-hook 'org-mode-hook 'my-add-pretty-symbol)
 
 (defun org-mode-remove-stars ()
   ;; 关掉 Headline 前面的 * 符号显示
