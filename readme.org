@@ -1115,7 +1115,6 @@
   (setq telega-chat-prompt-format "🐴>: ")
   (setq telega-chat-input-markups '("org"))
   (setq telega-use-images t)
-  (add-hook 'telega-msg-ignore-predicates 'telega-msg-from-blocked-sender-p)
 
   ;; (setq telega-proxies
   ;;       (list
