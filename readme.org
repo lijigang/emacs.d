@@ -1324,6 +1324,30 @@ If FRAME is omitted or nil, use currently selected frame."
 
 (global-set-key (kbd "C-s-i") 'insert-custom-symbol)
 #+end_src
+**** 修复 cl 包的启动时报错信息
+
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; 启动时 *Messages* 有 warning: "Package cl is deprecated"
+
+;; - 链接: [[https://github.com/doomemacs/doomemacs/issues/3372][Doom emacs issue #3372]]
+
+;; - 原因:
+;;   + Emacs 27 之后的版本废弃了内置库=cl=, 替之以=cl-lib=
+;;   + 但有很多第三方包仍在使用=cl=, 所以启动时会有该提示。
+
+;; - 解法: *无解*
+;;   - 根本解: 只能等待第三方包升级完成替换修复
+
+;;   - hack way: 在发出报警的函数上做文章, 增加=advice=
+
+(defadvice! fixed-do-after-load-evaluation (abs-file)
+  :override #'do-after-load-evaluation
+  (dolist (a-l-element after-load-alist)
+    (when (and (stringp (car a-l-element))
+               (string-match-p (car a-l-element) abs-file))
+      (mapc #'funcall (cdr a-l-element))))
+  (run-hook-with-args 'after-load-functions abs-file))
+#+end_src
 
 *** 配置快捷键
 **** 通用快捷键
