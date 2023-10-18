@@ -1,3 +1,5 @@
+#+title: doom emacs config of lijigang
+
 * 背景
 #+begin_quote
 配置原则： *如无必要, 勿增实体*
@@ -250,10 +252,13 @@
                              (width . 100)
                              (height . 45)))
 
+(setq frame-title-format "生产知识")
 (menu-bar-mode -1) ;; minimal chrome
 (tool-bar-mode -1) ;; no toolbar
 (scroll-bar-mode -1) ;; disable scroll bars
 
+(setq initial-major-mode 'org-mode) ;; org!
+(setq initial-scratch-message nil)
 #+end_src
 *** 配置 Window
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
