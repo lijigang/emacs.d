@@ -142,8 +142,6 @@
 
 (package! olivetti)
 
-(package! org-ai)
-
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
 (package! org-appear
   :recipe (:host github :repo "awth13/org-appear"))
@@ -213,7 +211,7 @@
 (setq default-buffer-file-coding-system 'utf-8)
 
 ;; 全局打开visual line
-;; (global-visual-line-mode)
+(global-visual-line-mode)
 
 (setq word-wrap-by-category t)
 
@@ -299,6 +297,12 @@
 ;; Doom 自带的字体变量配置
 
 ;; Plan A: 中文苹方, 英文Roboto Mono
+;; (setq doom-font (font-spec :family "Roboto Mono" :size 22)
+;;       doom-serif-font doom-font
+;;       doom-symbol-font (font-spec :family "PingFang SC")
+;;       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
+
+;; Plan B: 中文苹方, 英文Zpix 像素风格
 (setq doom-font (font-spec :family "Roboto Mono" :size 22)
       doom-serif-font doom-font
       doom-symbol-font (font-spec :family "PingFang SC")
@@ -505,37 +509,10 @@
           org-superstar-item-bullet-alist '((?- . ?•) (?* . ?–) (?+ . ?◦))
           org-superstar-prettify-item-bullets t ))
 
-  ;; Learn from:
-  ;; https://mullikine.github.io/posts/org-mode-bold/
-  ;; (defface org-bold
-  ;;   '((t :foreground "black"
-  ;;      :background "#fefefe"
-  ;;      :weight bold
-  ;;      :underline (:color "red" :style line :position 9)
-  ;;      :overline nil))
-  ;;   "Face for org-mode bold."
-  ;;   :group 'org-faces )
-
-  ;; (setq org-emphasis-alist
-  ;;       '(("*" org-bold)
-  ;;         ("/" italic)
-  ;;         ("_" underline)
-  ;;         ("=" ;; (:background "maroon" :foreground "white")
-  ;;          org-verbatim verbatim)
-  ;;         ("~" ;; (:background "deep sky blue" :foreground "MidnightBlue")
-  ;;          org-code verbatim)
-  ;;         ("+" (:strike-through t))))
-
-  ;; ;; Because spacemacs had different ideas about the verbatim background
-  ;; (set-face-background 'org-bold "#fefefe")
-  ;; (set-face-background 'org-verbatim "#fefefe")
-
-  ;; 完成任务时, 将其划线勾掉
-  ;; (set-face-attribute 'org-headline-done nil :strike-through t)
-
   (add-hook! 'org-babel-after-execute-hook 'org-display-inline-images 'append)
   (add-hook! 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
-  (add-hook! 'org-mode-hook #'+org-pretty-mode #'mixed-pitch-mode))
+  (add-hook! 'org-mode-hook #'+org-pretty-mode))
+
 
   ;; 任何.org 后缀的文件, 均以orgmode 打开
   (setq auto-mode-alist (append '(("\\.org$" . org-mode)) auto-mode-alist))
@@ -606,109 +583,6 @@
                                        ("#+end_src" . "⏪")))
 
 (add-hook! 'org-mode-hook 'prettify-symbols-mode)
-
-;; (after! org
-;;   (appendq! +ligatures-extra-symbols
-;;             `(:checkbox      "☐"
-;;               :pending       "◼"
-;;               :idea          "💡"
-;;               :think         "🤔"
-;;               :question      "❓"
-;;               :savings       "💰"
-;;               :pros          "👍"
-;;               :cons          "👎"
-;;               :up            "📈"
-;;               :down          "📉"
-;;               :checkedbox    "☑"
-;;               :list_property "››"
-;;               :ellipses      "…"
-;;               :title         "✍"
-;;               :author        "👨"
-;;               :date          "⚓"
-;;               :property      "☸"
-;;               :options       "⌥"
-;;               :tags          "☁"
-;;               :latex_class   "🄲"
-;;               :latex_header  "⇥"
-;;               :beamer_header "↠"
-;;               :attr_latex    "🄛"
-;;               :attr_html     "🄗"
-;;               :begin_quote   "❮"
-;;               :end_quote     "❯"
-;;               :begin_ai   "🌩"
-;;               :end_ai     "☁️"
-;;               :caption       "☰"
-;;               :header        "›"
-;;               :results       "🎁"
-;;               :begin_export  "⏩"
-;;               :end_export    "⏪"
-;;               :properties    "⚙"
-;;               :end           "∎"
-;;               :priority_a   ,(propertize "🅰" 'face 'all-the-icons-red)
-;;               :priority_b   ,(propertize "🅱" 'face 'all-the-icons-orange)
-;;               :priority_c   ,(propertize "🅲" 'face 'all-the-icons-yellow)
-;;               :priority_d   ,(propertize "🅳" 'face 'all-the-icons-green)
-;;               :priority_e   ,(propertize "🅴" 'face 'all-the-icons-blue)))
-;;   (set-ligatures! 'org-mode
-;;     :merge t
-;;     :checkbox      "[ ]"
-;;     :pending       "[-]"
-;;     :idea          "[i]"
-;;     :pending       "[-]"
-;;     :think         "[t]"
-;;     :question      "[q]"
-;;     :savings       "[s]"
-;;     :pros          "[p]"
-;;     :cons          "[c]"
-;;     :up            "[u]"
-;;     :down          "[d]"
-;;     :checkedbox    "[X]"
-;;     :list_property "::"
-;;     :em_dash       "---"
-;;     :ellipsis      "..."
-;;     :title         "#+title:"
-;;     :subtitle      "#+subtitle:"
-;;     :author        "#+author:"
-;;     :date          "#+date:"
-;;     :property      "#+property:"
-;;     :options       "#+options:"
-;;     :tags          "#+tags:"
-;;     :latex_class   "#+latex_class:"
-;;     :latex_header  "#+latex_header:"
-;;     :beamer_header "#+beamer_header:"
-;;     :attr_latex    "#+attr_latex:"
-;;     :attr_html     "#+attr_latex:"
-;;     :begin_quote   "#+begin_quote"
-;;     :end_quote     "#+end_quote"
-;;     :begin_ai   "#+begin_ai"
-;;     :end_ai     "#+end_ai"
-;;     :caption       "#+caption:"
-;;     :header        "#+header:"
-;;     :begin_export  "#+begin_export"
-;;     :end_export    "#+end_export"
-;;     :results       "#+RESULTS:"
-;;     :property      ":PROPERTIES:"
-;;     :end           ":END:"
-;;     :priority_a    "[#A]"
-;;     :priority_b    "[#B]"
-;;     :priority_c    "[#C]"
-;;     :priority_d    "[#D]"
-;;     :priority_e    "[#E]")
-;;   (plist-put +ligatures-extra-symbols :name "⁍")
-;;   )
-
-
-;; (defun my-add-pretty-symbol ()
-;;   "make some word display as Unicode symbols"
-;;   (setq prettify-symbols-alist
-;;         '(
-;;           ("\\pagebreak" . 128204)
-;;           ("#+tblfm:" . 8756) ; ∴
-;;           ("->" . 8594)       ; →
-;;           ("=>" . 8658)       ; ⇒
-;;           )))
-
-;; (add-hook 'org-mode-hook 'my-add-pretty-symbol)
 
 (defun org-mode-remove-stars ()
   ;; 关掉 Headline 前面的 * 符号显示
@@ -834,6 +708,53 @@
                 (throw :exit t))))))))
 
   (advice-add #'org-do-emphasis-faces :override #'eli/org-do-emphasis-faces)
+
+  (defun eli/org-element--parse-generic-emphasis (mark type)
+  "Parse emphasis object at point, if any.
+
+MARK is the delimiter string used.  TYPE is a symbol among
+`bold', `code', `italic', `strike-through', `underline', and
+`verbatim'.
+
+Assume point is at first MARK."
+  (save-excursion
+    (let ((origin (point)))
+      (unless (bolp) (forward-char -1))
+      (let ((opening-re
+             (rx-to-string
+              `(seq (or line-start (any space ?- ?\( ?' ?\" ?\{ nonascii))
+                ,mark
+                (not space)))))
+        (when (looking-at opening-re)
+          (goto-char (1+ origin))
+          (let ((closing-re
+                 (rx-to-string
+                  `(seq
+                    (not space)
+                    (group ,mark)
+                    (or (any space ?- ?. ?, ?\; ?: ?! ?? ?' ?\" ?\) ?\} ?\\ ?\[
+                             nonascii)
+                        line-end)))))
+            (when (re-search-forward closing-re nil t)
+              (let ((closing (match-end 1)))
+                (goto-char closing)
+                (let* ((post-blank (skip-chars-forward " \t"))
+                       (contents-begin (1+ origin))
+                       (contents-end (1- closing)))
+                  (list type
+                        (append
+                         (list :begin origin
+                               :end (point)
+                               :post-blank post-blank)
+                         (if (memq type '(code verbatim))
+                             (list :value
+                                   (and (memq type '(code verbatim))
+                                        (buffer-substring
+                                         contents-begin contents-end)))
+                           (list :contents-begin contents-begin
+                                 :contents-end contents-end)))))))))))))
+(advice-add #'org-element--parse-generic-emphasis :override #'eli/org-element--parse-generic-emphasis)
+
   )
 #+end_src
 *** 配置自带包
@@ -880,6 +801,7 @@
         elfeed-search-filter                ; Default filter
         "@1-weeks-ago +unread")
 
+  (defvar elfeed-search-sort-function)
   (defun eli/elfeed-search-filter-source (entry)
     "Filter elfeed search buffer by the feed under cursor."
     (interactive (list (elfeed-search-selected :ignore-region)))
@@ -1006,23 +928,6 @@
   :config
   ;; 设置文本宽度，默认是 80 列
   (setq olivetti-body-width 80))
-;;
-#+end_src
-**** org-ai
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;;
-(use-package! org-ai
-  :commands (org-ai-mode
-             org-ai-global-mode)
-  :init
-  (add-hook 'org-mode-hook #'org-ai-mode) ; enable org-ai in org-mode
-  (org-ai-global-mode) ; installs global keybindings on C-c M-a
-  :config
-  ;; (setq org-ai-openai-api-token "your-key")
-  (load-file "~/Documents/emacs/private/openai_key.el")
-  (setq org-ai-default-chat-model "gpt-3.5-turbo-0613") ; if you are on the gpt-4 beta:
-  (org-ai-install-yasnippets) ; if you are using yasnippet and want `ai` snippets
-)
 ;;
 #+end_src
 **** org-appear
@@ -1254,23 +1159,6 @@ If FRAME is omitted or nil, use currently selected frame."
                          (/ (- monitor-h frame-h) 2))))
       (apply 'set-frame-position (flatten-list (list frame center))))))
 ;;
-
-#+end_src
-**** Unfill-Paragraph
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;;; Stefan Monnier <foo at acm.org>. It is the opposite of fill-paragraph
-;; (defun unfill-paragraph (&optional region)
-;;     "Takes a multi-line paragraph and makes it into a single line of text."
-;;     (interactive (progn (barf-if-buffer-read-only) '(t)))
-;;     (let ((fill-column (point-max))
-;;         ;; This would override `fill-column' if it's an integer.
-;;         (emacs-lisp-docstring-fill-column t))
-;;     (fill-paragraph nil region)))
-
-;; ;; Handy key definition
-;; (global-set-key (kbd "s-u") 'unfill-paragraph)
-
 
 #+end_src
 **** 复制 org 文字到其它地方时自动 Unfill
