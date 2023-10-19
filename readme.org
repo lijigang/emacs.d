@@ -308,7 +308,7 @@
 ;;       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
 
 ;; Plan B: 中文苹方, 英文Zpix 像素风格
-(setq doom-font (font-spec :family "Roboto Mono" :size 22)
+(setq doom-font (font-spec :family "Zpix" :size 22)
       doom-serif-font doom-font
       doom-symbol-font (font-spec :family "PingFang SC")
       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
@@ -576,6 +576,8 @@
                                        ("#+author:" . "👨")
                                        ("#+caption:" . "☰")
                                        ("#+results:" . "🎁")
+                                       ("#+attr_latex:" . "🍄")
+                                       ("#+attr_org:" . "🔔")
                                        ("#+date:" . "⚓")
                                        ("#+property:" . "☸")
                                        (":PROPERTIES:" . "⚙")
@@ -584,8 +586,11 @@
                                        ("\\pagebreak" . 128204)
                                        ("#+begin_quote" . "❮")
                                        ("#+end_quote" . "❯")
+                                       ("#+BEGIN_Highlight" . "📖")
+                                       ("#+END_Highlight" . "📜")
                                        ("#+begin_src" . "⏩")
                                        ("#+end_src" . "⏪")))
+
 
 (add-hook! 'org-mode-hook 'prettify-symbols-mode)
 
