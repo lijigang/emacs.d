@@ -392,11 +392,11 @@
 \\newenvironment{Highlight}[1]
 {
         \\ifthenelse{\\equal{#1}{}}{
-                \\begin{tcolorbox}[breakable, enhanced, colback=yellow!15!white,colframe=yellow!20!black]
+                \\begin{tcolorbox}[breakable, enhanced, colback=white!55!white,colframe=arsenic!45!black]
                 \\setlength\\parskip{0.2cm}
         }
         {
-                \\begin{tcolorbox}[breakable, enhanced, colback=yellow!15!white,colframe=yellow!20!black, fonttitle=\\bfseries, title=#1]
+                \\begin{tcolorbox}[breakable, enhanced, colback=white!55!white,colframe=arsenic!45!black, fonttitle=\\bfseries, title=#1]
                 \\setlength\\parskip{0.2cm}
         }
 }
