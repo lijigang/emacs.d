@@ -162,6 +162,9 @@
 ;; 文件间引用的插件
 (package! org-transclusion)
 
+;; 便捷插入网页到org 文件
+(package! org-web-tools)
+
 ;; 中英文字符之间自动插入空格, 增加可阅读性
 (package! pangu-spacing)
 
@@ -274,7 +277,7 @@
 (setq +ivy-buffer-preview t)
 
 (setq-default x-stretch-cursor t ;; Stretch cursor to the glyph width
-              line-spacing 0.2
+              line-spacing 0.25
               fill-column 80
               x-underline-at-descent-line t)
 
@@ -990,6 +993,16 @@ Assume point is at first MARK."
 
 (global-set-key (kbd "C-s-j") 'org-transclusion-add)
 #+end_src
+**** org-web-tools
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; Easy insertion of weblinks
+(use-package! org-web-tools
+  :init
+  (map!
+   :leader
+   :prefix "i"
+   :desc "insert weblinks" "l" #'org-web-tools-insert-link-for-url))
+#+end_src
 **** pangu-spacing
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! pangu-spacing
@@ -1116,39 +1129,6 @@ r 为未来现金流折现率， n为企业未来存活年数"
   )
 
 (map! :leader :desc "Insert image" "i i" #'org-insert-image)
-
-#+end_src
-**** 更方便的插入链接
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-;; Learn from: https://xenodium.com/emacs-dwim-do-what-i-mean/
-(defun ar/org-insert-link-dwim ()
-  "Like `org-insert-link' but with personal dwim preferences."
-  (interactive)
-  (let* ((point-in-link (org-in-regexp org-link-any-re 1))
-         (clipboard-url (when (string-match-p "^http" (current-kill 0))
-                          (current-kill 0)))
-         (region-content (when (region-active-p)
-                           (buffer-substring-no-properties (region-beginning)
-                                                           (region-end)))))
-    (cond ((and region-content clipboard-url (not point-in-link))
-           (delete-region (region-beginning) (region-end))
-           (insert (org-make-link-string clipboard-url region-content)))
-          ((and clipboard-url (not point-in-link))
-           (insert (org-make-link-string
-                    clipboard-url
-                    (read-string "title: "
-                                 (with-current-buffer (url-retrieve-synchronously clipboard-url)
-                                   (dom-text (car
-                                              (dom-by-tag (libxml-parse-html-region
-                                                           (point-min)
-                                                           (point-max))
-                                                          'title))))))))
-          (t
-           (call-interactively 'org-insert-link)))))
-
-(map! :leader "i l" #'ar/org-insert-link-dwim)
-
 
 #+end_src
 **** 快速调整 Frame 居中
