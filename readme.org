@@ -588,6 +588,8 @@
                                        ("#+property:" . "☸")
                                        (":PROPERTIES:" . "⚙")
                                        (":END:" . ".")
+                                       ("[ ]" . "☐")
+                                       ("[X]" . "☑︎")
                                        ("#+options:" . "⌥")
                                        ("\\pagebreak" . 128204)
                                        ("#+begin_quote" . "❮")
