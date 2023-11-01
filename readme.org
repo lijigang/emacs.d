@@ -678,7 +678,7 @@
                             (forward-char 1)
                             (get-pos-property (point) 'org-emphasis)))
                      ;; Do not match in latex fragments.
-                     (not (org-inside-LaTeX-fragment-p))
+                     ;; (not (org-inside-LaTeX-fragment-p))
                      ;; Do not match in Drawer.
                      (not (org-match-line
                            "^[    ]*:\\(\\(?:\\w\\|[-_]\\)+\\):[      ]*"))
