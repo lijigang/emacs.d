@@ -900,6 +900,7 @@ Assume point is at first MARK."
                                ":" t " "))
          (gptel--system-message
           (with-temp-buffer
+            (org-mode)
             (insert-file-contents
              (file-name-concat eli/gptel-quick-prompts-directory
                                (file-name-with-extension
