@@ -133,7 +133,7 @@
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
 
 ;; 好用的翻译包
-(package! fanyi)
+(package! osx-dictionary)
 
 ;; 高亮当前段落, Dim 其它区域, 保持Focus!
 (package! focus)
@@ -311,10 +311,16 @@
 ;;       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
 
 ;; Plan B: 中文苹方, 英文Zpix 像素风格
-(setq doom-font (font-spec :family "Zpix" :size 22)
+;; (setq doom-font (font-spec :family "Zpix" :size 22)
+;;       doom-serif-font doom-font
+;;       doom-symbol-font (font-spec :family "PingFang SC")
+;;       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
+
+;; Plan C: 中英文仓耳今楷
+(setq doom-font (font-spec :family "TsangerJinKai05" :size 22)
       doom-serif-font doom-font
-      doom-symbol-font (font-spec :family "PingFang SC")
-      doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
+      doom-symbol-font (font-spec :family "TsangerJinKai05")
+      doom-variable-pitch-font (font-spec :family "TsangerJinKai05" :weight 'extra-bold))
 
 ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
 (setq use-default-font-for-symbols nil)
@@ -1005,6 +1011,12 @@ Assume point is at first MARK."
    :leader
    :prefix "i"
    :desc "insert weblinks" "l" #'org-web-tools-insert-link-for-url))
+#+end_src
+**** osx-dictionary
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! osx-dictionary
+  :bind (("C-c d l" . osx-dictionary-search-word-at-point)
+         ("C-c d i" . osx-dictionary-search-input)))
 #+end_src
 **** pangu-spacing
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
