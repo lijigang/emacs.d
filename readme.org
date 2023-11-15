@@ -507,11 +507,8 @@
   ;; Coding system for HTML export.
   (setq org-html-coding-system 'utf-8)
   (setq org-html-doctype "html5")
-  ;; (setq org-html-head
-  ;;       "<link rel='stylesheet' type='text/css' href='https://gongzhitaao.org/orgcss/org.css'/> ")
-
   (setq org-html-head
-        "<link rel='stylesheet' type='text/css' href='https://www.labri.fr/perso/nrougier/GTD/GTD.css'/>")
+        "<link rel='stylesheet' type='text/css' href='https://gongzhitaao.org/orgcss/org.css'/> ")
 
   (after! org-superstar
     ;; other symbols like: 🦄  🐻 "🙘" "🙙" "🙚" "🙛" "☯" "☷" "☲" "☵"
