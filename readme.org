@@ -859,7 +859,7 @@ Assume point is at first MARK."
 #+end_src
 **** yasnippet
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(setq yas-snippet-dirs '("~/Documents/emacs/ljg-snippets"))
+(setq yas-snippet-dirs '("~/Documents/emacs/ljg-snippets"  +snippets-dir doom-snippets-dir +file-templates-dir))
 #+end_src
 *** 配置加装包
 **** ace-pinyin
