@@ -856,7 +856,10 @@ Assume point is at first MARK."
 (after! plantuml-mode
   (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
   (setq plantuml-default-exec-mode 'jar))
-
+#+end_src
+**** yasnippet
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(setq yas-snippet-dirs '("~/Documents/emacs/ljg-snippets"))
 #+end_src
 *** 配置加装包
 **** ace-pinyin
