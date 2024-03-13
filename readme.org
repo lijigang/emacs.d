@@ -882,15 +882,17 @@ Assume point is at first MARK."
 **** gptel
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! gptel
-   :config
-   (setq! gptel-model "gpt-4")
-   (setq! gptel-api-key "your-api-key")
-   ;; (setq! gptel-model "gpt-3.5-turbo-0613")
-   ;; (setq! gptel-api-key "your-api-key")
-   )
-
+  :config
+  (setq! gptel-model "gpt-4")
+  (setq! gptel-api-key "your-api-key")
+  (setq! gptel-backend (gptel-make-openai "seven"
+                         :protocol "https"
+                         :host "api.xiaoyukefu.com"
+                         :stream t
+                         :key 'gptel-api-key
+                         :header (lambda () `(("Authorization" . ,(concat "Bearer " (gptel--get-api-key)))))
+                         :models '("gpt-4" "gpt-4-turbo-preview"))))
 (global-set-key (kbd "s-l") 'gptel-send)
-
 
 (defvar eli/gptel-quick-prompts-directory org-roam-directory)
 
@@ -1241,6 +1243,15 @@ If FRAME is omitted or nil, use currently selected frame."
   (run-hook-with-args 'after-load-functions abs-file))
 #+end_src
 
+**** 转换 Markdown 链接为 orgmode 格式
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(defun convert-markdown-links-to-org ()
+  "将 markdown 语法的链接转换成 orgmode 的链接"
+  (interactive)
+  (goto-char (point-min))
+  (while (re-search-forward "\\[\\(.*?\\)\\](\\(.*?\\))" nil t)
+    (replace-match "[[\\2][\\1]]")))
+#+end_src
 *** 配置快捷键
 **** 通用快捷键
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
