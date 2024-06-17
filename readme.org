@@ -888,17 +888,27 @@ Assume point is at first MARK."
 #+end_src
 **** gptel
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; for cluade
 (use-package! gptel
   :config
-  (setq! gptel-model "gpt-4")
-  (setq! gptel-api-key "your-api-key")
-  (setq! gptel-backend (gptel-make-openai "seven"
-                         :protocol "https"
-                         :host "api.xiaoyukefu.com"
-                         :stream t
-                         :key 'gptel-api-key
-                         :header (lambda () `(("Authorization" . ,(concat "Bearer " (gptel--get-api-key)))))
-                         :models '("gpt-4" "gpt-4-turbo-preview"))))
+  (setq gptel-model "claude-3-opus-20240229" ;  "claude-3-opus-20240229" also available
+        gptel-backend (gptel-make-anthropic "Claude"
+                        :stream t
+                        :key "your-api-key")))
+
+;; for gpt-4
+;; (use-package! gptel
+;;   :config
+;;   (setq! gptel-model "gpt-4")
+;;   (setq! gptel-api-key "your-api-key")
+;;   (setq! gptel-backend (gptel-make-openai "seven"
+;;                          :protocol "https"
+;;                          :host "api.xiaoyukefu.com"
+;;                          :stream t
+;;                          :key 'gptel-api-key
+;;                          :header (lambda () `(("Authorization" . ,(concat "Bearer " (gptel--get-api-key)))))
+;;                          :models '("gpt-4" "gpt-4-turbo-preview"))))
+
 (global-set-key (kbd "s-l") 'gptel-send)
 
 (defvar eli/gptel-quick-prompts-directory org-roam-directory)
