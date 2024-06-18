@@ -807,7 +807,7 @@ Assume point is at first MARK."
 
 (use-package! doom-modeline
   :custom
-  (doom-modeline-enable-word-count t)
+  (doom-modeline-enable-word-count nil)
   (doom-modeline-height 10)
   (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode text-mode)))
 
