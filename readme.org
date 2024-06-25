@@ -1208,7 +1208,7 @@ If FRAME is omitted or nil, use currently selected frame."
 (defun insert-bold-hline ()
   "Insert a bold horizontal line in Org-mode."
   (interactive)
-  (insert (make-string 18 ?━))
+  (insert (make-string 14 ?━))
   (insert "\n"))
 
 (global-set-key (kbd "s-h") 'insert-bold-hline)
