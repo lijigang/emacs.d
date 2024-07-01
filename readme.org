@@ -85,7 +85,6 @@
        lookup             ; navigate your code and its documentation
        magit              ; a git porcelain for Emacs
        pdf                ; pdf enhancements
-       rgb                ; creating color strings
 
        :os
        (:if IS-MAC macos) ; improve compatibility with macOS
@@ -1052,7 +1051,7 @@ Assume point is at first MARK."
   (default-input-method "rime")
   ;; FIXME
   (rime-librime-root "~/Documents/emacs/depend/librime/dist")
-  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@29/29.3/include")
+  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@29/29.4/include")
   ;; (rime-emacs-module-header-root "/usr/local/opt/emacs-mac/include")
   :config
   (define-key rime-mode-map (kbd "C-i") 'rime-force-enable)
