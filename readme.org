@@ -534,8 +534,8 @@
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (after! org
-  ;; FIXME
-  (setq org-agenda-files (directory-files-recursively (concat org-directory "roam") "\\.org$"))
+  (setq org-agenda-files '("~/Documents/emacs/org/roam/projects.org"
+                           "~/Documents/emacs/org/roam/tasks.org"))
   (setq org-agenda-diary-file (concat org-directory "private/standard-diary"))
   (setq diary-file (concat org-directory "private/standard-diary"))
 
