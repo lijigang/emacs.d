@@ -135,6 +135,10 @@
 (package! emacs-anki-helper
   :recipe (:host github :repo "Elilif/emacs-anki-helper"))
 
+;; 导出时支持src block 语法高亮
+(package! engrave-faces
+  :recipe (:host github :repo "tecosaur/engrave-faces"))
+
 ;; 高亮当前段落, Dim 其它区域, 保持Focus!
 (package! focus)
 
@@ -884,6 +888,14 @@ Assume point is at first MARK."
 (require 'blink-search)
 (global-set-key (kbd "C-s") 'blink-search)
 
+#+end_src
+**** engrave-faces
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! engrave-faces
+  :config
+  (setq org-latex-src-block-backend 'engraved)
+  ;; 配置导出时语法高亮的Theme
+  (setq org-latex-engraved-theme 'doom-material-dark))
 #+end_src
 **** gptel
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
