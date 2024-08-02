@@ -768,7 +768,14 @@ Assume point is at first MARK."
 *** 配置自带包
 **** evil
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; GnuPG
+(use-package! epa-file
+  :ensure nil
+  :config
+  (epa-file-enable)
+  (setq epa-file-encrypt-to "i@lijigang.com"))
 
+;; evil
 (after! evil
   (setq evil-ex-substitute-global t     ; I like my s/../.. to by global by default
         evil-move-cursor-back nil       ; Don't move the block cursor when toggling insert mode
