@@ -905,13 +905,19 @@ Assume point is at first MARK."
 #+end_src
 **** gptel
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;; for cluade
+;; auth-sources
+(setq auth-sources '("~/Documents/emacs/org/roam/authinfo.gpg"))
+
+;; for claude
 (use-package! gptel
   :config
-  (setq gptel-model "claude-3-opus-20240229" ;  "claude-3-opus-20240229" also available
+  (setq gptel-api-key
+        (lambda ()
+          (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey")))
+  (setq gptel-model "claude-3-5-sonnet-20240620"
         gptel-backend (gptel-make-anthropic "Claude"
                         :stream t
-                        :key "your-api-key")))
+                        :key 'gptel-api-key)))
 
 ;; for gpt-4
 ;; (use-package! gptel
