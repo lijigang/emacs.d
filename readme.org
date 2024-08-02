@@ -8,17 +8,11 @@
 配置的每行代码争取做到 =减无可减= 的状态, 增加的每一行都有其原因。
 
 * 截图
-#+attr_org: :width 600px
-[[file:images/demo1.png]]
+#+attr_org: :width 800px
+[[file:images/org-showoff-white.png]]
 
-#+attr_org: :width 600px
-[[file:images/demo2.png]]
-
-#+attr_org: :width 600px
-[[file:images/demo3.png]]
-
-#+attr_org: :width 600px
-[[file:images/demo4.png]]
+#+attr_org: :width 800px
+[[file:images/org-showoff-dark.png]]
 
 * 安装
 1. 安装 Doom
@@ -32,10 +26,10 @@
     git clone git@github.com:lijigang/emacs.d.git
    #+end_src
 3. Tangle 代码生成配置
-  #+begin_src
+   #+begin_src
    ;; emacs readme.org
    M-x: org-babel-tangle
-  #+end_src
+   #+end_src
 
 * 配置
 ** 开关: Doom 自带的模块
@@ -123,8 +117,7 @@
 :header-args: :mkdirp yes
 :END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
-;; -*- no-byte-compile: t; -*-
-;;; $DOOMDIR/packages.el
+;;; $DOOMDIR/packages.el --- -*- no-byte-compile: t; -*-
 
 ;; 快速跳转到任意位置, 通过汉字拼音的方式
 (package! ace-pinyin
@@ -158,6 +151,7 @@
 ;; 在Orgmode 文件中插入图片
 (package! org-download)
 
+(package! org-fragtog)
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
 
@@ -204,9 +198,13 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; Set package archives
 ;; 通过Emacs-china 的仓库来安装包, 提升安装速度
-(setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
+(use-package! package
+  :config
+  (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
+  (package-initialize))
 
 ;; 个人信息
 (setq user-full-name "lijigang"
@@ -223,6 +221,7 @@
       visible-bell nil
       ring-bell-function 'ignore)
 
+;; encoding system
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (setq default-buffer-file-coding-system 'utf-8)
@@ -251,9 +250,6 @@
 (show-paren-mode t)
 (fringe-mode '(0 . 0)) ;; No fringe
 
-#+end_src
-*** 配置 Frame
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; 指定启动时的窗口位置和大小
 (setq initial-frame-alist '((top . 45)
                              (left . 1200)
@@ -267,9 +263,6 @@
 
 (setq initial-major-mode 'org-mode) ;; org!
 (setq initial-scratch-message nil)
-#+end_src
-*** 配置 Window
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; 新打开窗口时, 提示要打开哪个Buffer
 (setq evil-vsplit-window-right t
@@ -286,29 +279,22 @@
               fill-column 80
               x-underline-at-descent-line t)
 
-#+end_src
-*** 配置鼠标滚动
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
 ;; Smooth mouse scrolling
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1))  ; scroll two lines at a time
       mouse-wheel-progressive-speed nil             ; don't accelerate scrolling
       mouse-wheel-follow-mouse t                    ; scroll window under mouse
       scroll-step 1)
 #+end_src
-*** 配置主题
+*** 配置外观
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;;; Look and Feel
 ;; for night
 (setq doom-theme 'doom-material-dark)
 
 ;; for day
 ;; (setq doom-theme 'whiteboard)
-#+end_src
-*** 配置字体
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; Doom 自带的字体变量配置
-
 ;; Plan A: 中文苹方, 英文Roboto Mono
 (setq doom-font (font-spec :family "Roboto Mono" :size 22)
       doom-serif-font doom-font
@@ -1025,6 +1011,18 @@ Assume point is at first MARK."
   (setq org-download-method 'directory)
   (setq org-download-link-format "[[file:images/%s]]\n"))
 
+#+end_src
+**** org-fragtog
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! org-fragtog
+  :after org
+  :hook
+  (org-mode . org-fragtog-mode)
+  :custom
+  (org-format-latex-options
+   (plist-put org-format-latex-options :scale 2)
+   (plist-put org-format-latex-options :foreground 'auto)
+   (plist-put org-format-latex-options :background 'auto)))
 #+end_src
 **** org-roam-ui
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
