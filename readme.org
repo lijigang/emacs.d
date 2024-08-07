@@ -1145,6 +1145,26 @@ Assume point is at first MARK."
 ;; SPC i p to insert day progress
 (map! :leader :desc "Insert day progress" "i p" #'insert-day-progress)
 
+(defun ascii-progress-bar (progress)
+  "Generate an ASCII progress bar with percentage based on PROGRESS (0.0 to 1.0)."
+  (let* ((bar-width 30)
+         (filled (round (* progress bar-width)))
+         (empty (- bar-width filled))
+         (percentage (round (* progress 100))))
+    (concat "["
+            (make-string filled ?/)
+            (make-string empty ? )
+            "] "
+            (format "%d%%" percentage))))
+
+(defun insert-progress-bar ()
+  "Prompt for a progress value and insert an ASCII progress bar at point."
+  (interactive)
+  (let* ((input (read-string "Enter progress (0.0 to 1.0): "))
+         (progress (string-to-number input)))
+    (if (and (>= progress 0.0) (<= progress 1.0))
+        (insert (ascii-progress-bar progress))
+      (message "Invalid input. Please enter a number between 0.0 and 1.0."))))
 #+end_src
 **** 快速插入截图到文件
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
