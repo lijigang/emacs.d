@@ -522,6 +522,24 @@
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+
+(after! org-agenda
+  ;; 定义自定义的 day 视图
+  (setq org-agenda-custom-commands
+        '(("d" "Day view"
+           ((agenda "" ((org-agenda-span 'day)
+                        (org-agenda-start-on-weekday nil)
+                        (org-agenda-start-day "+0d")
+                        (org-agenda-use-time-grid t)
+                        (org-agenda-time-grid '((daily today)
+                                                (1000 1100 1200 1300 1400 1500 1600 1700 1800 1900)
+                                                "......" "----------------"))))))))
+
+  ;; 设置快捷键来打开 day 视图
+  (map! :leader
+        :desc "Org agenda day view"
+        "od" (cmd! (org-agenda nil "d"))))
+
 (after! org
   (setq org-agenda-files '("~/Documents/emacs/org/roam/projects.org"
                            "~/Documents/emacs/org/roam/tasks.org"))
@@ -542,12 +560,9 @@
 
   (setq org-agenda-hide-tags-regexp ".")
 
-  (setq org-agenda-span 7
-        org-agenda-start-on-weekday 1
-        org-agenda-log-mode-items '(clock)
+  (setq org-agenda-log-mode-items '(clock)
         org-agenda-include-all-todo t
         org-agenda-time-leading-zero t
-        org-agenda-use-time-grid nil
         calendar-holidays nil
         org-agenda-include-diary t))
 
@@ -763,7 +778,7 @@ Assume point is at first MARK."
                                          contents-begin contents-end)))
                            (list :contents-begin contents-begin
                                  :contents-end contents-end)))))))))))))
-(advice-add #'org-element--parse-generic-emphasis :override #'eli/org-element--parse-generic-emphasis))
+(advice-add #'org-element--parse-generic-emphasis :override #'eli/org-element--parse-generic-emphasis)  )
 #+end_src
 *** 配置自带包
 **** evil
