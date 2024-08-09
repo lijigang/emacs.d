@@ -522,7 +522,20 @@
 #+end_src
 **** org agenda
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;;; org-capture
+(after! org
+  (setq org-default-notes-file (expand-file-name "tasks.org" org-roam-directory))
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file org-default-notes-file)
+           "* TODO %?\n  %i\n" :prepend t)))
 
+  ;; 设置 Org-capture 的快捷键
+  (map! :leader
+        :desc "Org capture"
+        "x" #'org-capture))
+
+
+;;; org-agenda
 (after! org-agenda
   ;; 定义自定义的 day 视图
   (setq org-agenda-custom-commands
@@ -552,8 +565,11 @@
           (0.5 . org-upcoming-deadline)
           (0.0 . org-upcoming-distant-deadline)))
 
-  (setq org-agenda-prefix-format '((agenda . "%t %s ")
-                                   (todo   . " ")))
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12:c%?-12t% s")
+          (todo . " %i %-12:c")
+          (tags . " %i %-12:c")
+          (search . " %i %-12:c")))
 
   (setq org-agenda-clockreport-parameter-plist
         '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
