@@ -555,9 +555,12 @@
 
 (after! org
   (setq org-agenda-files '("~/Documents/emacs/org/roam/projects.org"
+                           "~/Documents/emacs/org/roam/archive.org"
                            "~/Documents/emacs/org/roam/tasks.org"))
   (setq org-agenda-diary-file (concat org-directory "private/standard-diary"))
   (setq diary-file (concat org-directory "private/standard-diary"))
+
+  (setq org-agenda-skip-archived-trees nil)
 
   (setq org-agenda-deadline-faces
         '((1.001 . error)
@@ -1024,14 +1027,18 @@ Assume point is at first MARK."
 #+end_src
 **** org-appear
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-;;
+;; better look
 (use-package! org-appear
   :hook (org-mode . org-appear-mode)
   :config
   (setq org-appear-autoemphasis t
         org-appear-autosubmarkers t
         org-appear-autolinks nil))
-;;
+
+
+;; filter marked text out
+(use-package! org-marked-text-overview
+  :load-path  "~/Documents/emacs/local-packages/org-marked-text-overview")
 #+end_src
 **** org-count-words
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -1229,23 +1236,21 @@ Assume point is at first MARK."
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; Author: @Nasy 学姐
 ;; Description: 将当前窗口设置为居中.
-
-(defun nasy/frame-recenter (&optional frame)
-  "Center FRAME on the screen.
-FRAME can be a frame name, a terminal name, or a frame.
-If FRAME is omitted or nil, use currently selected frame."
+(defun nasy/frame-recenter (&optional target-frame)
+  "Center TARGET-FRAME on the screen.
+TARGET-FRAME can be a frame name, a terminal name, or a frame.
+If TARGET-FRAME is omitted or nil, use currently selected frame."
   (interactive)
   (unless (eq 'maximised (frame-parameter nil 'fullscreen))
-    (let* ((frame (or (and (boundp 'frame) frame) (selected-frame)))
+    (let* ((frame (or target-frame (selected-frame)))
            (frame-w (frame-pixel-width frame))
            (frame-h (frame-pixel-height frame))
-            ;; frame-monitor-workarea returns (x y width height) for the monitor
+           ;; frame-monitor-workarea returns (x y width height) for the monitor
            (monitor-w (nth 2 (frame-monitor-workarea frame)))
            (monitor-h (nth 3 (frame-monitor-workarea frame)))
            (center (list (/ (- monitor-w frame-w) 2)
                          (/ (- monitor-h frame-h) 2))))
-      (apply 'set-frame-position (flatten-list (list frame center))))))
-;;
+      (apply #'set-frame-position (flatten-list (list frame center))))))
 
 #+end_src
 **** 复制 org 文字到其它地方时自动 Unfill
