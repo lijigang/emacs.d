@@ -324,8 +324,8 @@
 *** 配置 LaTeX
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; Macbook 安装路径
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2022/bin/universal-darwin"))
-(setq exec-path (append exec-path '("/usr/local/texlive/2022/bin/universal-darwin")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2024/bin/universal-darwin"))
+(setq exec-path (append exec-path '("/usr/local/texlive/2024/bin/universal-darwin")))
 
 ;; 家里iMac 安装路径
 ;; (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2019/bin/x86_64-darwin/"))
