@@ -458,14 +458,21 @@
 **** 常用变量
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (after! org
+  (setq org-export-with-toc nil
+        org-export-with-date t
+        org-export-with-author t
+        org-export-with-section-numbers nil
+        org-export-with-sub-superscripts nil
+        org-export-headline-levels 5
+        org-export-in-background nil
+        org-export-use-babel t))
+
+(after! org
   (setq org-archive-location (concat org-directory "roam/archive.org::")
         org-log-done t
         org-use-property-inheritance t
         org-confirm-babel-evaluate nil
         org-list-allow-alphabetical t
-        org-export-with-sub-superscripts nil
-        org-export-headline-levels 5
-        org-export-use-babel t
         org-use-speed-commands t
         org-return-follows-link t
         org-hide-emphasis-markers t
@@ -474,7 +481,6 @@
         org-src-preserve-indentation nil
         org-src-tab-acts-natively t
         org-edit-src-content-indentation 0
-        org-export-in-background nil
         org-fontify-quote-and-verse-blocks t
         org-fontify-whole-heading-line t
         org-fontify-done-headline t
