@@ -198,15 +198,15 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;;; One liners
 ;; Set package archives
-;; 通过Emacs-china 的仓库来安装包, 提升安装速度
 (use-package! package
   :config
   (setq package-archives '(("gnu" . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")))
   (package-initialize))
 
-;; 个人信息
+;; personal information
 (setq user-full-name "lijigang"
       user-mail-address "i@lijigang.com")
 
@@ -217,9 +217,16 @@
       system-time-locale "C" ; 设置系统时间显示方式
       pop-up-windows nil     ; no pop-up window
       scroll-margin 2        ; It's nice to maintain a little margin
-      widget-image-enable nil
-      visible-bell nil
-      ring-bell-function 'ignore)
+      widget-image-enable nil)
+
+;; Shut up
+(setq byte-compile-warnings '(not obsolete))
+(setq warning-suppress-log-types '((comp) (bytecomp)))
+(setq native-comp-async-report-warnings-errors 'silent)
+(setq inhibit-startup-echo-area-message (user-login-name))
+(setq visible-bell t)
+(setq ring-bell-function 'ignore)
+(setq set-message-beep 'silent)
 
 ;; encoding system
 (prefer-coding-system 'utf-8)
@@ -228,6 +235,9 @@
 
 ;; 全局打开visual line
 (global-visual-line-mode)
+
+;; 删除文件先进垃圾筒
+(setq delete-by-moving-to-trash t)
 
 (setq word-wrap-by-category t)
 
