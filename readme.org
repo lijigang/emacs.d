@@ -358,23 +358,20 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
-               '("ctexart" "\\documentclass[11pt,titlepage]{ctexart}
+               '("ctexart" "\\documentclass[12pt,titlepage,a5paper]{ctexart}
+
+% for use notin math symbol
+\\usepackage{unicode-math}
+
+\\usepackage[utf8]{inputenc}
+\\usepackage[T1]{fontenc}
 
 % Document title
 \\usepackage{titling}
 
 % Page Margins: important
 % https://ctan.math.illinois.edu/macros/latex/contrib/geometry/geometry.pdf
-% \\usepackage[scale=0.8,centering]{geometry}
-\\usepackage{geometry}
-\\geometry{
-    a4paper,% 210 * 297mm
-    hcentering,% 将hmarginratio设为1:1，即left=right
-    left=28mm,% 注意left=right
-    top=37.00mm,% Word 模板页眉顶端距离20mm
-    width=156mm,
-    height=225mm,
-    }
+\\usepackage[scale=0.8,centering]{geometry}
 
 % Page head and foot
 % lhead/chead/rhead
@@ -384,16 +381,12 @@
 \\usepackage{fancyhdr}
 \\pagestyle{fancy}
 \\chead{\\textsc{\\title}}
-\\rhead{\\textit{Last modified: \\today}}
 \\rfoot{}
 \\cfoot{\\color{gray} \\textsc{\\thepage~/~\\pageref*{LastPage}}}
 \\lfoot{}
-\\renewcommand\\headrulewidth{0.6pt}
-\\renewcommand\\footrulewidth{0.6pt}
 
 \\usepackage[most]{tcolorbox}
 \\usepackage[colorinlistoftodos]{todonotes}
-\\usepackage{tikz-bagua}
 
 % xcolor is more powerful than color
 % \\color{red!70}  %70 percent red color
@@ -404,39 +397,10 @@
 % \\rowclor{gray}
 \\usepackage{colortbl}
 
-% 定义新的颜色
-\\definecolor{mycolor}{RGB}{200,198,196}
-
-%% Highlighted remarks/notes
-% Highlighted remark/note with and without title
-\\newenvironment{Highlight}[1]
-{
-        \\ifthenelse{\\equal{#1}{}}{
-                \\begin{tcolorbox}[breakable, enhanced, colback=white!55!white,colframe=mycolor!45!black]
-                \\setlength\\parskip{0.2cm}
-        }
-        {
-                \\begin{tcolorbox}[breakable, enhanced, colback=white!55!white,colframe=mycolor!45!black, fonttitle=\\bfseries, title=#1]
-                \\setlength\\parskip{0.2cm}
-        }
-}
-{
-        \\end{tcolorbox}
-}
-\\newtcolorbox{tip}{colback=blue!5!white,colframe=blue!75!black}
-\\newtcolorbox{tipt}[1]{colback=blue!5!white,colframe=blue!75!black,fonttitle=\\bfseries,title=#1}
-
 % Format of section and subsection headers
 % [rm sf tt bf up it sl sc]
 % Select the corresponding family/series/shape. Default is bf.
 \\usepackage{titlesec}
-
-% for use notin math symbol
-\\usepackage{unicode-math}
-
-% 使用UTF-8编码输入文字
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
 
 % Hyperlinks and bookmarks
 \\usepackage{hyperref}
@@ -462,7 +426,6 @@
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
   (setq org-latex-default-class "ctexart")
   (setq org-latex-compiler "xelatex"))
-
 #+end_src
 *** 配置 =OrgMode=
 **** 常用变量
