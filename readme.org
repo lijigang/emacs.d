@@ -1347,13 +1347,3 @@ If TARGET-FRAME is omitted or nil, use currently selected frame."
 (global-set-key (kbd "s-o") 'org-roam-node-find)
 (global-set-key (kbd "s-i") 'org-roam-node-insert)
 #+end_src
-**** org-roam 快捷键
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-
-(map! :leader
-      :prefix ("r" . "org-roam")
-      "f" #'org-roam-find-file
-      ;; "s" #'org-roam-server-mode
-      "i" #'org-roam-insert
-      "t" #'org-roam-dailies-goto-today)
-#+end_src
