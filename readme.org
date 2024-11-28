@@ -296,9 +296,6 @@
 
 (setq-default x-stretch-cursor t
               x-underline-at-descent-line t)
-
-(use-package! mixed-pitch
-  :hook (org-mode . mixed-pitch-mode))
 #+end_src
 *** 交互增强
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -397,6 +394,12 @@ default config to rice org-mode
 
 
 (add-hook! 'org-mode-hook 'prettify-symbols-mode)
+
+(after! org-superstar
+  (setq org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛")
+        org-superstar-special-todo-items t
+        org-superstar-item-bullet-alist '((?- . ?➤) (?* . ?🔻) (?+ . ?△))
+        org-superstar-prettify-item-bullets t ))
 
 (defun org-mode-remove-stars ()
   ;; 关掉 Headline 前面的 * 符号显示
