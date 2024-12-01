@@ -115,6 +115,7 @@
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
 
 (package! denote)
+(package! consult-notes)
 ;; 导出时支持src block 语法高亮
 (package! engrave-faces
   :recipe (:host github :repo "tecosaur/engrave-faces"))
@@ -588,9 +589,18 @@ Oh, Denote!
     :init
     (require 'denote-org-extras)
     :bind
-    (("s-o" . denote-open-or-create)))
+    (("s-n" . denote-open-or-create)))
 #+end_src
 
+Consult-Notes for easy access to notes
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! consult-notes
+  :bind
+  (("s-o" . consult-notes)
+   ("s-f" . consult-notes-search-in-all-notes))
+  :init
+  (consult-notes-denote-mode))
+#+end_src
 Oh, Rime!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! rime
