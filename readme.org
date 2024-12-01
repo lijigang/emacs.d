@@ -116,6 +116,7 @@
 
 (package! denote)
 (package! consult-notes)
+(package! denote-explore)
 ;; 导出时支持src block 语法高亮
 (package! engrave-faces
   :recipe (:host github :repo "tecosaur/engrave-faces"))
@@ -601,6 +602,22 @@ Consult-Notes for easy access to notes
   :init
   (consult-notes-denote-mode))
 #+end_src
+
+Explore and manage your Denote collection
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! denote-explore
+  :bind
+  (;; Statistics
+   ("C-c w x c" . denote-explore-count-notes)
+   ("C-c w x C" . denote-explore-count-keywords)
+   ("C-c w x b" . denote-explore-barchart-keywords)
+   ("C-c w x e" . denote-explore-barchart-filetypes)
+   ;; Visualise denote
+   ("C-c w x n" . denote-explore-network)
+   ("C-c w x v" . denote-explore-network-regenerate)
+   ("C-c w x D" . denote-explore-degree-barchart)))
+#+end_src
+
 Oh, Rime!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! rime
