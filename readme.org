@@ -241,13 +241,14 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Look and Feel
 ;; for night
-(setq doom-theme 'doom-material-dark)
+(setq doom-theme 'doom-badger)
 
 ;; for day
 ;; (setq doom-theme 'doom-flatwhite)
 
 (use-package! doom-modeline
   :custom
+  (doom-modeline-buffer-encoding nil)
   (doom-modeline-enable-word-count nil)
   (doom-modeline-height 10))
 
@@ -378,6 +379,8 @@ default config to rice org-mode
 (setq-default prettify-symbols-alist '(("#+title:" . "✍")
                                        ("#+author:" . "👨")
                                        ("#+caption:" . "☰")
+                                       ("#+filetags:" . "🎃")
+                                       ("#+identifier:" . "👺")
                                        ("#+results:" . "🎁")
                                        ("#+attr_latex:" . "🍄")
                                        ("#+attr_org:" . "🔔")
