@@ -562,6 +562,7 @@ Oh, GPTel!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; auth-sources
 (setq auth-sources '("~/Documents/emacs/org/roam/authinfo.gpg"))
+(setq epa-pinentry-mode 'loopback)
 
 ;; for claude
 (use-package! gptel
@@ -726,6 +727,9 @@ export for pdf
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("ctexart" "\\documentclass[12pt,titlepage,a5paper]{ctexart}
+
+% 设置中文字体
+\\setCJKmainfont{KingHwa_OldSong}
 
 % for use notin math symbol
 \\usepackage{unicode-math}
