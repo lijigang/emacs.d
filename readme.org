@@ -178,7 +178,7 @@
 ;; Package Management
 (use-package! use-package
   :custom
-  (use-package-always-ensure t)
+  (use-package-always-ensure nil)
   (package-native-compile t)
   (warning-minimum-level :emergency))
 
