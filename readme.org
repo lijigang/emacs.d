@@ -230,7 +230,7 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; personal information
-(setq user-full-name "lijigang"
+(setq user-full-name "李继刚"
       user-mail-address "i@lijigang.com")
 
 ;; FIXME
