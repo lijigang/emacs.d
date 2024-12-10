@@ -510,6 +510,33 @@ other package to rice org-mode
 
 
 #+end_src
+
+custom functions to rice org-mode
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(defvar-keymap ct/org-emphasis-map
+  :doc "Keymap for quickly applying Org emphasis rules."
+  :name "[b]old [i]talic [u]nderscore [v]erbatim [c]ode [s]trike-though"
+  "b" (lambda () (interactive) (ct/org-emphasize-below-point ?*))
+  "i" (lambda () (interactive) (ct/org-emphasize-below-point ?/))
+  "u" (lambda () (interactive) (ct/org-emphasize-below-point ?_))
+  "v" (lambda () (interactive) (ct/org-emphasize-below-point ?=))
+  "c" (lambda () (interactive) (ct/org-emphasize-below-point ?~))
+  "s" (lambda () (interactive) (ct/org-emphasize-below-point ?+)))
+
+(defun ct/org-emphasize-below-point (&optional char)
+  "Emphasisez region with CHAR.
+
+If there's no region, marks the closest s-expression, first.
+Opposed to word boundaries, sexp's work with `subword-mode' enabled."
+  (interactive)
+  (unless (region-active-p)
+    (backward-sexp)
+    (mark-sexp))
+  (org-emphasize char))
+
+(define-key org-mode-map (kbd "s-i") ct/org-emphasis-map)
+
+#+end_src
 *** 读
 读网页链接
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
