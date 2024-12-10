@@ -397,7 +397,6 @@ default config to rice org-mode
                                        ("#+begin_src" . "❮")
                                        ("#+end_src" . "❯")))
 
-
 (add-hook! 'org-mode-hook 'prettify-symbols-mode)
 
 (after! org-superstar
@@ -437,27 +436,7 @@ default config to rice org-mode
 
 ;; 关闭indent
 (after! org
-  (custom-set-variables
-   '(org-startup-indented nil)))
-
-(after! org
-  ;; @Eli 帮忙写的解决标记符号前后空格问题的代码, 感谢.
-  (setq org-emphasis-regexp-components '("-[:space:]('\"{[:nonascii:]"
-                                         "-[:space:].,:!?;'\")}\\[[:nonascii:]"
-                                         "[:space:]"
-                                         "."
-                                         1))
-  (setq org-match-substring-regexp
-        (concat
-         ;; 限制上标和下标的匹配范围，org 中对其的介绍见：(org) Subscripts and superscripts
-         "\\([0-9a-zA-Zα-γΑ-Ω]\\)\\([_^]\\)\\("
-         "\\(?:" (org-create-multibrace-regexp "{" "}" org-match-sexp-depth) "\\)"
-         "\\|"
-         "\\(?:" (org-create-multibrace-regexp "(" ")" org-match-sexp-depth) "\\)"
-         "\\|"
-         "\\(?:\\*\\|[+-]?[[:alnum:].,\\]*[[:alnum:]]\\)\\)"))
-  (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
-  (org-element-update-syntax))
+  (custom-set-variables '(org-startup-indented nil)))
 #+end_src
 
 other package to rice org-mode
@@ -507,8 +486,6 @@ other package to rice org-mode
 (use-package! ace-pinyin
   :config
   (ace-pinyin-global-mode +1))
-
-
 #+end_src
 
 custom functions to rice org-mode
@@ -534,9 +511,8 @@ Opposed to word boundaries, sexp's work with `subword-mode' enabled."
     (mark-sexp))
   (org-emphasize char))
 
-(define-key org-mode-map (kbd "s-i") ct/org-emphasis-map)
-
 #+end_src
+
 *** 读
 读网页链接
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -571,7 +547,7 @@ Opposed to word boundaries, sexp's work with `subword-mode' enabled."
 org-capture 快速记录 idea
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! org
-    :bind (("s-i" . org-capture))
+    :bind (("s-c" . org-capture))
     :custom
     (org-default-notes-file "~/Documents/notes/.notes")
     (org-goto-interface 'outline-path-completion)
@@ -670,11 +646,8 @@ Oh, Rime!
 
 Yasnippet, quickly!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(setq yas-snippet-dirs
-      '("~/Documents/emacs/ljg-snippets"
-        doom-snippets-dir
-        +snippets-dir
-        +file-templates-dir))
+(after! yasnippet
+  (setq yas-snippet-dirs '("~/Documents/emacs/ljg-snippets")))
 #+end_src
 
 PlantUML for drawing
@@ -839,4 +812,5 @@ engrave-faces, 导出时语法高亮
 (map! :leader :desc "All in M-x" "SPC" #'execute-extended-command)
 (map! :leader :desc "open export dispatch" "e" #'org-export-dispatch)
 (global-set-key (kbd "s-j") 'avy-goto-word-1)
+(define-key org-mode-map (kbd "s-i") ct/org-emphasis-map)
 #+end_src
