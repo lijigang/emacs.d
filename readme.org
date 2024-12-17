@@ -591,7 +591,7 @@ Oh, GPTel!
   (setq gptel-api-key
         (lambda ()
           (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey")))
-  (setq gptel-model "claude-3-5-sonnet-20240620"
+  (setq gptel-model "claude-3-5-sonnet-20241022"
         gptel-backend (gptel-make-anthropic "Claude"
                         :stream t
                         :key 'gptel-api-key)))
