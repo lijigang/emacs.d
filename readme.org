@@ -758,8 +758,6 @@ export for pdf
 % Document title
 \\usepackage{titling}
 
-% Page Margins: important
-% https://ctan.math.illinois.edu/macros/latex/contrib/geometry/geometry.pdf
 \\usepackage[scale=0.8,centering]{geometry}
 
 % Page head and foot
@@ -774,21 +772,40 @@ export for pdf
 \\cfoot{\\color{gray} \\textsc{\\thepage~/~\\pageref*{LastPage}}}
 \\lfoot{}
 
+% 设置页眉高度
+\\setlength{\\headheight}{15pt}
+\\addtolength{\\topmargin}{-2.5pt}
+
+% 页眉页脚设置
+\\pagestyle{fancy}
+\\fancyhf{}  % 清除所有页眉页脚
+\\fancyhead[R]{\\thepage\\ / \\pageref{LastPage}}
+
+\\usepackage{framed}
 \\usepackage[most]{tcolorbox}
+% 重定义 quote 环境
+\\renewenvironment{quote}{%
+\\begin{tcolorbox}[
+        enhanced,        % 启用增强功能
+        breakable,       % 允许分页
+        frame empty,     % 移除默认框架
+        colback=gray!10, % 背景色
+        boxrule=0pt,     % 移除边框
+        leftrule=2pt,    % 左边竖线
+        left=10pt,       % 左内边距
+        right=10pt,      % 右内边距
+        top=8pt,         % 上内边距
+        bottom=8pt,      % 下内边距
+        sharp corners    % 直角
+        ]
+}{%
+        \\end{tcolorbox}
+}
+
 \\usepackage[colorinlistoftodos]{todonotes}
 
-% xcolor is more powerful than color
-% \\color{red!70}  %70 percent red color
-% \\textcolor{red}
-% \\colorbox{gray}
 \\usepackage[RGB,dvipsnames,svgnames]{xcolor}
-% colortble is for org-table
-% \\rowclor{gray}
 \\usepackage{colortbl}
-
-% Format of section and subsection headers
-% [rm sf tt bf up it sl sc]
-% Select the corresponding family/series/shape. Default is bf.
 \\usepackage{titlesec}
 
 % Hyperlinks and bookmarks
@@ -813,6 +830,7 @@ export for pdf
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
   (setq org-latex-default-class "ctexart")
   (setq org-latex-compiler "xelatex"))
 #+end_src
