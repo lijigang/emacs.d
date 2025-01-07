@@ -745,68 +745,54 @@ export for pdf
 (with-eval-after-load 'ox-latex
   (add-to-list 'org-latex-classes
                '("ctexart" "\\documentclass[12pt,titlepage,a5paper]{ctexart}
-
 % 设置中文字体
-\\setCJKmainfont{KingHwa_OldSong}
+\\setCJKmainfont[AutoFakeBold=true]{KingHwa_OldSong}
+
+% 设置段落
+\\usepackage[skip=1em]{parskip}
+\\setlength{\\parindent}{0pt}
 
 % for use notin math symbol
 \\usepackage{unicode-math}
+\\setmathfont{Latin Modern Math}
 
 \\usepackage[utf8]{inputenc}
 \\usepackage[T1]{fontenc}
 
 % Document title
-\\usepackage{titling}
+\\usepackage{titlesec}
 
 \\usepackage[scale=0.8,centering]{geometry}
 
-% Page head and foot
-% lhead/chead/rhead
-% lfoot/cfoot/rfoot
-\\usepackage{lastpage}
-
-\\usepackage{fancyhdr}
-\\pagestyle{fancy}
-\\chead{\\textsc{\\title}}
-\\rfoot{}
-\\cfoot{\\color{gray} \\textsc{\\thepage~/~\\pageref*{LastPage}}}
-\\lfoot{}
-
-% 设置页眉高度
-\\setlength{\\headheight}{15pt}
-\\addtolength{\\topmargin}{-2.5pt}
-
-% 页眉页脚设置
-\\pagestyle{fancy}
-\\fancyhf{}  % 清除所有页眉页脚
-\\fancyhead[R]{\\thepage\\ / \\pageref{LastPage}}
-
 \\usepackage{framed}
 \\usepackage[most]{tcolorbox}
+
 % 重定义 quote 环境
 \\renewenvironment{quote}{%
 \\begin{tcolorbox}[
-        enhanced,        % 启用增强功能
-        breakable,       % 允许分页
-        frame empty,     % 移除默认框架
-        colback=gray!10, % 背景色
-        boxrule=0pt,     % 移除边框
-        leftrule=2pt,    % 左边竖线
-        left=10pt,       % 左内边距
-        right=10pt,      % 右内边距
-        top=8pt,         % 上内边距
-        bottom=8pt,      % 下内边距
-        sharp corners    % 直角
+        enhanced,              % 启用增强功能
+        breakable,             % 允许分页
+        frame empty,           % 移除默认框架
+        colback=gray!4,        % 背景色
+        boxrule=0pt,           % 移除边框
+        leftrule=2pt,          % 左边竖线
+        left=10pt,             % 左内边距
+        right=10pt,            % 右内边距
+        top=8pt,               % 上内边距
+        bottom=8pt,            % 下内边距
+        sharp corners,         % 直角
+        before skip=10pt,      % 环境前的垂直间距
+        after skip=10pt,       % 环境后的垂直间距
+        parskip=1.5em,          % 段落间距
+        before upper={\\setlength{\\parskip}{1.5em}}
         ]
 }{%
         \\end{tcolorbox}
 }
 
-\\usepackage[colorinlistoftodos]{todonotes}
 
 \\usepackage[RGB,dvipsnames,svgnames]{xcolor}
 \\usepackage{colortbl}
-\\usepackage{titlesec}
 
 % Hyperlinks and bookmarks
 \\usepackage{hyperref}
@@ -821,10 +807,7 @@ export for pdf
 
 % List items
 \\usepackage{enumerate}
-%% \\usepackage{enumitem}
-
-% Line spread
-\\usepackage{parskip}"
+"
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
