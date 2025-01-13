@@ -680,8 +680,8 @@ Org-download for images
 (use-package! org-download
   :defer nil
   :custom
-  (org-download-image-dir "~/Documents/emacs/notes/images")
-  (org-image-actual-width '(400))
+  (org-download-image-dir "~/Documents/notes/images")
+  (org-image-actual-width '(600))
   (org-download-heading-lvl nil)
   (org-download-timestamp "")
   :config
