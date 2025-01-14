@@ -156,6 +156,9 @@
 
 (package! spacious-padding)
 
+(package! ultra-scroll
+  :recipe (:host github :repo "jdtsmith/ultra-scroll"))
+
 ;; 完美解决中英文字符在表格中对齐的问题
 (package! valign)
 #+end_src
@@ -486,6 +489,13 @@ other package to rice org-mode
 (use-package! ace-pinyin
   :config
   (ace-pinyin-global-mode +1))
+
+(use-package! ultra-scroll
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
 #+end_src
 
 custom functions to rice org-mode
