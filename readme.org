@@ -142,6 +142,9 @@
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
 
+;; 概念地图
+(package! org-mind-map)
+
 ;; 便捷插入网页到org 文件
 (package! org-web-tools)
 
@@ -295,6 +298,10 @@
                             (left . 1200)
                             (width . 100)
                             (height . 45)))
+
+;; 新开窗口时默认是左右结构
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -607,6 +614,14 @@ Oh, GPTel!
                         :key 'gptel-api-key)))
 
 (global-set-key (kbd "s-l") 'gptel-send)
+#+end_src
+
+概念地图
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! org-mind-map
+  :config
+  (setq org-mind-map-engine "dot")
+  (setq org-mind-map-display 'window))
 #+end_src
 *** 写
 Oh, Denote!
