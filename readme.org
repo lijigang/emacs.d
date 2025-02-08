@@ -115,8 +115,11 @@
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
 
 (package! denote)
+(package! dired-narrow)
+
 (package! consult-notes)
 (package! denote-explore)
+
 ;; 导出时支持src block 语法高亮
 (package! engrave-faces
   :recipe (:host github :repo "tecosaur/engrave-faces"))
@@ -143,7 +146,9 @@
   :recipe (:host github :repo "rougier/org-imenu"))
 
 ;; 概念地图
-(package! org-mind-map)
+(package! org-mind-map
+  :recipe (:host github :repo "lijigang/org-mind-map" :branch "master"))
+
 
 ;; 便捷插入网页到org 文件
 (package! org-web-tools)
@@ -312,6 +317,18 @@
 #+end_src
 *** 交互增强
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! dired
+  :commands (dired dired-jump)
+  :config
+  (evil-collection-define-key 'normal 'dired-mode-map
+    "h" 'dired-up-directory
+    "l" 'dired-find-file))
+
+(use-package! dired-narrow
+  :after dired
+  :config
+  (evil-define-key 'normal dired-mode-map (kbd "/") #'dired-narrow))
+
 ;; MINIBUFFER COMPLETION
 (use-package! vertico
   :init (vertico-mode)
@@ -529,6 +546,9 @@ Opposed to word boundaries, sexp's work with `subword-mode' enabled."
   (org-emphasize char))
 
 (after! org
+  (define-key org-mode-map (kbd "s-i") ct/org-emphasis-map))
+
+(after! org
   ;; @Eli 帮忙写的解决标记符号前后空格问题的代码, 感谢.
   (setq org-emphasis-regexp-components '("-[:space:]('\"{[:nonascii:]"
                                          "-[:space:].,:!?;'\")}\\[[:nonascii:]"
@@ -616,13 +636,6 @@ Oh, GPTel!
 (global-set-key (kbd "s-l") 'gptel-send)
 #+end_src
 
-概念地图
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! org-mind-map
-  :config
-  (setq org-mind-map-engine "dot")
-  (setq org-mind-map-display 'window))
-#+end_src
 *** 写
 Oh, Denote!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -667,6 +680,7 @@ Explore and manage your Denote collection
    ("C-c w x v" . denote-explore-network-regenerate)
    ("C-c w x D" . denote-explore-degree-barchart)))
 #+end_src
+
 
 Oh, Rime!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -849,12 +863,20 @@ engrave-faces, 导出时语法高亮
   :config
   (setq org-latex-src-block-backend 'engraved)
   ;; 配置导出时语法高亮的Theme
-  (setq org-latex-engraved-theme 'doom-material-dark))
+  (setq org-latex-engraved-theme 'whiteboard))
 #+end_src
 
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(map! :leader :desc "All in M-x" "SPC" #'execute-extended-command)
-(map! :leader :desc "open export dispatch" "e" #'org-export-dispatch)
+(map! :leader
+      :desc "All in M-x" "SPC" #'execute-extended-command
+      :desc "open export dispatch" "e" #'org-export-dispatch)
 (global-set-key (kbd "s-j") 'avy-goto-word-1)
-(define-key org-mode-map (kbd "s-i") ct/org-emphasis-map)
+#+end_src
+
+概念地图
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! org-mind-map
+  :config
+  (setq org-mind-map-engine "dot")
+  (setq org-mind-map-display 'window))
 #+end_src
