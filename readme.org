@@ -566,6 +566,34 @@ Opposed to word boundaries, sexp's work with `subword-mode' enabled."
          "\\(?:\\*\\|[+-]?[[:alnum:].,\\]*[[:alnum:]]\\)\\)"))
   (org-set-emph-re 'org-emphasis-regexp-components org-emphasis-regexp-components)
   (org-element-update-syntax))
+
+(defun convert-markdown-to-org (begin end)
+  "Convert Markdown syntax to Org-mode syntax in the selected region."
+  (interactive "r")
+  (save-excursion
+    (let ((content (buffer-substring begin end)))
+      ;; 替换标题
+      (setq content (replace-regexp-in-string "^# \\(.*\\)" "* \\1" content))
+      (setq content (replace-regexp-in-string "^## \\(.*\\)" "** \\1" content))
+      (setq content (replace-regexp-in-string "^### \\(.*\\)" "*** \\1" content))
+
+      ;; 替换粗体和斜体
+      (setq content (replace-regexp-in-string "\\*\\*\\([^*]+\\)\\*\\*" "*\\1*" content))
+      (setq content (replace-regexp-in-string "_\\([^_]+\\)_" "/\\1/" content))
+
+      ;; 替换链接
+      (setq content (replace-regexp-in-string "\\[\\([^]]+\\)\\](\\([^)]+\\))" "[[\\2][\\1]]" content))
+
+      ;; 替换代码块
+      (setq content (replace-regexp-in-string "```\\([^`\n]*\\)\n\\([^`]*?\\)```" "#+BEGIN_SRC \\1\n\\2#+END_SRC" content))
+
+      ;; 替换行内代码
+      (setq content (replace-regexp-in-string "`\\([^`]+\\)`" "=\\1=" content))
+
+      ;; 删除原区域内容并插入转换后的内容
+      (delete-region begin end)
+      (goto-char begin)
+      (insert content))))
 #+end_src
 
 *** 读
