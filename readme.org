@@ -149,6 +149,8 @@
 (package! org-mind-map
   :recipe (:host github :repo "lijigang/org-mind-map" :branch "master"))
 
+;; 默认在+pretty 的时候已经包含，需单独关闭
+(package! org-modern :disable t)
 
 ;; 便捷插入网页到org 文件
 (package! org-web-tools)
