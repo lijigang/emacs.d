@@ -678,8 +678,6 @@ Oh, Denote!
     (dired-mode . denote-dired-mode)
     :custom-face
     (denote-faces-link ((t (:slant italic))))
-    :init
-    (require 'denote-org-extras)
     :bind
     (("s-n" . denote-open-or-create)))
 #+end_src
@@ -784,7 +782,7 @@ export for html
 (setq org-html-coding-system 'utf-8)
 (setq org-html-doctype "html5")
 (setq org-html-head
-      "<link rel='stylesheet' type='text/css' href='https://gongzhitaao.org/orgcss/org.css'/> ")
+      "<link rel='stylesheet' type='text/css' href='org-minimal.css'/> ")
 #+end_src
 
 export for pdf
