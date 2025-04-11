@@ -319,6 +319,7 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! dired
   :commands (dired dired-jump)
+  :after evil-collection
   :config
   (evil-collection-define-key 'normal 'dired-mode-map
     "h" 'dired-up-directory
