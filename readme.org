@@ -401,7 +401,7 @@ default config to rice org-mode
         org-use-speed-commands t
         org-use-sub-superscripts "{}"))
 
-(setq org-todo-keywords '((sequence "TODO" "|" "DONE")))
+(setq org-todo-keywords '((sequence "STRT(s)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
 
 (add-hook! 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 (add-hook! 'org-babel-after-execute-hook 'org-toggle-latex-fragment 'append)
@@ -635,7 +635,7 @@ org-capture 快速记录 idea
 (use-package! org
     :bind (("s-c" . org-capture))
     :custom
-    (org-default-notes-file "~/Documents/notes/.notes")
+    (org-default-notes-file "~/Documents/notes/lijigang.org")
     (org-goto-interface 'outline-path-completion)
     (org-capture-templates
      '(("f" "Fleeting note"
