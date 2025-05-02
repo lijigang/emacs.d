@@ -791,8 +791,8 @@ export for html
 export for pdf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; texlive 安装路径
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2024/bin/universal-darwin"))
-(setq exec-path (append exec-path '("/usr/local/texlive/2024/bin/universal-darwin")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2025/bin/universal-darwin"))
+(setq exec-path (append exec-path '("/usr/local/texlive/2025/bin/universal-darwin")))
 
 (setq org-highlight-latex-and-related '(native script entities))
 
