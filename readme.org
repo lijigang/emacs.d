@@ -808,8 +808,7 @@ Oh, Rime!
   :custom
   (default-input-method "rime")
   (rime-librime-root "~/Documents/emacs/depend/librime/dist")
-  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@29/29.4/include")
-  ;; (rime-emacs-module-header-root "/usr/local/opt/emacs-mac/include")
+  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@30/30.1/include")
   :config
   (define-key rime-mode-map (kbd "C-i") 'rime-force-enable)
   (setq rime-disable-predicates
