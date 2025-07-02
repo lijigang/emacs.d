@@ -120,11 +120,16 @@
 (package! consult-notes)
 (package! denote-explore)
 
+(package! ef-themes)
+
 ;; 导出时支持src block 语法高亮
 (package! engrave-faces
   :recipe (:host github :repo "tecosaur/engrave-faces"))
 
 (package! gptel)
+
+(package! gptel-prompts
+  :recipe (:host github :repo "jwiegley/gptel-prompts"))
 
 (package! imenu-list)
 
@@ -254,10 +259,10 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Look and Feel
 ;; for night
-(setq doom-theme 'doom-badger)
+(setq doom-theme 'ef-elea-dark)
 
 ;; for day
-;; (setq doom-theme 'doom-flatwhite)
+;; (setq doom-theme 'ef-spring)
 
 (use-package! doom-modeline
   :custom
@@ -267,16 +272,10 @@
 
 ;; Doom 自带的字体变量配置
 ;; Plan A: 中文苹方, 英文Roboto Mono
-(setq doom-font (font-spec :family "Roboto Mono" :size 22)
+(setq doom-font (font-spec :family "Roboto Mono" :size 28)
       doom-serif-font doom-font
       doom-symbol-font (font-spec :family "PingFang SC")
       doom-variable-pitch-font (font-spec :family "PingFang SC" :weight 'extra-bold))
-
-;; Plan B: 中英文仓耳今楷
-;; (setq doom-font (font-spec :family "TsangerJinKai03" :size 22)
-;;       doom-serif-font doom-font
-;;       doom-symbol-font (font-spec :family "TsangerJinKai03")
-;;       doom-variable-pitch-font (font-spec :family "TsangerJinKai03"))
 
 ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
 (setq use-default-font-for-symbols nil)
@@ -298,7 +297,7 @@
 (blink-cursor-mode 0)
 (fringe-mode '(0 . 0)) ;; No fringe
 
-(setq frame-title-format "生产知识")
+(setq frame-title-format "Do one thing")
 
 ;; 指定启动时的窗口位置和大小
 (setq initial-frame-alist '((top . 45)
@@ -750,12 +749,18 @@ Oh, GPTel!
   (setq gptel-api-key
         (lambda ()
           (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey")))
-  (setq gptel-model "claude-3-5-sonnet-20241022"
+  (setq gptel-model "claude-opus-4-20250514"
         gptel-backend (gptel-make-anthropic "Claude"
                         :stream t
                         :key 'gptel-api-key)))
 
 (global-set-key (kbd "s-l") 'gptel-send)
+
+(use-package! gptel-prompts
+  :after (gptel)
+  :config
+  (setq gptel-prompts-directory (expand-file-name org-directory))
+  (gptel-prompts-update))
 #+end_src
 
 *** 写
