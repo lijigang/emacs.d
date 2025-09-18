@@ -128,9 +128,6 @@
 
 (package! gptel)
 
-(package! gptel-prompts
-  :recipe (:host github :repo "jwiegley/gptel-prompts"))
-
 (package! imenu-list)
 
 (package! olivetti)
@@ -166,10 +163,12 @@
 ;; 每个标识符显示一个颜色, 花里胡哨的开始
 (package! rainbow-identifiers)
 
-;; 在Emacs 中使用rime, 减少切换中英文状态
 (package! rime)
 
 (package! spacious-padding)
+
+(package! superchat
+  :recipe (:host github :repo "yibie/superchat"))
 
 (package! ultra-scroll
   :recipe (:host github :repo "jdtsmith/ultra-scroll"))
@@ -297,13 +296,11 @@
 (blink-cursor-mode 0)
 (fringe-mode '(0 . 0)) ;; No fringe
 
-(setq frame-title-format "Do one thing")
-
 ;; 指定启动时的窗口位置和大小
-(setq initial-frame-alist '((top . 45)
+(setq initial-frame-alist '((top . 10)
                             (left . 1200)
                             (width . 100)
-                            (height . 45)))
+                            (height . 40)))
 
 ;; 新开窗口时默认是左右结构
 (setq split-height-threshold nil)
@@ -376,7 +373,8 @@ default config to rice org-mode
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Ricing Org mode
 (after! org
-  (setq org-confirm-babel-evaluate nil
+  (setq org-adapt-indentation t
+        org-confirm-babel-evaluate nil
         org-edit-src-content-indentation 0
         org-ellipsis "▾"
         org-fold-catch-invisible-edits 'show
@@ -720,22 +718,6 @@ Assume point is at first MARK."
     (replace-match "[[\\2][\\1]]")))
 #+end_src
 *** 想
-org-capture 快速记录 idea
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! org
-    :bind (("s-c" . org-capture))
-    :custom
-    (org-default-notes-file "~/Documents/notes/lijigang.org")
-    (org-goto-interface 'outline-path-completion)
-    (org-capture-templates
-     '(("f" "Fleeting note"
-        item
-        (file+headline org-default-notes-file "Notes")
-        "- [ ] %?")
-       ("t" "New task" entry
-        (file+headline org-default-notes-file "Tasks")
-        "* TODO %i%?"))))
-#+end_src
 
 Oh, GPTel!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -743,24 +725,23 @@ Oh, GPTel!
 (setq auth-sources '("~/Documents/emacs/org/roam/authinfo.gpg"))
 (setq epa-pinentry-mode 'loopback)
 
-;; for claude
 (use-package! gptel
   :config
-  (setq gptel-api-key
-        (lambda ()
-          (auth-source-pick-first-password :host "api.anthropic.com" :user "apikey")))
-  (setq gptel-model "claude-opus-4-20250514"
-        gptel-backend (gptel-make-anthropic "Claude"
+  (setq gptel-model 'gemini-2.5-pro
+        gptel-default-mode 'org-mode
+        gptel-directives '((default . "你是一个擅长深度思考，探究本质的哲学家。"))
+        gptel-backend (gptel-make-gemini "Gemini"
                         :stream t
-                        :key 'gptel-api-key)))
+                        :key (gptel-api-key-from-auth-source "api.google.com"))))
 
 (global-set-key (kbd "s-l") 'gptel-send)
 
-(use-package! gptel-prompts
-  :after (gptel)
+(use-package! superchat
   :config
-  (setq gptel-prompts-directory (expand-file-name org-directory))
-  (gptel-prompts-update))
+  (setq superchat-lang "中文")
+  (setq superchat-data-directory "~/Documents/notes/superchat/")
+  (setq superchat-save-directory "~/Documents/notes/superchat/chats")
+  (setq superchat-default-directories '("~/Documents/notes")))
 #+end_src
 
 *** 写
@@ -805,7 +786,6 @@ Explore and manage your Denote collection
    ("C-c w x v" . denote-explore-network-regenerate)
    ("C-c w x D" . denote-explore-degree-barchart)))
 #+end_src
-
 
 Oh, Rime!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
