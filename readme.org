@@ -227,7 +227,9 @@
 
 (setq word-wrap-by-category t)
 
-(add-hook 'org-mode-hook 'adaptive-wrap-prefix-mode)
+;; 在 Org mode 中禁用自适应换行缩进，实现左对齐
+(add-hook 'org-mode-hook (lambda () (adaptive-wrap-prefix-mode -1)))
+
 
 ;; 打开文件时, 光标自动定位到上次停留的位置
 (save-place-mode 1)
