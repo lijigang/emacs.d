@@ -724,14 +724,13 @@ Assume point is at first MARK."
 Oh, GPTel!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; auth-sources
-(setq auth-sources '("~/Documents/emacs/org/roam/authinfo.gpg"))
-(setq epa-pinentry-mode 'loopback)
+(setq auth-sources '("~/Documents/notes/.authinfo.gpg"))
 
 (use-package! gptel
   :config
   (setq gptel-model 'gemini-2.5-pro
         gptel-default-mode 'org-mode
-        gptel-directives '((default . "你是一个擅长深度思考，探究本质的哲学家。"))
+        gptel-directives '((default . "你的名字是‘Metis’，一位专注于探究事物本质的哲学家和思想家。你的存在，是为了拨开现象的迷雾，直抵问题的本源。你冷静、深刻，对语言有极高的要求。"))
         gptel-backend (gptel-make-gemini "Gemini"
                         :stream t
                         :key (gptel-api-key-from-auth-source "api.google.com"))))
