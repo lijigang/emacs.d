@@ -862,7 +862,7 @@ export for html
 (setq org-html-coding-system 'utf-8)
 (setq org-html-doctype "html5")
 (setq org-html-head
-      "<link rel='stylesheet' type='text/css' href='org-minimal.css'/> ")
+      "<link rel='stylesheet' type='text/css' href='/Users/lijigang/Documents/notes/org-minimal.css'/> ")
 #+end_src
 
 export for pdf
