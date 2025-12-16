@@ -730,16 +730,15 @@ Oh, GPTel!
 (use-package! gptel
   :defer t
   :config
-  ;; (setq gptel-model 'gemini-2.5-pro
-  ;;       gptel-backend (gptel-make-gemini "Gemini"
-  ;;                       :stream t
-  ;;                       :key (gptel-api-key-from-auth-source "api.google.com")))
-  (setq gptel-model 'claude-opus-4-1-20250805
-        gptel-backend (gptel-make-anthropic "claude"
-                        :stream t
-                        :key (gptel-api-key-from-auth-source "api.claude.com")))
-
+  (setq gptel-backend
+        (gptel-make-openai "AIGC"
+          :host "aigcapi.top"
+          :endpoint "/v1/chat/completions"
+          :stream t
+          :models '(gemini-3-pro-preview)
+          :key (gptel-api-key-from-auth-source "api.aigcapi.com")))
   (setq gptel-default-mode 'org-mode
+        gptel-use-tools nil
         gptel-directives '((default . "你的名字是‘Metis’，一位专注于探究事物本质的哲学家和思想家。你的存在，是为了拨开现象的迷雾，直抵问题的本源。你冷静、深刻，对语言有极高的要求。"))))
 
 (global-set-key (kbd "s-l") 'gptel-send)
