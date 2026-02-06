@@ -42,6 +42,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 (doom!
  :completion
+ corfu
  (vertico +icons)
 
  :ui
@@ -317,6 +318,11 @@
 #+end_src
 *** 交互增强
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! corfu
+  :init (global-corfu-mode)
+  :config
+  (setq corfu-auto-complete t))
+
 (use-package! dired
   :commands (dired dired-jump)
   :after evil-collection
@@ -713,6 +719,12 @@ Assume point is at first MARK."
 
 读 markdown
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; 让 .md 文件默认直接用 view-mode 打开
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-view-mode))
+
+;; 然后只针对 view-mode 开启 writeroom
+(add-hook! 'markdown-view-mode-hook #'writeroom-mode)
+
 (defun convert-markdown-links-to-org ()
   "将 markdown 语法的链接转换成 orgmode 的链接"
   (interactive)
