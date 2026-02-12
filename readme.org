@@ -381,7 +381,7 @@ default config to rice org-mode
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Ricing Org mode
 (after! org
-  (setq org-adapt-indentation t
+  (setq org-adapt-indentation nil
         org-confirm-babel-evaluate nil
         org-edit-src-content-indentation 0
         org-ellipsis "▾"
