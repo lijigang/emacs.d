@@ -317,6 +317,29 @@
               x-underline-at-descent-line t)
 #+end_src
 *** 交互增强
+Consult-Notes for easy access to notes
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! consult-notes
+  :bind
+  (("s-o" . consult-notes)
+   ("s-f" . consult-notes-search-in-all-notes))
+  :init
+  (consult-notes-denote-mode))
+
+(after! consult-notes
+  ;; 禁用 consult 的默认排序，保留 source 提供的顺序
+  (consult-customize consult-notes :sort nil)
+
+  ;; 让 denote 文件列表按修改时间降序排列
+  (setq consult-notes-denote-files-function
+        (lambda ()
+          (sort (denote-directory-files)
+                (lambda (a b)
+                  (time-less-p
+                   (file-attribute-modification-time (file-attributes b))
+                   (file-attribute-modification-time (file-attributes a))))))))
+#+end_src
+
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! corfu
   :init (global-corfu-mode)
@@ -781,38 +804,14 @@ Oh, Denote!
     (("s-n" . denote-open-or-create)))
 #+end_src
 
-Consult-Notes for easy access to notes
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! consult-notes
-  :bind
-  (("s-o" . consult-notes)
-   ("s-f" . consult-notes-search-in-all-notes))
-  :init
-  (consult-notes-denote-mode))
-#+end_src
-
-Explore and manage your Denote collection
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! denote-explore
-  :bind
-  (;; Statistics
-   ("C-c w x c" . denote-explore-count-notes)
-   ("C-c w x C" . denote-explore-count-keywords)
-   ("C-c w x b" . denote-explore-barchart-keywords)
-   ("C-c w x e" . denote-explore-barchart-filetypes)
-   ;; Visualise denote
-   ("C-c w x n" . denote-explore-network)
-   ("C-c w x v" . denote-explore-network-regenerate)
-   ("C-c w x D" . denote-explore-degree-barchart)))
-#+end_src
 
 Oh, Rime!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! rime
   :custom
   (default-input-method "rime")
-  (rime-librime-root "~/Documents/emacs/depend/librime/dist")
-  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@30/30.1/include")
+  (rime-librime-root "~/Documents/archive/depend/librime/dist")
+  (rime-emacs-module-header-root "/opt/homebrew/Cellar/emacs-plus@30/30.2/include")
   :config
   (define-key rime-mode-map (kbd "C-i") 'rime-force-enable)
   (setq rime-disable-predicates
@@ -824,18 +823,6 @@ Oh, Rime!
   (setq rime-user-data-dir "~/Library/Rime"))
 #+end_src
 
-Yasnippet, quickly!
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(after! yasnippet
-  (setq yas-snippet-dirs '("~/Documents/emacs/ljg-snippets")))
-#+end_src
-
-PlantUML for drawing
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(after! plantuml-mode
-  (setq plantuml-jar-path (expand-file-name "~/Documents/emacs/org/private/plantuml.jar"))
-  (setq plantuml-default-exec-mode 'jar))
-#+end_src
 
 Org-download for images
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
