@@ -148,10 +148,6 @@
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
 
-;; 概念地图
-(package! org-mind-map
-  :recipe (:host github :repo "lijigang/org-mind-map" :branch "master"))
-
 ;; 默认在+pretty 的时候已经包含，需单独关闭
 (package! org-modern :disable t)
 
@@ -983,10 +979,3 @@ engrave-faces, 导出时语法高亮
 (global-set-key (kbd "s-j") 'avy-goto-word-1)
 #+end_src
 
-概念地图
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! org-mind-map
-  :config
-  (setq org-mind-map-engine "dot")
-  (setq org-mind-map-display 'window))
-#+end_src
