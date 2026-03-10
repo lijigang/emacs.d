@@ -37,6 +37,7 @@
 :PROPERTIES:
 :header-args: :tangle "~/.doom.d/init.el"
 :header-args: :mkdirp yes
+:ID:       3ff1a903-b78f-4953-bb26-f113ef656867
 :END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/init.el"
 ;;; init.el -*- lexical-binding: t; -*-
@@ -107,6 +108,7 @@
 :PROPERTIES:
 :header-args: :tangle "~/.doom.d/packages.el"
 :header-args: :mkdirp yes
+:ID:       ee0b38ea-1c7c-481b-90e4-4c87f73f0941
 :END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/packages.el"
 ;;; $DOOMDIR/packages.el --- -*- no-byte-compile: t; -*-
@@ -179,6 +181,9 @@
 :header-args: :mkdirp yes
 :END:
 *** 通用配置
+:PROPERTIES:
+:ID:       3f9ffccc-c0b8-405b-8f6b-c6d5fe32d66d
+:END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
@@ -243,6 +248,9 @@
       scroll-step 1)
 #+end_src
 *** 个人信息
+:PROPERTIES:
+:ID:       7c77fb89-9907-4dc1-b0cf-882deeeb6c0e
+:END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 
 ;; personal information
@@ -254,6 +262,9 @@
 (setq org-directory "~/Documents/notes/")
 #+end_src
 *** 配置外观
+:PROPERTIES:
+:ID:       9a733a19-0e6f-4a48-8cf3-49568b7eabee
+:END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Look and Feel
 ;; for night
@@ -313,6 +324,9 @@
               x-underline-at-descent-line t)
 #+end_src
 *** 交互增强
+:PROPERTIES:
+:ID:       c4edb50c-ba93-43dc-8a6d-669e9637ec46
+:END:
 Consult-Notes for easy access to notes
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! consult-notes
@@ -396,6 +410,9 @@ Consult-Notes for easy access to notes
    ("C-h v" . helpful-variable)))
 #+end_src
 *** Org
+:PROPERTIES:
+:ID:       4160e5d2-2529-4835-b60a-f03c230da361
+:END:
 default config to rice org-mode
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Ricing Org mode
@@ -447,6 +464,8 @@ default config to rice org-mode
                                        ("[X]" . "☑︎")
                                        ("#+options:" . "⌥")
                                        ("\\pagebreak" . 128204)
+                                       ("#+begin_example" . "⌸")
+                                       ("#+end_example" . "⌸")
                                        ("#+begin_quote" . "❮")
                                        ("#+end_quote" . "❯")
                                        ("#+begin_src" . "❮")
@@ -716,6 +735,9 @@ Assume point is at first MARK."
 #+end_src
 
 *** 读
+:PROPERTIES:
+:ID:       a1c54135-5a8f-4a22-81e4-90d0d597c5bc
+:END:
 读网页链接
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; Easy insertion of weblinks
@@ -752,6 +774,9 @@ Assume point is at first MARK."
     (replace-match "[[\\2][\\1]]")))
 #+end_src
 *** 想
+:PROPERTIES:
+:ID:       30bf0701-7b31-4697-a560-93a15cd8b456
+:END:
 
 Oh, GPTel!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
@@ -783,6 +808,9 @@ Oh, GPTel!
 #+end_src
 
 *** 写
+:PROPERTIES:
+:ID:       bb4d4e77-bd08-4899-9fa1-daaafb2058dc
+:END:
 Oh, Denote!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! denote
@@ -839,6 +867,9 @@ Org-download for images
 #+end_src
 
 *** 发
+:PROPERTIES:
+:ID:       c95370d4-37de-4ebd-ba0a-176fb69cfd5f
+:END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! org
   :custom
