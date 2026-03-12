@@ -153,6 +153,8 @@
 ;; 默认在+pretty 的时候已经包含，需单独关闭
 (package! org-modern :disable t)
 
+(package! org-superstar)
+
 ;; 便捷插入网页到org 文件
 (package! org-web-tools)
 
@@ -476,23 +478,14 @@ default config to rice org-mode
 
 (add-hook! 'org-mode-hook 'prettify-symbols-mode)
 
-(after! org-superstar
+(use-package! org-superstar
+  :hook (org-mode . org-superstar-mode)
+  :config
   (setq org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛")
+        org-superstar-remove-leading-stars t
         org-superstar-special-todo-items t
         org-superstar-item-bullet-alist '((?- . ?➤) (?* . ?🔻) (?+ . ?△))
         org-superstar-prettify-item-bullets t ))
-
-(defun org-mode-remove-stars ()
-  ;; 关掉 Headline 前面的 * 符号显示
-  (font-lock-add-keywords
-   nil
-   '(("^\\*+ "
-      (0
-       (prog1 nil
-         (put-text-property (match-beginning 0) (match-end 0)
-                            'invisible t)))))))
-
-(add-hook! 'org-mode-hook #'org-mode-remove-stars)
 
 (after! org
   (custom-set-faces!
@@ -531,11 +524,27 @@ other package to rice org-mode
   :after org
   :hook
   (org-mode . org-fragtog-mode)
-  :custom
-  (org-format-latex-options
-   (plist-put org-format-latex-options :scale 2)
-   (plist-put org-format-latex-options :foreground 'auto)
-   (plist-put org-format-latex-options :background 'auto)))
+  :config
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :scale 2))
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :foreground 'default))
+  (setq org-format-latex-options
+        (plist-put org-format-latex-options :background 'default))
+  ;; 用 xelatex + dvisvgm 生成 SVG，暗色主题下显示更好
+  (setq org-preview-latex-default-process 'dvisvgm)
+  ;; 覆盖 dvisvgm 流程：xelatex -no-pdf 生成 xdv，dvisvgm 转 svg
+  (setf (alist-get 'dvisvgm org-preview-latex-process-alist)
+        '(:programs ("xelatex" "dvisvgm")
+          :description "xelatex > xdv > svg"
+          :message "you need to install xelatex and dvisvgm."
+          :image-input-type "xdv"
+          :image-output-type "svg"
+          :image-size-adjust (1.7 . 1.5)
+          :latex-compiler ("xelatex -interaction nonstopmode -no-pdf -output-directory %o %f")
+          :image-converter ("dvisvgm %f --no-fonts --exact-bbox --scale=%S -o %O")))
+  ;; 打开 org 文件时自动渲染所有 LaTeX 公式
+  (setq org-startup-with-latex-preview t))
 
 
 (use-package! spacious-padding
@@ -707,34 +716,6 @@ Assume point is at first MARK."
                                    :contents-end contents-end)))))))))))))
 
   (advice-add #'org-element--parse-generic-emphasis :override #'eli/org-element--parse-generic-emphasis))
-
-(defun convert-markdown-to-org (begin end)
-  "Convert Markdown syntax to Org-mode syntax in the selected region."
-  (interactive "r")
-  (save-excursion
-    (let ((content (buffer-substring begin end)))
-      ;; 替换标题
-      (setq content (replace-regexp-in-string "^# \\(.*\\)" "* \\1" content))
-      (setq content (replace-regexp-in-string "^## \\(.*\\)" "** \\1" content))
-      (setq content (replace-regexp-in-string "^### \\(.*\\)" "*** \\1" content))
-
-      ;; 替换粗体和斜体
-      (setq content (replace-regexp-in-string "\\*\\*\\([^*]+\\)\\*\\*" "*\\1*" content))
-      (setq content (replace-regexp-in-string "_\\([^_]+\\)_" "/\\1/" content))
-
-      ;; 替换链接
-      (setq content (replace-regexp-in-string "\\[\\([^]]+\\)\\](\\([^)]+\\))" "[[\\2][\\1]]" content))
-
-      ;; 替换代码块
-      (setq content (replace-regexp-in-string "```\\([^`\n]*\\)\n\\([^`]*?\\)```" "#+BEGIN_SRC \\1\n\\2#+END_SRC" content))
-
-      ;; 替换行内代码
-      (setq content (replace-regexp-in-string "`\\([^`]+\\)`" "=\\1=" content))
-
-      ;; 删除原区域内容并插入转换后的内容
-      (delete-region begin end)
-      (goto-char begin)
-      (insert content))))
 #+end_src
 
 *** 读
@@ -905,7 +886,7 @@ export for pdf
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2025/bin/universal-darwin"))
 (setq exec-path (append exec-path '("/usr/local/texlive/2025/bin/universal-darwin")))
 
-(setq org-highlight-latex-and-related '(native script entities))
+(setq org-highlight-latex-and-related '(latex script entities))
 
 (pdf-loader-install)
 
