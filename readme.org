@@ -916,9 +916,6 @@ export for pdf
 \\usepackage{unicode-math}
 \\setmathfont{Latin Modern Math}
 
-\\usepackage[utf8]{inputenc}
-\\usepackage[T1]{fontenc}
-
 % Document title
 \\usepackage{titlesec}
 
