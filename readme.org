@@ -923,6 +923,19 @@ export for pdf
 \\usepackage[skip=1em]{parskip}
 \\setlength{\\parindent}{0pt}
 
+% 把常见符号区块纳入 CJK 字符类，走 xeCJK 字体链路
+\\xeCJKDeclareCharClass{CJK}{%
+  \"2190 -> \"21FF,   %% Arrows
+  \"2500 -> \"257F,   %% Box Drawing
+  \"25A0 -> \"25FF,   %% Geometric Shapes
+  \"2600 -> \"26FF,   %% Misc Symbols
+  \"2700 -> \"27BF,   %% Dingbats
+  \"2B00 -> \"2BFF    %% Misc Symbols and Arrows
+}
+% KingHwa 缺失的字形自动 fallback 到 Symbola
+\\xeCJKsetup{AutoFallBack=true}
+\\setCJKfallbackfamilyfont{\\CJKrmdefault}{Symbola}
+
 % for use notin math symbol
 \\usepackage{unicode-math}
 \\setmathfont{Latin Modern Math}
