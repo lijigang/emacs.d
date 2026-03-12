@@ -206,6 +206,17 @@
 (setq mac-command-modifier 'super)
 (setq mac-option-modifier 'meta)
 
+;; J 合并行时，中文之间不插入多余空格
+(defun my/evil-join-cjk-advice (&rest _)
+  "Remove unwanted space between CJK characters after evil-join."
+  (save-excursion
+    (beginning-of-line)
+    (while (re-search-forward "\\(\\cc\\) \\(\\cc\\)" (line-end-position) t)
+      (replace-match "\\1\\2"))))
+
+(advice-add 'evil-join :after #'my/evil-join-cjk-advice)
+
+
 (setq confirm-kill-emacs nil ; 关闭 emacs 时无需额外确认
       system-time-locale "C" ; 设置系统时间显示方式
       pop-up-windows nil     ; no pop-up window
