@@ -812,7 +812,8 @@ Oh, Denote!
     :defer t
     :config
     (setq denote-directory (expand-file-name "~/Documents/notes/"))
-    (setq denote-known-keywords '("emacs" "prompt" "claude"))
+    (setq denote-org-front-matter
+          "#+title: %s\n#+date: %s\n#+filetags: %s\n#+identifier: %s\n")
     :custom
     (denote-sort-keywords t)
     :hook
@@ -821,6 +822,18 @@ Oh, Denote!
     (denote-faces-link ((t (:slant italic))))
     :bind
     (("s-n" . denote-open-or-create)))
+
+(defun my/normalize-org-meta-spacing ()
+  "Normalize multiple spaces after #+keyword: to single space."
+  (when (and (derived-mode-p 'org-mode)
+             (string-prefix-p (expand-file-name denote-directory)
+                              (or buffer-file-name "")))
+    (save-excursion
+      (goto-char (point-min))
+      (while (re-search-forward "^#\\+[a-zA-Z_]+:\\(  +\\)" nil t)
+        (replace-match " " nil nil nil 1)))))
+
+(add-hook 'before-save-hook #'my/normalize-org-meta-spacing)
 #+end_src
 
 
