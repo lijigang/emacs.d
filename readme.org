@@ -998,6 +998,7 @@ export for pdf
 \\usepackage{longtable}
 \\usepackage{float}
 \\usepackage{wrapfig}
+\\usepackage{adjustbox}
 
 % List items
 \\usepackage{enumerate}
@@ -1009,7 +1010,27 @@ export for pdf
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   (setq org-latex-default-class "ctexart")
-  (setq org-latex-compiler "xelatex"))
+  (setq org-latex-compiler "xelatex")
+
+  ;; Fix table truncation: use tabular + adjustbox auto-fit
+  (setq org-latex-default-table-environment "tabular")
+
+  (defun my/org-latex-table-auto-fit (text backend info)
+    "Wrap tabular tables in adjustbox to prevent width truncation in PDF export."
+    (when (org-export-derived-backend-p backend 'latex)
+      (setq text
+            (replace-regexp-in-string
+             "\\\\begin{tabular}"
+             "\\\\begin{adjustbox}{max width=\\\\linewidth}\n\\\\begin{tabular}"
+             text))
+      (setq text
+            (replace-regexp-in-string
+             "\\\\end{tabular}"
+             "\\\\end{tabular}\n\\\\end{adjustbox}"
+             text)))
+    text)
+
+  (add-to-list 'org-export-filter-table-functions #'my/org-latex-table-auto-fit))
 #+end_src
 
 engrave-faces, 导出时语法高亮
