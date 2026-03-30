@@ -96,7 +96,6 @@
   +pretty
   +present)
 
- plantuml           ; diagrams for confusing people more
  rest               ; for use restclient
  sh                 ; she sells {ba,z,fi}sh shells on the C xor
  yaml               ; JSON, but readable
@@ -168,8 +167,8 @@
 
 (package! spacious-padding)
 
-(package! superchat
-  :recipe (:host github :repo "yibie/superchat"))
+(package! tao-theme
+  :recipe (:host github :repo "11111000000/tao-theme-emacs"))
 
 (package! ultra-scroll
   :recipe (:host github :repo "jdtsmith/ultra-scroll"))
@@ -280,11 +279,7 @@
 :END:
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; Look and Feel
-;; for night
-(setq doom-theme 'ef-elea-dark)
-
-;; for day
-;; (setq doom-theme 'ef-spring)
+(setq doom-theme 'tao-yin)
 
 (use-package! doom-modeline
   :custom
@@ -468,10 +463,11 @@ default config to rice org-mode
                                        ("#+source:" . "☍")
                                        ("#+venue:" . "⌂")
                                        ("#+filetags:" . "🎃")
-                                       ("#+identifier:" . "👺")
+                                       ("#+identifier:" . "🍄")
                                        ("#+results:" . "🎁")
-                                       ("#+attr_latex:" . "🍄")
-                                       ("#+attr_org:" . "🔔")
+                                       ("#+attr_latex:" . "⚛")
+                                       ("#+attr_org:" . "⚛")
+                                       ("#+ATTR_ORG:" . "⚛")
                                        ("#+date:" . "⚓")
                                        ("#+property:" . "☸")
                                        (":PROPERTIES:" . "⚙")
@@ -493,9 +489,9 @@ default config to rice org-mode
   :hook (org-mode . org-superstar-mode)
   :config
   (setq org-superstar-headline-bullets-list '("🙘" "🙙" "🙚" "🙛")
+        org-superstar-item-bullet-alist '((?- . ?▸) (?* . ?•) (?+ . ?◦))
         org-superstar-remove-leading-stars t
         org-superstar-special-todo-items t
-        org-superstar-item-bullet-alist '((?- . ?➤) (?* . ?🔻) (?+ . ?△))
         org-superstar-prettify-item-bullets t ))
 
 (after! org
@@ -836,7 +832,6 @@ Oh, Denote!
 (add-hook 'before-save-hook #'my/normalize-org-meta-spacing)
 #+end_src
 
-
 Oh, Rime!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! rime
@@ -855,23 +850,36 @@ Oh, Rime!
   (setq rime-user-data-dir "~/Library/Rime"))
 #+end_src
 
-
 Org-download for images
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 (use-package! org-download
-  :defer nil
-  :custom
-  (org-download-image-dir "~/Documents/notes/images")
-  (org-image-actual-width '(600))
-  (org-download-heading-lvl nil)
-  (org-download-timestamp "")
+  :after org
   :config
-  (require 'org-download))
-
-(after! org-download
-  (setq org-download-method 'directory)
-  (setq org-download-link-format "[[file:images/%s]]\n"))
-
+  (setq org-download-method 'directory
+        org-download-image-dir "~/Documents/notes/images"
+        org-download-heading-lvl nil
+        org-download-timestamp ""
+        org-download-link-format "[[file:images/%s]]\n"
+        org-download-link-format-function
+        (lambda (filename)
+          (format "[[file:images/%s]]\n"
+                  (file-name-nondirectory filename)))
+        org-download-annotate-function (lambda (_link) "")
+        org-image-actual-width '(600))
+  ;; Emacs 30 的 org-mode 在 org-setup-yank-dnd-handlers 里
+  ;; 用 setq-local 注册自己的 DND handler，跟 org-download 冲突。
+  ;; 直接禁掉它，让 org-download 全权接管。
+  (advice-add 'org-setup-yank-dnd-handlers :override #'ignore)
+  ;; org-download-dnd 的 fallback 调了 Emacs 30 已废弃的 dnd-handle-one-url，
+  ;; 导致错误时静默打开文件。覆盖掉，让错误暴露出来。
+  (advice-add 'org-download-dnd :override
+              (lambda (uri action)
+                (cond ((org-download-org-mode-p)
+                       (org-download-image uri))
+                      ((eq major-mode 'dired-mode)
+                       (org-download-dired uri))
+                      (t (dnd-open-local-file uri action)))))
+  (org-download-enable))
 #+end_src
 
 *** 发
