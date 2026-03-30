@@ -454,7 +454,142 @@ default config to rice org-mode
         org-startup-indented t
         org-startup-with-inline-images t
         org-use-speed-commands t
-        org-use-sub-superscripts "{}"))
+        org-use-sub-superscripts "{}")
+
+  ;; Export defaults
+  (setq org-export-with-toc nil
+        org-export-with-drawers nil
+        org-export-with-todo-keywords nil
+        org-export-with-broken-links t
+        org-export-with-smart-quotes t
+        org-export-with-date t
+        org-export-with-author t
+        org-export-with-section-numbers nil
+        org-export-with-sub-superscripts nil
+        org-export-headline-levels 5
+        org-export-in-background nil
+        org-export-use-babel t)
+
+
+  ;; LaTeX 中文导出：提前设置，defcustom 不会覆盖已有值
+  (setq org-latex-compiler "xelatex"
+        org-latex-default-class "ctexart"
+        org-latex-pdf-process
+        '("xelatex -interaction nonstopmode -output-directory %o %f"
+          "xelatex -interaction nonstopmode -output-directory %o %f"
+          "xelatex -interaction nonstopmode -output-directory %o %f"
+          "rm -fr %b.out %b.log %b.tex auto"))
+
+  ;; 加载 ox-latex 并注册 ctexart class
+  (require 'ox-latex)
+  (add-to-list 'org-latex-classes
+               '("ctexart" "\\documentclass[12pt,titlepage,a5paper]{ctexart}
+% 设置中文字体
+\\setCJKmainfont[AutoFakeBold=true]{KingHwa_OldSong}
+
+% 设置段落
+\\usepackage[skip=1em]{parskip}
+\\setlength{\\parindent}{0pt}
+
+% 把常见符号区块纳入 CJK 字符类，走 xeCJK 字体链路
+\\xeCJKDeclareCharClass{CJK}{%
+  \"2190 -> \"21FF,   %% Arrows
+  \"2500 -> \"257F,   %% Box Drawing
+  \"25A0 -> \"25FF,   %% Geometric Shapes
+  \"2600 -> \"26FF,   %% Misc Symbols
+  \"2700 -> \"27BF,   %% Dingbats
+  \"2B00 -> \"2BFF    %% Misc Symbols and Arrows
+}
+% KingHwa 缺失的字形自动 fallback 到 Symbola
+\\xeCJKsetup{AutoFallBack=true}
+\\setCJKfallbackfamilyfont{\\CJKrmdefault}{Symbola}
+
+% for use notin math symbol
+\\usepackage{unicode-math}
+\\setmathfont{Latin Modern Math}
+
+% Document title
+\\usepackage{titlesec}
+
+\\usepackage[scale=0.8,centering]{geometry}
+
+\\usepackage{framed}
+\\usepackage[most]{tcolorbox}
+
+% 重定义 quote 环境
+\\renewenvironment{quote}{%
+\\begin{tcolorbox}[
+        enhanced,              % 启用增强功能
+        breakable,             % 允许分页
+        frame empty,           % 移除默认框架
+        colback=gray!4,        % 背景色
+        boxrule=0pt,           % 移除边框
+        leftrule=2pt,          % 左边竖线
+        left=10pt,             % 左内边距
+        right=10pt,            % 右内边距
+        top=8pt,               % 上内边距
+        bottom=8pt,            % 下内边距
+        sharp corners,         % 直角
+        before skip=10pt,      % 环境前的垂直间距
+        after skip=10pt,       % 环境后的垂直间距
+        parskip=1.5em,          % 段落间距
+        before upper={\\setlength{\\parskip}{1.5em}}
+        ]
+}{%
+        \\end{tcolorbox}
+}
+
+
+\\usepackage[RGB,dvipsnames,svgnames]{xcolor}
+\\usepackage{colortbl}
+
+% Hyperlinks and bookmarks
+\\usepackage{hyperref}
+\\hypersetup{colorlinks=true,linkcolor=blue}
+
+% Include graphics
+\\usepackage{graphicx}
+
+\\usepackage{longtable}
+\\usepackage{float}
+\\usepackage{wrapfig}
+\\usepackage{adjustbox}
+
+% List items
+\\usepackage{enumerate}
+
+% 页码移到底部居中
+\\usepackage{fancyhdr}
+\\pagestyle{fancy}
+\\fancyhf{}
+\\fancyfoot[C]{\\thepage}
+\\renewcommand{\\headrulewidth}{0pt}
+"
+                 ("\\section{%s}" . "\\section*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  ;; Fix table truncation: use tabular + adjustbox auto-fit
+  (setq org-latex-default-table-environment "tabular")
+
+  (defun my/org-latex-table-auto-fit (text backend info)
+    "Wrap tabular tables in adjustbox to prevent width truncation in PDF export."
+    (when (org-export-derived-backend-p backend 'latex)
+      (setq text
+            (replace-regexp-in-string
+             "\\\\begin{tabular}"
+             "\\\\begin{adjustbox}{max width=\\\\linewidth}\n\\\\begin{tabular}"
+             text))
+      (setq text
+            (replace-regexp-in-string
+             "\\\\end{tabular}"
+             "\\\\end{tabular}\n\\\\end{adjustbox}"
+             text)))
+    text)
+
+  (add-to-list 'org-export-filter-table-functions #'my/org-latex-table-auto-fit))
 
 ;; S-TAB 全局折叠/展开列表项（org-global-cycle 默认不处理 plain lists）
 (defun +org-shifttab-fold-lists-a (&rest _)
@@ -916,23 +1051,6 @@ Org-download for images
 :PROPERTIES:
 :ID:       c95370d4-37de-4ebd-ba0a-176fb69cfd5f
 :END:
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(use-package! org
-  :custom
-  (org-export-with-drawers nil)
-  (org-export-with-todo-keywords nil)
-  (org-export-with-broken-links t)
-  (org-export-with-toc nil)
-  (org-export-with-smart-quotes t)
-  (org-export-with-date t)
-  (org-export-with-author t)
-  (org-export-with-section-numbers nil)
-  (org-export-with-sub-superscripts nil)
-  (org-export-headline-levels 5)
-  (org-export-in-background nil)
-  (org-export-use-babel t))
-#+end_src
-
 export for html
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; Coding system for HTML export.
@@ -953,122 +1071,6 @@ export for pdf
 (pdf-loader-install)
 
 (setq Tex-command-default "XeLaTeX")
-
-;; LaTeX PDF Export settings
-(use-package ox-latex
-  :demand t
-  :custom
-  (org-latex-pdf-process
-   '("xelatex -interaction nonstopmode -output-directory %o %f"
-     "xelatex -interaction nonstopmode -output-directory %o %f"
-     "xelatex -interaction nonstopmode -output-directory %o %f"
-     "rm -fr %b.out %b.log %b.tex auto")))
-
-(with-eval-after-load 'ox-latex
-  (add-to-list 'org-latex-classes
-               '("ctexart" "\\documentclass[12pt,titlepage,a5paper]{ctexart}
-% 设置中文字体
-\\setCJKmainfont[AutoFakeBold=true]{KingHwa_OldSong}
-
-% 设置段落
-\\usepackage[skip=1em]{parskip}
-\\setlength{\\parindent}{0pt}
-
-% 把常见符号区块纳入 CJK 字符类，走 xeCJK 字体链路
-\\xeCJKDeclareCharClass{CJK}{%
-  \"2190 -> \"21FF,   %% Arrows
-  \"2500 -> \"257F,   %% Box Drawing
-  \"25A0 -> \"25FF,   %% Geometric Shapes
-  \"2600 -> \"26FF,   %% Misc Symbols
-  \"2700 -> \"27BF,   %% Dingbats
-  \"2B00 -> \"2BFF    %% Misc Symbols and Arrows
-}
-% KingHwa 缺失的字形自动 fallback 到 Symbola
-\\xeCJKsetup{AutoFallBack=true}
-\\setCJKfallbackfamilyfont{\\CJKrmdefault}{Symbola}
-
-% for use notin math symbol
-\\usepackage{unicode-math}
-\\setmathfont{Latin Modern Math}
-
-% Document title
-\\usepackage{titlesec}
-
-\\usepackage[scale=0.8,centering]{geometry}
-
-\\usepackage{framed}
-\\usepackage[most]{tcolorbox}
-
-% 重定义 quote 环境
-\\renewenvironment{quote}{%
-\\begin{tcolorbox}[
-        enhanced,              % 启用增强功能
-        breakable,             % 允许分页
-        frame empty,           % 移除默认框架
-        colback=gray!4,        % 背景色
-        boxrule=0pt,           % 移除边框
-        leftrule=2pt,          % 左边竖线
-        left=10pt,             % 左内边距
-        right=10pt,            % 右内边距
-        top=8pt,               % 上内边距
-        bottom=8pt,            % 下内边距
-        sharp corners,         % 直角
-        before skip=10pt,      % 环境前的垂直间距
-        after skip=10pt,       % 环境后的垂直间距
-        parskip=1.5em,          % 段落间距
-        before upper={\\setlength{\\parskip}{1.5em}}
-        ]
-}{%
-        \\end{tcolorbox}
-}
-
-
-\\usepackage[RGB,dvipsnames,svgnames]{xcolor}
-\\usepackage{colortbl}
-
-% Hyperlinks and bookmarks
-\\usepackage{hyperref}
-\\hypersetup{colorlinks=true,linkcolor=blue}
-
-% Include graphics
-\\usepackage{graphicx}
-
-\\usepackage{longtable}
-\\usepackage{float}
-\\usepackage{wrapfig}
-\\usepackage{adjustbox}
-
-% List items
-\\usepackage{enumerate}
-"
-                 ("\\section{%s}" . "\\section*{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  (setq org-latex-default-class "ctexart")
-  (setq org-latex-compiler "xelatex")
-
-  ;; Fix table truncation: use tabular + adjustbox auto-fit
-  (setq org-latex-default-table-environment "tabular")
-
-  (defun my/org-latex-table-auto-fit (text backend info)
-    "Wrap tabular tables in adjustbox to prevent width truncation in PDF export."
-    (when (org-export-derived-backend-p backend 'latex)
-      (setq text
-            (replace-regexp-in-string
-             "\\\\begin{tabular}"
-             "\\\\begin{adjustbox}{max width=\\\\linewidth}\n\\\\begin{tabular}"
-             text))
-      (setq text
-            (replace-regexp-in-string
-             "\\\\end{tabular}"
-             "\\\\end{tabular}\n\\\\end{adjustbox}"
-             text)))
-    text)
-
-  (add-to-list 'org-export-filter-table-functions #'my/org-latex-table-auto-fit))
 #+end_src
 
 engrave-faces, 导出时语法高亮
