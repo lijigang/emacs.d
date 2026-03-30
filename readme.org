@@ -188,6 +188,12 @@
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
+;; Leader key overrides — must be before any potentially-failing package blocks
+(define-key doom-leader-map [?\s] #'execute-extended-command)
+(define-key doom-leader-map "e" #'org-export-dispatch)
+
+(global-set-key (kbd "s-j") 'avy-goto-word-1)
+
 ;; Set package archives
 (use-package! package
   :config
@@ -1050,10 +1056,4 @@ engrave-faces, 导出时语法高亮
   (setq org-latex-engraved-theme 'whiteboard))
 #+end_src
 
-#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
-(map! :leader
-      :desc "All in M-x" "SPC" #'execute-extended-command
-      :desc "open export dispatch" "e" #'org-export-dispatch)
-(global-set-key (kbd "s-j") 'avy-goto-word-1)
-#+end_src
 
