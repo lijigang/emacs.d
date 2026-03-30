@@ -456,6 +456,30 @@ default config to rice org-mode
         org-use-speed-commands t
         org-use-sub-superscripts "{}"))
 
+;; S-TAB 全局折叠/展开列表项（org-global-cycle 默认不处理 plain lists）
+(defun +org-shifttab-fold-lists-a (&rest _)
+  "S-TAB 时同步折叠/展开列表项。"
+  (when (and (derived-mode-p 'org-mode)
+             (boundp 'org-cycle-global-status))
+    (let ((target (if (memq org-cycle-global-status '(overview contents))
+                      'folded 'subtree)))
+      (save-excursion
+        (goto-char (point-min))
+        (while (and (< (point) (point-max))
+                    (re-search-forward org-list-full-item-re nil t))
+          (goto-char (match-beginning 0))
+          (ignore-errors
+            (when (org-at-item-p)
+              (let* ((struct (org-list-struct))
+                     (item-beg (line-beginning-position))
+                     (item-end (org-list-get-item-end-before-blank item-beg struct)))
+                (when (> item-end (line-end-position))
+                  (org-list-set-item-visibility item-beg struct target)))))
+          (forward-line 1))))))
+
+(advice-add 'org-shifttab :after #'+org-shifttab-fold-lists-a)
+
+
 (setq org-todo-keywords '((sequence "STRT(s)" "NEXT(n)" "TODO(t)" "WAIT(w)" "|" "DONE(d)" "CANX(c)")))
 
 (add-hook! 'org-babel-after-execute-hook 'org-display-inline-images 'append)
