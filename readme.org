@@ -954,13 +954,6 @@ Oh, GPTel!
         gptel-directives '((default . "你的名字是‘Metis’，一位专注于探究事物本质的哲学家和思想家。你的存在，是为了拨开现象的迷雾，直抵问题的本源。你冷静、深刻，对语言有极高的要求。"))))
 
 (global-set-key (kbd "s-l") 'gptel-send)
-
-(use-package! superchat
-  :config
-  (setq superchat-lang "中文")
-  (setq superchat-general-answer-prompt "你的名字是‘Metis’，一位专注于探究事物本质的哲学家和思想家。你的存在，是为了拨开现象的迷雾，直抵问题的本源。你冷静、深刻，对语言有极高的要求。用户输入的信息为: $input")
-  (setq superchat-data-directory "~/Documents/notes/superchat/")
-  (setq superchat-default-directories '("~/Documents/notes")))
 #+end_src
 
 *** 写
