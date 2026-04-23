@@ -697,6 +697,16 @@ other package to rice org-mode
   :hook
   (org-mode . org-fragtog-mode)
   :config
+  (setq org-format-latex-header "\\documentclass{article}
+  \\usepackage[usenames]{color}
+  \\usepackage{xeCJK}
+  \\setCJKmainfont{KingHwa_OldSong}
+  \\usepackage{amsmath,amssymb}
+  \\usepackage{unicode-math}
+  \\setmathfont{Latin Modern Math}
+  [PACKAGES]
+  [DEFAULT-PACKAGES]
+  \\pagestyle{empty}")
   (setq org-format-latex-options
         (plist-put org-format-latex-options :scale 2))
   (setq org-format-latex-options
@@ -717,7 +727,6 @@ other package to rice org-mode
           :image-converter ("dvisvgm %f --no-fonts --exact-bbox --scale=%S -o %O")))
   ;; 打开 org 文件时自动渲染所有 LaTeX 公式
   (setq org-startup-with-latex-preview t))
-
 
 (use-package! spacious-padding
   :custom (line-spacing 3)
