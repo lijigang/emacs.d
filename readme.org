@@ -622,6 +622,7 @@ default config to rice org-mode
 
 (setq-default prettify-symbols-alist '(("#+title:" . "✍")
                                        ("#+TITLE:" . "✍")
+                                       ("#+subtitle:" . "✒")
                                        ("#+author:" . "👨")
                                        ("#+authors:" . "⚶")
                                        ("#+caption:" . "☰")
@@ -761,6 +762,9 @@ other package to rice org-mode
   :config
   (ultra-scroll-mode 1))
 #+end_src
+
+#+RESULTS:
+: t
 
 custom functions to rice org-mode
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
