@@ -116,6 +116,10 @@
 (package! ace-pinyin
   :recipe (:host github :repo "cute-jumper/ace-pinyin"))
 
+(package! shell-maker)
+(package! acp)
+(package! agent-shell)
+
 (package! denote)
 (package! dired-narrow)
 
@@ -127,8 +131,6 @@
 ;; 导出时支持src block 语法高亮
 (package! engrave-faces
   :recipe (:host github :repo "tecosaur/engrave-faces"))
-
-(package! gptel)
 
 (package! imenu-list)
 
@@ -947,26 +949,55 @@ Assume point is at first MARK."
 :ID:       30bf0701-7b31-4697-a560-93a15cd8b456
 :END:
 
-Oh, GPTel!
+Oh, agent-shell!
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; auth-sources
 (setq auth-sources '("~/Documents/notes/.authinfo.gpg"))
 
-(use-package! gptel
-  :defer t
+(require 'acp)
+(require 'agent-shell)
+(use-package! agent-shell
+  :ensure-system-package
+  ((claude-agent-acp . "npm install -g @agentclientprotocol/claude-agent-acp"))
   :config
-  (setq gptel-backend
-        (gptel-make-openai "AIGC"
-          :host "aigcapi.top"
-          :endpoint "/v1/chat/completions"
-          :stream t
-          :models '(gemini-3-pro-preview)
-          :key (gptel-api-key-from-auth-source "api.aigcapi.com")))
-  (setq gptel-default-mode 'org-mode
-        gptel-use-tools nil
-        gptel-directives '((default . "你的名字是‘Metis’，一位专注于探究事物本质的哲学家和思想家。你的存在，是为了拨开现象的迷雾，直抵问题的本源。你冷静、深刻，对语言有极高的要求。"))))
+  (setq agent-shell-highlight-blocks t)
+  (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
+  (setq agent-shell-anthropic-authentication
+        (agent-shell-anthropic-make-authentication :login t))
 
-(global-set-key (kbd "s-l") 'gptel-send)
+  ;; ── Leader 键：SPC a 作 agent 前缀 ────────────────────────────
+  ;; vertico 模块在 embark :init 里把 SPC a 绑到了 embark-act（非 keymap），
+  ;; 不先清掉这个绑定，下面的 :prefix 会因为「a 已是非 prefix 键」而沉默失败。
+  (map! :leader
+        "a" nil
+        (:prefix ("a" . "agent")
+         :desc "Start / switch agent"  "a" #'agent-shell
+         :desc "New shell session"     "n" #'agent-shell-new-shell
+         :desc "Send region / dwim"    "r" #'agent-shell-send-dwim
+         :desc "Send current file"     "f" #'agent-shell-send-current-file
+         :desc "Send other file"       "F" #'agent-shell-send-other-file
+         :desc "Send clipboard image"  "i" #'agent-shell-send-clipboard-image
+         :desc "Open transcript"       "t" #'agent-shell-open-transcript
+         :desc "Search history"        "/" #'agent-shell-search-history
+         :desc "Rename buffer"         "R" #'agent-shell-rename-buffer
+         :desc "Interrupt agent"       "k" #'agent-shell-interrupt))
+
+  ;; ── Buffer 内 Evil 友好键位 ──────────────────────────────────
+  ;; insert mode：RET = 换行（防误发），S-RET = 发送
+  ;; normal mode：RET = 发送（vim 习惯），q = 关 buffer
+  (map! :map agent-shell-mode-map
+        :i "RET"   #'newline
+        :i "S-RET" #'shell-maker-submit
+        :n "RET"   #'shell-maker-submit
+        :n "q"     #'quit-window
+        :nv "gr"   #'agent-shell-send-dwim)
+
+  ;; ── Diff buffer 自动进 emacs-state ──────────────────────────
+  ;; 看 agent 改动时按 y/n/p/q 不用先切 insert
+  (add-hook 'diff-mode-hook
+            (lambda ()
+              (when (string-match-p "\\*agent-shell-diff\\*" (buffer-name))
+                (evil-emacs-state)))))
 #+end_src
 
 *** 写
