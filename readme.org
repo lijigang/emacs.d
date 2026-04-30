@@ -956,6 +956,7 @@ Oh, agent-shell!
 
 (require 'acp)
 (require 'agent-shell)
+
 (use-package! agent-shell
   :ensure-system-package
   ((claude-agent-acp . "npm install -g @agentclientprotocol/claude-agent-acp"))
@@ -997,7 +998,10 @@ Oh, agent-shell!
   (add-hook 'diff-mode-hook
             (lambda ()
               (when (string-match-p "\\*agent-shell-diff\\*" (buffer-name))
-                (evil-emacs-state)))))
+                (evil-emacs-state))))
+  ;; ── Viewport view-mode 自动进 emacs-state ───────────────────
+  ;; view 模式大量单字母键 (n/p/f/b/r/y/1-9/m/a/c/q) 会被 evil normal state 拦截
+  (evil-set-initial-state 'agent-shell-viewport-view-mode 'emacs))
 #+end_src
 
 *** 写
@@ -1100,8 +1104,8 @@ export for html
 export for pdf
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; texlive 安装路径
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2025/bin/universal-darwin"))
-(setq exec-path (append exec-path '("/usr/local/texlive/2025/bin/universal-darwin")))
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/texlive/2026/bin/universal-darwin"))
+(setq exec-path (append exec-path '("/usr/local/texlive/2026/bin/universal-darwin")))
 
 (setq org-highlight-latex-and-related '(latex script entities))
 
