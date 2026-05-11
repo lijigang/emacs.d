@@ -309,7 +309,10 @@
 (add-hook! 'after-setting-font-hook
   (set-fontset-font t 'symbol (font-spec :family "Symbola"))
   (set-fontset-font t 'mathematical (font-spec :family "Symbola"))
-  (set-fontset-font t 'emoji (font-spec :family "Symbola")))
+  (set-fontset-font t 'emoji (font-spec :family "Apple Color Emoji"))
+  ;; 对 emoji unicode 区段强制 prepend, 越过 symbol 的拦截
+  (set-fontset-font t '(#x1F300 . #x1FAFF) (font-spec :family "Apple Color Emoji") nil 'prepend)
+  (set-fontset-font t '(#x2600  . #x27BF)  (font-spec :family "Apple Color Emoji") nil 'prepend))
 
 ;; 全局打开visual line
 (global-visual-line-mode)
@@ -509,6 +512,14 @@ default config to rice org-mode
 % for use notin math symbol
 \\usepackage{unicode-math}
 \\setmathfont{Latin Modern Math}
+
+% verbatim/example 块的等宽字体——Menlo 覆盖 Block Elements/Box Drawing/Arrows，
+% 让 ASCII art（正态曲线等）字形完整、字宽对齐
+\\setmonofont[Scale=0.92]{Menlo}
+
+% 正文 Latin 字体——Latin Modern Roman 缺小写希腊（μ σ θ π α β 不显示），
+% 改用 Times New Roman（macOS 自带，含完整 Greek + Latin，与 KingHwa 同 serif 风格协调）
+\\setmainfont{Times New Roman}
 
 % Document title
 \\usepackage{titlesec}
