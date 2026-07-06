@@ -467,6 +467,10 @@ default config to rice org-mode
         org-use-speed-commands t
         org-use-sub-superscripts "{}")
 
+  ;; Org Tempo: type <m then TAB to insert a mindmap block.
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("m" . "mindmap"))
+
   ;; Export defaults
   (setq org-export-with-toc nil
         org-export-with-drawers nil
@@ -522,6 +526,20 @@ default config to rice org-mode
 % verbatim/example 块的等宽字体——Menlo 覆盖 Block Elements/Box Drawing/Arrows，
 % 让 ASCII art（正态曲线等）字形完整、字宽对齐
 \\setmonofont[Scale=0.92]{Menlo}
+
+% Org example blocks default to orgdiagram so ASCII diagrams preserve their
+% shape by fitting the whole block to the page width.
+\\usepackage{fvextra}
+\\newenvironment{orgdiagram}{%
+  \\VerbatimEnvironment
+  \\begin{center}
+  \\begin{adjustbox}{max width=\\linewidth}
+  \\begin{BVerbatim}
+}{%
+  \\end{BVerbatim}
+  \\end{adjustbox}
+  \\end{center}
+}
 
 % 正文 Latin 字体——Latin Modern Roman 缺小写希腊（μ σ θ π α β 不显示），
 % 改用 Times New Roman（macOS 自带，含完整 Greek + Latin，与 KingHwa 同 serif 风格协调）
@@ -589,6 +607,23 @@ default config to rice org-mode
                  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}")
                  ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+  (defun my/org-latex-example-block-default-orgdiagram (example-block _contents info)
+    "Export Org example blocks as orgdiagram unless ATTR_LATEX overrides it."
+    (when (org-string-nw-p (org-element-property :value example-block))
+      (let ((environment (or (org-export-read-attribute
+                              :attr_latex example-block :environment)
+                             "orgdiagram")))
+        (org-latex--wrap-label
+         example-block
+         (format "\\begin{%s}\n%s\\end{%s}"
+                 environment
+                 (org-export-format-code-default example-block info)
+                 environment)
+         info))))
+
+  (advice-add #'org-latex-example-block
+              :override #'my/org-latex-example-block-default-orgdiagram)
 
   ;; Fix table truncation: use tabular + adjustbox auto-fit
   (setq org-latex-default-table-environment "tabular")
@@ -1147,9 +1182,8 @@ export for pdf
 (setq org-highlight-latex-and-related '(latex script entities))
 
 ;; pdf-tools builds a small C server; keep it from inheriting stale gcc paths.
-(let ((process-environment (copy-sequence process-environment)))
-  (setenv "CC" "cc")
-  (pdf-loader-install))
+(setenv "CC" "cc")
+(pdf-loader-install)
 
 (setq Tex-command-default "XeLaTeX")
 #+end_src
