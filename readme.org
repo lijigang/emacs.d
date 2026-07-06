@@ -977,13 +977,13 @@ Oh, agent-shell!
 (require 'agent-shell)
 
 (use-package! agent-shell
-  :ensure-system-package
-  ((claude-agent-acp . "npm install -g @agentclientprotocol/claude-agent-acp"))
   :config
   (setq agent-shell-highlight-blocks t)
-  (setq agent-shell-preferred-agent-config (agent-shell-anthropic-make-claude-code-config))
-  (setq agent-shell-anthropic-authentication
-        (agent-shell-anthropic-make-authentication :login t))
+  (setq agent-shell-session-strategy 'new)
+  (setq agent-shell-preferred-agent-config
+        (agent-shell-openai-make-codex-config))
+  (setq agent-shell-openai-authentication
+        (agent-shell-openai-make-authentication :login t))
 
   ;; ── Leader 键：SPC a 作 agent 前缀 ────────────────────────────
   ;; vertico 模块在 embark :init 里把 SPC a 绑到了 embark-act（非 keymap），
