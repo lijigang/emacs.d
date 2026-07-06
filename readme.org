@@ -147,9 +147,15 @@
 ;; 在Orgmode 文件中插入图片
 (package! org-download)
 
+(package! org-export-png
+  :recipe (:host github :repo "lijigang/org-export-png"))
+
 (package! org-fragtog)
 (package! org-imenu
   :recipe (:host github :repo "rougier/org-imenu"))
+
+(package! org-mindmap
+  :recipe (:host github :repo "krvkir/org-mindmap"))
 
 ;; 默认在+pretty 的时候已经包含，需单独关闭
 (package! org-modern :disable t)
@@ -659,6 +665,8 @@ default config to rice org-mode
                                        ("#+end_example" . "⌸")
                                        ("#+begin_quote" . "❮")
                                        ("#+end_quote" . "❯")
+                                       ("#+begin_mindmap" . "🧠")
+                                       ("#+end_mindmap" . "🧠")
                                        ("#+begin_src" . "❮")
                                        ("#+end_src" . "❯")))
 
@@ -1099,6 +1107,24 @@ Org-download for images
   (org-download-enable))
 #+end_src
 
+org-mindmap
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(use-package! org-mindmap
+  :after org
+  :config
+  (add-hook 'org-mode-hook #'org-mindmap-mode)
+  (defun +org-mindmap-return ()
+    "在 mindmap 节点上插同级，否则走 Doom 的 `+org/return'。"
+    (interactive)
+    (if (and (org-mindmap-parser-region-active-p)
+             (org-mindmap-find-node-at-point))
+        (org-mindmap-insert-sibling)
+      (call-interactively #'+org/return)))
+  (map! :map org-mindmap-mode-map
+        :i "RET" #'+org-mindmap-return
+        :n "RET" #'+org-mindmap-return))
+#+end_src
+
 *** 发
 :PROPERTIES:
 :ID:       c95370d4-37de-4ebd-ba0a-176fb69cfd5f
@@ -1120,7 +1146,10 @@ export for pdf
 
 (setq org-highlight-latex-and-related '(latex script entities))
 
-(pdf-loader-install)
+;; pdf-tools builds a small C server; keep it from inheriting stale gcc paths.
+(let ((process-environment (copy-sequence process-environment)))
+  (setenv "CC" "cc")
+  (pdf-loader-install))
 
 (setq Tex-command-default "XeLaTeX")
 #+end_src
@@ -1132,6 +1161,150 @@ engrave-faces, 导出时语法高亮
   (setq org-latex-src-block-backend 'engraved)
   ;; 配置导出时语法高亮的Theme
   (setq org-latex-engraved-theme 'whiteboard))
+#+end_src
+
+export text to png
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+(after! org
+  (require 'org-export-png))
+#+end_src
+
+convert markdown region to org
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;;; ──────────────────────────────────
+;;; Markdown → Org 区域转换（选中一段 Markdown，就地转成 Org 语法）
+;;; 用法：选中区域后  M-x ljg/markdown-to-org-region
+;;; 有 pandoc 走 pandoc（-f gfm，表格、任务列表等全量语法高保真）；
+;;; 没有 pandoc 走纯 elisp 降级：标题、粗/斜/粗斜体、行内代码、
+;;; 删除线、链接、图片、围栏代码块、引用块、水平线、`*` 列表。
+;;; 转换失败时原文不动。单下划线斜体 _x_ 故意不转（snake_case 误伤）。
+
+(defun ljg/markdown-to-org-region (beg end)
+  "把 BEG 到 END 之间的 Markdown 文本转成 Org 语法，就地替换。
+优先用 pandoc；找不到时退回 `ljg/markdown-to-org--elisp'。
+pandoc 报错时抛 `user-error'，region 原文保持不动。
+交互调用时要求 region 处于激活状态——防止 stale mark 吃掉别的文本。"
+  (interactive
+   (if (use-region-p)
+       (list (region-beginning) (region-end))
+     (user-error "先选中一段 Markdown 再调用")))
+  (let* ((input (buffer-substring-no-properties beg end))
+         (output (if (executable-find "pandoc")
+                     (ljg/markdown-to-org--pandoc input)
+                   (ljg/markdown-to-org--elisp input))))
+    (delete-region beg end)
+    (goto-char beg)
+    (insert output)))
+
+(defun ljg/markdown-to-org--pandoc (text)
+  "用 pandoc 把 Markdown TEXT 转成 Org 字符串。
+GFM 方言进（关掉 auto_identifiers，免得每个标题带 CUSTOM_ID
+抽屉）、Org 出、不折行。非零退出时抛 `user-error'。"
+  (with-temp-buffer
+    (insert text)
+    (let* ((coding-system-for-write 'utf-8)
+           (coding-system-for-read 'utf-8)
+           (exit (call-process-region (point-min) (point-max) "pandoc"
+                                      t t nil
+                                      "-f" "gfm-gfm_auto_identifiers"
+                                      "-t" "org" "--wrap=none")))
+      (unless (eql exit 0)
+        (user-error "pandoc 转换失败 (exit %s): %s"
+                    exit (string-trim (buffer-string))))
+      (buffer-string))))
+
+(defun ljg/markdown-to-org--elisp (text)
+  "纯 elisp 的 Markdown→Org 转换。
+逐行状态机：围栏代码块内的内容原样保留，连续引用行合并成
+一个 quote 块，其余行走行级 + 行内规则。"
+  (let ((in-code nil)
+        (in-quote nil)
+        (out '()))
+    (dolist (line (split-string text "\n"))
+      (cond
+       ;; 围栏代码块开/关
+       ((string-match "^\\s-*```\\(.*\\)$" line)
+        (if in-code
+            (progn (push "#+end_src" out)
+                   (setq in-code nil))
+          (let ((lang (string-trim (match-string 1 line))))
+            (push (if (string-empty-p lang)
+                      "#+begin_src"
+                    (concat "#+begin_src " lang))
+                  out)
+            (setq in-code t))))
+       ;; 代码块内：原样
+       (in-code (push line out))
+       ;; 引用块
+       ((string-match "^\\s-*>\\s-?\\(.*\\)$" line)
+        (unless in-quote
+          (push "#+begin_quote" out)
+          (setq in-quote t))
+        (push (ljg/markdown-to-org--inline (match-string 1 line)) out))
+       (t
+        (when in-quote
+          (push "#+end_quote" out)
+          (setq in-quote nil))
+        (push (ljg/markdown-to-org--line line) out))))
+    (when in-quote (push "#+end_quote" out))
+    (when in-code (push "#+end_src" out))
+    (mapconcat #'identity (nreverse out) "\n")))
+
+(defun ljg/markdown-to-org--line (line)
+  "转换单行 LINE 的行级语法，再交给行内规则。"
+  (cond
+   ;; 水平线 --- / *** / ___
+   ((string-match "^\\s-*\\(?:---+\\|\\*\\*\\*+\\|___+\\)\\s-*$" line)
+    "-----")
+   ;; 标题：#… → *…
+   ((string-match "^\\(#+\\)\\s-+\\(.*\\)$" line)
+    (concat (make-string (length (match-string 1 line)) ?*) " "
+            (ljg/markdown-to-org--inline (match-string 2 line))))
+   ;; `* ' 列表符号 → `- '（org 里顶格 * 是标题）
+   ((string-match "^\\(\\s-*\\)\\*\\s-+\\(.*\\)$" line)
+    (concat (match-string 1 line) "- "
+            (ljg/markdown-to-org--inline (match-string 2 line))))
+   (t (ljg/markdown-to-org--inline line))))
+
+(defun ljg/markdown-to-org--inline (line)
+  "转换 LINE 里的行内语法：行内代码、图片、链接、删除线、粗体、斜体。
+行内代码先整体摘出存进占位符（\x02N\x03），免得代码里的 `**' 被
+粗体规则改写；粗体也走 \x01 占位符再处理斜体，防止 `*x*' 规则
+吃掉转好的粗体。单下划线斜体（_x_）故意不转——snake_case 误伤率太高。"
+  (let ((s line)
+        (codes '())
+        (i 0))
+    ;; 行内代码 `x` → 摘出，占位符顶替
+    (setq s (replace-regexp-in-string
+             "`\\([^`]+\\)`"
+             (lambda (m)
+               (push (concat "~" (substring m 1 -1) "~") codes)
+               (prog1 (format "\x02%d\x03" i) (setq i (1+ i))))
+             s))
+    (setq codes (nreverse codes))
+    ;; 图片 ![alt](url) → [[url]]
+    (setq s (replace-regexp-in-string "!\\[[^]]*\\](\\([^)]+\\))" "[[\\1]]" s))
+    ;; 链接 [text](url) → [[url][text]]
+    (setq s (replace-regexp-in-string "\\[\\([^]]+\\)\\](\\([^)]+\\))" "[[\\2][\\1]]" s))
+    ;; 删除线 ~~x~~ → +x+
+    (setq s (replace-regexp-in-string "~~\\([^~]+\\)~~" "+\\1+" s))
+    ;; 行内代码 `x` 已摘出；粗体 **x** / __x__ → 占位符
+    (setq s (replace-regexp-in-string "\\*\\*\\([^*]+\\)\\*\\*" "\x01\\1\x01" s))
+    (setq s (replace-regexp-in-string "__\\([^_]+\\)__" "\x01\\1\x01" s))
+    ;; 斜体 *x* → /x/
+    (setq s (replace-regexp-in-string "\\*\\([^*]+\\)\\*" "/\\1/" s))
+    ;; 占位符 → org 粗体
+    (setq s (replace-regexp-in-string "\x01" "*" s))
+    ;; 行内代码放回（LITERAL=t，代码里的反斜杠原样保留）
+    (setq s (replace-regexp-in-string
+             "\x02\\([0-9]+\\)\x03"
+             (lambda (m)
+               (nth (string-to-number (substring m 1 -1)) codes))
+             s nil t))
+    s))
+
+(map! :leader
+      :desc "Markdown region → Org" "c o" #'ljg/markdown-to-org-region)
 #+end_src
 
 
