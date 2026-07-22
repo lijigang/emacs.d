@@ -134,6 +134,10 @@
 
 (package! imenu-list)
 
+;; 单页面、Vim 风格的 Emacs 网页浏览器
+(package! ljg-web
+  :recipe (:host github :repo "lijigang/ljg-web"))
+
 (package! olivetti)
 
 ;; 鼠标放到加粗字符上, 可编辑修饰符, 离开即显示加粗后的效果
@@ -963,7 +967,7 @@ Assume point is at first MARK."
 :PROPERTIES:
 :ID:       a1c54135-5a8f-4a22-81e4-90d0d597c5bc
 :END:
-读网页链接
+读网页标题
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; Easy insertion of weblinks
 (use-package! org-web-tools
@@ -974,6 +978,16 @@ Assume point is at first MARK."
    :desc "insert weblinks" "l" #'org-web-tools-insert-link-for-url))
 #+end_src
 
+读网页内容
+#+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
+;; 单页面、Vim 风格的 Emacs 网页浏览器
+(use-package! ljg-web
+  :commands ljg-web-open
+  :init
+  (map! :leader
+        :desc "Open web"
+        "o w" #'ljg-web-open))
+#+end_src
 加密文件
 #+begin_src emacs-lisp :tangle "~/.doom.d/config.el"
 ;; GnuPG
